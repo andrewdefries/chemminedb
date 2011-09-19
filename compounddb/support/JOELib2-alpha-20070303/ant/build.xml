@@ -1,0 +1,2186 @@
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Filename: $RCSfile: build.xml,v $
+   Purpose:  Ant build file for JOELib2.
+
+             Ant-Download: http://jakarta.apache.org/ant
+             Ant-Manual:   http://jakarta.apache.org/ant/manual/index.html
+
+             JOELib-Homepage:    http://joelib.sourceforge.net
+             JOELib@SourceForge: http://sourceforge.net/projects/joelib
+             JOELib@FreshMeat:   http://freshmeat.net/projects/joelib/?topic_id=813%2C913
+	     JOELib-CVSRoot:     :pserver:anonymous@cvs.sourceforge.net:/cvsroot/joelib
+
+             Further questions:
+               developer mailing list: http://lists.sourceforge.net/lists/listinfo/joelib-devel
+               help mailing list:      http://lists.sourceforge.net/lists/listinfo/joelib-help
+
+   Precondition: 1. Ant should be installed.
+                 2. JAVA_HOME environment variable contains the path to JDK1.4 or higher
+                 3. ANT_HOME environment variable contains the path to ant's home directory
+
+   Language: XML
+   Compiler: Ant
+   Authors:  Joerg Kurt Wegner, wegner@users.sourceforge.net
+
+   Copyright OELIB:          OpenEye Scientific Software, Santa Fe,
+                             U.S.A., 1999,2000,2001
+   Copyright JOELIB/JOELib2: Dept. Computer Architecture, University of
+                             Tuebingen, Germany, 2001,2002,2003,2004,2005
+   Copyright JOELIB/JOELib2: ALTANA PHARMA AG, Konstanz, Germany,
+                             2003,2004,2005
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation version 2 of the License.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   Version:  $Revision: 1.15 $
+             $Date: 2006/07/24 22:41:33 $
+             $Author: wegner $
+   Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<project name="JOELib2" default="compile" basedir="..">
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Set properties
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+  <!-- SET PROJECT PROPERTIES -->
+  <property name="project.name.short"             value="JOELib2" />
+  <property name="project.name.cvs"               value="joelib2" />
+  <property name="project.debug.mode"             value="off" />
+  <property name="project.status"                 value="alpha" />
+  <property name="project.name.full"              value="${project.name.short}-${project.status}" />
+
+  <!-- SET COMPILE PROPERTIES -->
+  <property name="switchOff.compiler.warnings"    value="true" />
+
+  <!-- SET THE PROXY PROPERTIES if you are behind a firewall -->
+  <property name="proxy.use"                      value="false" />
+  <property name="proxy.port"                     value="3128" />
+  <property name="proxy.host"                     value="www-cache.informatik.uni-tuebingen.de" />
+  <property name="javadoc.proxy"                  value="-J-DproxySet=${proxy.use} -J-DproxyHost=${proxy.host} -J-DproxyPort=${proxy.port}" />
+
+  <!-- SET THE DIRECTORY PROPERTIES -->
+  <property name="source.directory"               value="src" />
+  <property name="source.testing.directory"       value="src_test" />
+  <property name="build.directory"                value="build" />
+  <property name="distribution.directory"         value="dist" />
+  <property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
+  <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
+  <property name="documentation.directory"        value="docs" />
+  <property name="library.directory"              value="lib" />
+
+  <!-- SET THE DOCUMENTATION DIRECTORY PROPERTIES -->
+  <property name="javadoc.directory"              value="${documentation.directory}/api" />
+  <property name="docbook.directory"              value="${documentation.directory}/docbook" />
+  <property name="tutorial.directory"             value="${documentation.directory}/tutorial" />
+  <property name="docbook.o2c2.directory"              value="${documentation.directory}/docbookO2C2" />
+  <property name="tutorial.o2c2.directory"             value="${documentation.directory}/tutorialO2C2" />
+
+  <!-- SET THE BINARY LIBRARIES PROPERTIES -->
+  <property name="check.libraries.ant"            value="ant/check.xml" />
+  <property name="windows.libraries"              value="${library.directory}/windows" />
+  <property name="unix.libraries"                 value="${library.directory}/linux" />
+
+  <!-- SET THE JAVA BINARY LIBRARIES PROPERTIES -->
+<!--  <property name="library.WSI"                    value="${library.directory}/wsi.jar" />
+  <property name="library.WSI.ant"                value="../java" />
+  <property name="library.WSI.original"           value="../java/dist/wsi.jar" />
+-->
+  <property name="library.LOG4J"                  value="${library.directory}/log4j.jar" />
+
+  <!-- SET THE SOURCE LIBRARIES PROPERTIES -->
+<!--
+ <property name="solves.source.directory"       value="../solves" />
+-->
+
+  <!-- SET CLASSPATH -->
+  <path id="project.class.path">
+    <pathelement location="${env.JAVA_HOME}/jre/lib/rt.jar" />
+    <pathelement location="${env.JAVA_HOME}/lib/dt.jar" />
+    <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+    <pathelement location="${build.directory}" />
+    <fileset dir="${library.directory}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- SET THE CVS RELEVANT PROPERTIES -->
+  <property name="repository.directory"      value=":pserver:anonymous@cvs.${project.name.cvs}.sourceforge.net:/cvsroot/${project.name.cvs}" />
+
+  <!-- ENVIRNONMENT PROPERTIES -->
+  <property environment="env"/>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Usage
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="usage" unless="silent">
+    <echo>
+      Supported targets (default=compile):
+      -------------------------------------------------------------------------
+      compile    - compile core project files, and available optional sources,
+                   if their relevant binary classes are available:
+                   - Chemical Development Kit (CDK)
+                   - Java3D
+                   - Weka data mining
+      javadoc    - build project javadoc files
+      dist       - will create a complete binary and source distribution
+      clean      - will clean up files, except the source files and the api
+                   documentation
+      cvsupdate  - gets the latest ${project.name.full} version from the
+                   developer Concurrent Version System (CVS) repository.
+
+      use 'ant -projecthelp' for further Main targets
+      -------------------------------------------------------------------------
+      Mailing lists:
+        http://lists.sourceforge.net/lists/listinfo/joelib-devel
+        http://lists.sourceforge.net/lists/listinfo/joelib-help
+
+      ${project.name.full}@SourceForge:
+        http://sourceforge.net/projects/joelib
+    </echo>
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Library check
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+
+  <target name="check">
+    <ant inheritAll="true" antfile="${check.libraries.ant}" target="binary.libraries.test">
+      <property name="silent" value="true"/>
+    </ant>
+<!--    <ant inheritAll="true" antfile="${check.libraries.ant}" target="source.libraries.test">
+      <property name="silent" value="true"/>
+    </ant>
+   -->
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Init
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="splash" description="Gimmick !;-) JOELib in Tolkien's Tengwar scribe (try: ant splash compile)">
+    <!-- BEGIN: ONLY for Ant 1.5 -->
+    <splash/>
+    <!-- END: ONLY for Ant 1.5 -->
+  </target>
+
+  <target name="init" depends="usage">
+
+    <tstamp />
+
+    <mkdir dir="${build.directory}" />
+    <mkdir dir="${distribution.directory}" />
+    <mkdir dir="${source.distribution.directory}" />
+    <mkdir dir="${binary.distribution.directory}" />
+    <mkdir dir="${javadoc.directory}" />
+
+    <condition property="isWindows">
+      <and>
+        <os family="windows" />
+        <not>
+          <os family="unix" />
+        </not>
+      </and>
+    </condition>
+
+    <condition property="isUnix">
+      <and>
+        <os family="unix" />
+        <not>
+          <os family="windows" />
+        </not>
+      </and>
+    </condition>
+
+    <condition property="java3d.available" value="true">
+      <and>
+        <available classname="javax.media.j3d.MasterControl">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+
+    <condition property="java3d.vecmath.available" value="true">
+      <and>
+        <available classname="javax.vecmath.Tuple2d">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+
+    <condition property="cdk.available" value="true">
+      <and>
+        <available classname="org.openscience.cdk.libio.joelib.Convertor">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+
+    <condition property="plucker.available" value="true">
+      <and>
+        <available classname="pluckit">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+
+    <condition property="weka.available" value="true">
+      <and>
+        <available classname="weka.core.Instances">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+
+    <condition property="xsl.available" value="true">
+      <and>
+        <available classname="com.icl.saxon.StyleSheet">
+          <classpath>
+            <pathelement path="${project.class.path}" />
+            <pathelement path="${build.directory}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          </classpath>
+        </available>
+      </and>
+    </condition>
+  </target>
+
+
+  <target name="java3d.availability.no" unless="java3d.available">
+    <echo>Java3D NOT available. Java3D-Molecule-Viewer is not available.
+1. Download Java3D:
+   WINDOWS: http://java.sun.com/products/java-media/3D/
+   LINUX:   http://www.blackdown.org/
+2. Install Java3D
+3. Copy the j3dcore.jar, j3dutils.jar, j3daudio.jar and vecmath.jar files
+   to the ${project.name.cvs}/lib directory or add to CLASSPATH</echo>
+  </target>
+
+  <target name="java3d.availability.yes" if="java3d.available">
+    <echo>Java3D available.</echo>
+  </target>
+
+  <target name="java3d.vecmath.availability.no" unless="java3d.vecmath.available">
+    <echo>Java3D vecmath library NOT available.
+1. Download Java3D:
+   WINDOWS: http://java.sun.com/products/java-media/3D/
+   LINUX:   http://www.blackdown.org/
+2. Copy the vecmath.jar file to the ${project.name.cvs}/lib directory or add to CLASSPATH</echo>
+  </target>
+
+  <target name="java3d.vecmath.availability.yes" if="java3d.vecmath.available">
+    <echo>Java3D vecmath library available.</echo>
+  </target>
+
+  <target name="cdk.availability.no" unless="cdk.available">
+    <echo>The CDK converter classes are NOT available.
+
+1. The project can be checked out from from:
+     cvs -z3 -d:pserver:anonymous@cvs.cdk.sourceforge.net:/cvsroot/cdk co cdk
+2. A stable release can be downloaded from:
+     http://sourceforge.net/projects/cdk
+After downloading call:
+  ant dist
+and copies the generated jar files in the cdk/dist/jar directory to ${project.name.cvs}/lib.
+Copy additionally the JSX.jar from cdk/jar to ${project.name.cvs}/lib.
+If you want to use 2D layout, don't forget to recompile ${project.name.full} to generate
+the interface class.</echo>
+  </target>
+
+  <target name="cdk.availability.yes" if="cdk.available">
+    <echo message="The CDK converter classes are available."/>
+  </target>
+
+  <target name="plucker.availability.no" unless="plucker.available">
+    <echo>The Plucker (E-Book) distiller java classes are NOT available.
+
+1. The Plucker (E-Book) distiller java archive can be downloaded from:
+     http://www.plkr.org/
+2. Copy the plucker-build-*.jar to ${project.name.cvs}/lib.</echo>
+  </target>
+
+  <target name="weka.availability.yes" if="weka.available">
+    <echo message="The Weka data mining classes are available."/>
+  </target>
+
+  <target name="weka.availability.no" unless="weka.available">
+    <echo>The Weka data mining java classes are NOT available.
+
+1. The Weka data mining java archive can be downloaded from:
+     http://www.cs.waikato.ac.nz/ml/weka/
+2. For using Weka you should modify the constructors in
+   weka.core.Attributes from 'protected' to 'public' and use the
+   recompiled Weka sources.
+3. Copy recompiled weka*.jar to ${project.name.cvs}/lib.</echo>
+  </target>
+
+  <target name="plucker.availability.yes" if="plucker.available">
+    <echo message="The Plucker (E-Book) distiller java classes are available."/>
+  </target>
+
+  <target name="cdk.availability" depends="cdk.availability.yes, cdk.availability.no" unless="silent">
+  </target>
+
+  <target name="java3d.vecmath.availability" depends="java3d.vecmath.availability.yes, java3d.vecmath.availability.no" unless="silent">
+  </target>
+
+  <target name="java3d.availability" depends="java3d.availability.yes, java3d.availability.no" unless="silent">
+  </target>
+
+  <target name="plucker.availability" depends="plucker.availability.yes, plucker.availability.no" unless="silent">
+  </target>
+
+  <target name="weka.availability" depends="weka.availability.yes, weka.availability.no" unless="silent">
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Clean
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="clean" description="PROJECT: Clean the project and delete *.bak, *.class, ... files.">
+    <delete>
+      <fileset dir="." includes="**/*.bak" />
+      <fileset dir="." includes="**.class" />
+      <fileset dir="." includes="*.tar.gz" />
+    </delete>
+
+    <delete dir="${build.directory}" />
+    <delete dir="${distribution.directory}" />
+    <delete dir="${javadoc.directory}" />
+    <delete>
+      <fileset dir="${docbook.directory}" includes="*.html" />
+      <fileset dir="${docbook.directory}" includes="*.htm" />
+      <fileset dir="${docbook.directory}" includes="*.fot" />
+      <fileset dir="${docbook.directory}" includes="*.rtf" />
+    </delete>
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        CVS tools
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="cvsupdate" description="PROJECT: Gets the latest JOELib version from the developer CVS repository.">
+    <cvs cvsRoot="${repository.directory}"
+      package="${project.name.cvs}"
+      command="checkout"
+    />
+ </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Update libraries
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<!--
+  <target name="update.library.WSI">
+    <ant inheritAll="false" antfile="build.xml"
+         dir="${library.WSI.ant}" target="compile">
+      <property name="silent" value="true"/>
+    </ant>
+    <ant inheritAll="false" antfile="build.xml"
+         dir="${library.WSI.ant}" target="dist">
+      <property name="silent" value="true"/>
+    </ant>
+    <copy file="${library.WSI.original}" tofile="${library.WSI}"/>
+  </target>
+
+  <target name="update.libraries" depends="update.library.WSI">
+  </target>
+-->
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Compile
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="compileInfo"  unless="silent">
+    <echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
+    <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}"/>
+    <echo message="${project.name.full} starting directory is = ${basedir}${file.separator}${build.directory}"/>
+    <echo message="You are using JDK version ${ant.java.version}"/>
+  	<echo message="Debugging mode is: ${project.debug.mode}"/>
+    <echo message=""/>
+
+    <antcall target="java3d.availability"/>
+    <antcall target="cdk.availability"/>
+    <antcall target="java3d.vecmath.availability"/>
+    <antcall target="plucker.availability"/>
+    <antcall target="weka.availability"/>
+  </target>
+
+  <target name="compile" depends="init, check, compileInfo,compile.core, compile.java3d.parts, compile.cdk.parts, compile.weka.parts" description="PROJECT: Compiles JOELib.">
+  </target>
+
+  <target name="compile.java3d.parts" depends="init, check, compileInfo,compile.core" if="java3d.available">
+    <!-- java3d.availability is th precondition, the following teo lines are only for verbosity. -->
+    <fail message="Java3D library is not available." unless="java3d.available"/>
+    <fail message="Java3D vecmath library is not available." unless="java3d.vecmath.available"/>
+    <echo message="Compiling Java3D parts."/>
+
+    <javac destdir="${build.directory}"
+           optimize="on"
+           debug="${project.debug.mode}"
+           nowarn="${switchOff.compiler.warnings}"
+           deprecation="on" target="1.5">
+      <src path="${source.directory}/${project.name.cvs}/gui/render3D">
+      </src>
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+   </javac>
+   <!-- copy molecule viewer data -->
+   <copy todir="${build.directory}/${project.name.cvs}/gui/render3D">
+     <fileset dir="${source.directory}/${project.name.cvs}/gui/render3D" includes="*txt" />
+   </copy>
+  </target>
+
+  <target name="compile.cdk.parts" depends="init, check, compileInfo,compile.core" if="cdk.available">
+    <!-- cdk.availability is th precondition, the following two lines are only for verbosity. -->
+    <fail message="CDK classes are not available." unless="cdk.available"/>
+    <fail message="Java3D vecmath library is not available." unless="java3d.vecmath.available"/>
+    <echo message="Compiling CDK parts."/>
+
+    <javac destdir="${build.directory}"
+           optimize="on"
+           debug="${project.debug.mode}"
+           nowarn="${switchOff.compiler.warnings}"
+           deprecation="on" target="1.5">
+      <src path="${source.directory}/${project.name.cvs}/util/cdk"/>
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+   </javac>
+  </target>
+
+  <target name="compile.weka.parts" depends="init, check, compileInfo,compile.core" if="weka.available">
+    <!-- cdk.availability is th precondition, the following two lines are only for verbosity. -->
+    <fail message="Weka classes are not available." unless="weka.available"/>
+    <echo message="Compiling Weka data mining parts."/>
+
+    <javac destdir="${build.directory}"
+           optimize="on"
+           debug="${project.debug.mode}"
+           nowarn="${switchOff.compiler.warnings}"
+           deprecation="on" target="1.5">
+      <src path="${source.directory}/${project.name.cvs}/algo/datamining/weka"/>
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+   </javac>
+  </target>
+
+  <target name="compile.core" depends="init, check, compileInfo" description="PROJECT: Compiles core JOELib without external libraries.">
+    <echo message="Compiling core ${project.name.full} library."/>
+
+    <!-- COMPILE PROJECT -->
+    <javac destdir="${build.directory}"
+           optimize="on"
+           debug="${project.debug.mode}"
+           nowarn="${switchOff.compiler.warnings}"
+           deprecation="on" target="1.5">
+      <src path="${source.directory}" />
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+
+      <!-- Exclude all classes which needs external optional libraries-->
+      <exclude name="${project.name.cvs}/util/cdk/**/*.java"/>
+      <exclude name="${project.name.cvs}/gui/molviewer/java3d/**/*.java"/>
+      <exclude name="${project.name.cvs}/algo/datamining/**/*.java"/>
+   </javac>
+
+   <!-- COPY DATA FILES TO BUILD DIRECTORY -->
+   <copy todir="${build.directory}/${project.name.cvs}/data/plain">
+     <fileset dir="${source.directory}/${project.name.cvs}/data/plain" includes="*txt" />
+     <fileset dir="${source.directory}/${project.name.cvs}/data/plain" includes="*contributions" />
+   </copy>
+   <!-- copy resource data -->
+   <copy todir="${build.directory}/resources">
+     <fileset dir="${source.directory}/resources" includes="**/*" />
+   </copy>
+   <!-- copy CML dtd definitions -->
+   <copy todir="${build.directory}/${project.name.cvs}/io/types/cml/data">
+     <fileset dir="${source.directory}/${project.name.cvs}/io/types/cml/data" includes="*dtd" />
+   </copy>
+   <!-- copy JOELib images -->
+   <copy todir="${build.directory}/${project.name.cvs}/data/images">
+     <fileset dir="${source.directory}/${project.name.cvs}/data/images" includes="*gif" />
+   </copy>
+   <copy todir="${build.directory}">
+      <fileset dir="${source.directory}" includes="*.properties" />
+   </copy>
+
+    <copy todir="${build.directory}/docs">
+      <fileset dir="${source.directory}/docs">
+        <include name="**/*.txt" />
+        <include name="**/*.html" />
+        <include name="**/*.xml" />
+        <include name="**/*.bib" />
+        <include name="**/*.tex" />
+        <include name="**/*.gif" />
+      </fileset>
+    </copy>
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Binary Distribution
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="binaryDistribution" depends="init, compile, javadoc, binaryDistributionWithoutDoc, binaryDistribution.javadoc, binaryDistributionPackages">
+  </target>
+
+  <target name="binaryDistribution.javadoc" depends="init, compile, javadoc">
+
+    <property name="bin.dist.dir"  value="${binary.distribution.directory}/${project.name.full}-${DSTAMP}" />
+    <mkdir dir="${bin.dist.dir}" />
+
+    <mkdir dir="${bin.dist.dir}/${javadoc.directory}" />
+    <copy todir="${bin.dist.dir}/${javadoc.directory}">
+      <fileset dir="${javadoc.directory}">
+        <include name="**/*" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="binaryDistributionWithoutDoc" depends="init, compile">
+
+    <property name="bin.dist.dir"  value="${binary.distribution.directory}/${project.name.full}-${DSTAMP}" />
+    <mkdir dir="${bin.dist.dir}" />
+    <mkdir dir="${bin.dist.dir}/${library.directory}" />
+
+    <!-- create .jar-file -->
+    <delete>
+      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*${project.name.cvs}*jar" />
+    </delete>
+    <jar jarfile="${bin.dist.dir}/${library.directory}/${project.name.cvs}.jar" basedir="${build.directory}" />
+
+    <!-- copy starting files -->
+    <copy todir="${bin.dist.dir}/${library.directory}">
+      <fileset dir="${library.directory}" includes="*jar" />
+    </copy>
+    <copy todir="${bin.dist.dir}">
+      <fileset dir=".">
+        <include name="*.sh"/>
+        <include name="*.bat"/>
+        <include name="*.txt"/>
+        <exclude name="CVS" />
+        <exclude name="build.sh" />
+        <exclude name="build.bat" />
+      </fileset>
+    </copy>
+
+    <!-- copy ant starting files -->
+    <copy todir="${bin.dist.dir}/ant">
+      <fileset dir="ant">
+        <include name="**/*.xml" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy documentation -->
+    <mkdir dir="${bin.dist.dir}/${tutorial.directory}" />
+    <copy todir="${bin.dist.dir}/${tutorial.directory}">
+      <fileset dir="${tutorial.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.htm" />
+        <include name="**/*.rtf" />
+        <include name="**/*.pdf" />
+        <include name="**/*.txt" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy documentation -->
+    <mkdir dir="${bin.dist.dir}/${tutorial.o2c2.directory}" />
+    <copy todir="${bin.dist.dir}/${tutorial.o2c2.directory}">
+      <fileset dir="${tutorial.o2c2.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.htm" />
+        <include name="**/*.rtf" />
+        <include name="**/*.pdf" />
+        <include name="**/*.txt" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy libraries -->
+    <copy todir="${bin.dist.dir}/${library.directory}">
+      <fileset dir="${library.directory}">
+        <include name="**/*" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="binaryDistributionPackages" depends="binaryDistributionWithoutDoc">
+    <tar tarfile="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar">
+      <tarfileset dir="${binary.distribution.directory}">
+        <include name="**" />
+        <exclude name="*.tar*, *.zip" />
+      </tarfileset>
+    </tar>
+    <gzip zipfile="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar.gz"
+        src="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar" />
+    <bzip2 zipfile="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar.bz2"
+        src="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar" />
+    <delete file="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.tar" />
+
+    <zip zipfile="${distribution.directory}/${project.name.full}-bin-${DSTAMP}.zip">
+      <zipfileset dir="${binary.distribution.directory}">
+        <include name="**" />
+        <exclude name="*.tar*, *.zip" />
+      </zipfileset>
+    </zip>
+  </target>
+
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Source Distribution
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="sourceDistribution" depends="init">
+
+    <property name="src.dist.dir"  value="${source.distribution.directory}/${project.name.full}-${DSTAMP}" />
+    <mkdir dir="${src.dist.dir}" />
+
+    <!-- copy starting files -->
+    <copy todir="${src.dist.dir}/${library.directory}">
+      <fileset dir="${library.directory}" includes="*jar" />
+    </copy>
+    <copy todir="${src.dist.dir}">
+      <fileset dir=".">
+        <include name="*.sh" />
+        <include name="*.bat" />
+        <include name="*.txt"/>
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy ant starting files -->
+    <copy todir="${src.dist.dir}/ant">
+      <fileset dir="ant">
+        <include name="**/*.xml" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy documentation -->
+    <mkdir dir="${src.dist.dir}/${docbook.directory}" />
+    <copy todir="${src.dist.dir}/${docbook.directory}">
+      <fileset dir="${docbook.directory}">
+        <include name="**/*.xml" />
+        <include name="**/*.sh" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.tex" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <mkdir dir="${src.dist.dir}/${tutorial.directory}" />
+    <copy todir="${src.dist.dir}/${tutorial.directory}">
+      <fileset dir="${tutorial.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.htm" />
+        <include name="**/*.rtf" />
+        <include name="**/*.pdf" />
+        <include name="**/*.txt" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy O2C2 documentation -->
+    <mkdir dir="${src.dist.dir}/${docbook.o2c2.directory}" />
+    <copy todir="${src.dist.dir}/${docbook.o2c2.directory}">
+      <fileset dir="${docbook.o2c2.directory}">
+        <include name="**/*.xml" />
+        <include name="**/*.sh" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.tex" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <mkdir dir="${src.dist.dir}/${tutorial.o2c2.directory}" />
+    <copy todir="${src.dist.dir}/${tutorial.o2c2.directory}">
+      <fileset dir="${tutorial.o2c2.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.htm" />
+        <include name="**/*.rtf" />
+        <include name="**/*.pdf" />
+        <include name="**/*.txt" />
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <include name="**/*.eps" />
+        <include name="**/*.sdf" />
+        <include name="**/*.mol" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy libraries -->
+    <copy todir="${src.dist.dir}/${library.directory}">
+      <fileset dir="${library.directory}">
+        <include name="**/*" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+
+    <!-- copy sources, properties and example files-->
+    <copy todir="${src.dist.dir}/${source.directory}">
+      <fileset dir="${source.directory}">
+      	<include name="**/*java" />
+      	<include name="**/*txt" />
+      	<include name="**/*mol" />
+      	<include name="**/*sdf" />
+      	<include name="**/*contributions" />
+      	<include name="**/*html" />
+      	<include name="**/*xml" />
+        <include name="**/*tex" />
+      	<include name="**/*properties" />
+        <include name="**/*.gif" />
+        <exclude name="CVS" />
+      </fileset>
+    </copy>
+   <!-- copy CML dtd definitions-->
+   <copy todir="${src.dist.dir}/${source.directory}/${project.name.cvs}/io/types/cml/data">
+     <fileset dir="${source.directory}/${project.name.cvs}/io/types/cml/data" includes="*dtd" />
+   </copy>
+   <!-- copy JOELib images -->
+   <copy todir="${src.dist.dir}/${source.directory}/${project.name.cvs}/data/images">
+     <fileset dir="${source.directory}/${project.name.cvs}/data/images" includes="*gif" />
+   </copy>
+
+    <tar tarfile="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar"
+         basedir="${source.distribution.directory}" includes="**" excludes="*.tar*, *.zip"/>
+    <gzip zipfile="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar.gz"
+          src="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar" />
+    <bzip2 zipfile="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar.bz2"
+          src="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar" />
+    <delete file="${distribution.directory}/${project.name.full}-src-${DSTAMP}.tar" />
+
+    <zip zipfile="${distribution.directory}/${project.name.full}-src-${DSTAMP}.zip">
+      <zipfileset dir="${source.distribution.directory}">
+        <include name="**" />
+        <exclude name="*.tar*, *.zip" />
+      </zipfileset>
+    </zip>
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Generate Distribution
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="dist" depends="binaryDistribution, sourceDistribution" description="PROJECT: Generates a source and a binary distribution from JOELib.">
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Run JOELib
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="CombineExample" description="APPLICATION: Combines two molecule files.">
+    <java classname="joelib2.example.CombineExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="-isdf"/>
+      <arg value="resources/test.sdf"/>
+      <arg value="-isdf"/>
+      <arg value="resources/test2.sdf"/>
+      <arg value="-osdf"/>
+      <arg value="summarized.sdf"/>
+    </java>
+  </target>
+
+  <target name="ComparisonExample" description="APPLICATION: Calculates the distance between two molecules.">
+    <java classname="joelib2.example.ComparisonExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="-isdf"/>
+      <arg value="../src/resource/test.sdf"/>
+      <arg value="-isdf"/>
+      <arg value="resources/test2.sdf"/>
+      <arg value="resources/comparisonDescs.txt"/>
+      <arg value="result_comparison.txt"/>
+      <arg value="Entry_Number"/>
+    </java>
+  </target>
+
+  <target name="ConvertExample" description="APPLICATION: Start JOELib file conversion.">
+  	<java classname="joelib2.example.ConvertExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin2D.sdf"/>
+      <arg value="resources/aspirin2D.mol2"/>
+    </java>
+  </target>
+
+  <target name="DatabaseExample" description="APPLICATION: Select molecules with defined descriptors.">
+    <java classname="joelib2.util.database.SimpleJOELibDatabase" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/multiple.mol"/>
+      <arg value="SDF"/>
+    </java>
+  </target>
+
+  <target name="DescriptorSelectionExample" description="APPLICATION: Select molecules with defined descriptors.">
+    <java classname="joelib2.example.DescriptorSelectionExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="-isdf"/>
+      <arg value="resources/test.sdf"/>
+      <arg value="-osdf"/>
+      <arg value="resources/selected.sdf"/>
+      <arg value="resources/descriptors.txt"/>
+<!--      <arg value="normal"/>
+-->
+      <arg value="flat"/>
+      <arg value=" "/>
+    </java>
+  </target>
+
+  <target name="DescriptorStatisticExample" description="APPLICATION: Calculate the descriptor statistic of a molecule file.">
+    <java classname="joelib2.example.DescriptorStatisticExample" fork="yes"
+          dir="${build.directory}">
+      <jvmarg value="-Xmx512m"/>
+      <classpath refid="project.class.path" />
+      <arg value="-isdf"/>
+      <arg value="reources/example/test.sdf"/>
+      <arg value="result.txt"/>
+    </java>
+  </target>
+
+  <target name="FeatureExample" description="APPLICATION: Start JOELib feature calculation example.">
+    <java classname="joelib2.example.FeatureExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin3D.mol"/>
+    </java>
+  </target>
+
+  <target name="GCTest" description="APPLICATION: Start JOELib group contribution example.">
+    <java classname="joelib2.example.GroupContributionExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <target name="SimpleGUI" description="APPLICATION: Start JOELib example GUI.">
+    <java classname="joelib2.gui.example.SimpleGUIExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <target name="LayoutTest" depends="init" description="APPLICATION: Starts 2D layout test using CDK." >
+    <antcall target="cdk.availability"/>
+    <fail message="CDK classes are not available." unless="cdk.available"/>
+    <antcall target="java3d.vecmath.availability"/>
+    <fail message="Java3D vecmath library is not available." unless="java3d.vecmath.available"/>
+    <java classname="joelib2.util.cdk.TestLayout" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="c1cc(OC)ccc1"/>
+      <arg value="fromSMILES.mol"/>
+    </java>
+  </target>
+
+  <target name="MoleculeExample" description="APPLICATION: Start JOELib molecule load example.">
+    <java classname="joelib2.example.MoleculeExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin2D.mol"/>
+    </java>
+  </target>
+
+  <target name="MorganTest" description="APPLICATION: Morgan renumbering test for Canonical/Unique SMILES and Hashcode calculation.">
+    <java classname="joelib2.algo.morgan.MorganTest" fork="yes"
+          dir="${build.directory}">
+      <jvmarg value="-Xmx521m"/>
+      <jvmarg value="-Xss128m"/>
+      <classpath refid="project.class.path" />
+      <arg value="resources/multiple.mol"/>
+    </java>
+  </target>
+
+  <target name="MoleculeViewer2D" description="APPLICATION: Start JOELib's 2D molecule viewer example.">
+    <java classname="joelib2.gui.render2D.MoleculeViewer2D" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin2D.mol"/>
+      <arg value="SDF"/>
+      <arg value=";"/>
+      <arg value=";"/>
+      <arg value=";"/>
+      <arg value=";"/>
+      <arg value=";"/>
+<!--      <arg value="[*;r;!a]"/>
+      <arg value="11,r,13;1,2,l,2,7;6,7,l,6,8"/>
+      <arg value="1,l,sr1,2;8,l,sr2,11"/>
+      <arg value="40,47,55,59,58,52,c-"/>
+      <arg value="40=abc;50=*;12=*"/>
+-->
+    </java>
+  </target>
+
+  <target name="MoleculeViewer3D" depends="init" description="APPLICATION: Start JOELib's 3D molecule viewer example (requires Java3D).">
+    <antcall target="java3d.availability"/>
+    <fail message="Java3D library is not available." unless="java3d.available"/>
+    <java classname="joelib2.gui.render3D.Viewer" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="sdf"/>
+      <arg value="resources/aspirin3D.mol"/>
+    </java>
+  </target>
+
+  <target name="AtomTyperExample" description="APPLICATION: Start JOELib 'SMARTS Pattern assignment' (Patty) example.">
+    <java classname="joelib2.example.AtomTyperExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin2D.mol"/>
+      <arg value="resources/patty.txt"/>
+    </java>
+  </target>
+
+  <target name="IdentifierExpertSystem" description="APPLICATION: Shows the expert system identifier.">
+    <java classname="joelib2.data.IdentifierExpertSystem" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <target name="SSSRTest" description="APPLICATION: Start JOELib 'Smallest Set of Smallest Rings' (SSSR) example.">
+    <java classname="joelib2.SSSRFinderExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="resources/aspirin2D.mol"/>
+    </java>
+  </target>
+
+  <target name="SMILESExample" description="APPLICATION: Start JOELib 'Simplified Molecular Input Line Entry System' (SMILES) example.">
+    <java classname="joelib2.example.SMILESExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="c1cc(OC)ccc1"/> 
+<!--      <arg value="Oc1c(O)c2cccc3ccc4cccc1c4c23"/> -->
+      <arg value="fromSMILES.mol"/>
+    </java>
+  </target>
+
+  <target name="SMARTSMatchingExample" description="APPLICATION: Start JOELib 'SMiles ARbitrary Target Specification' (SMARTS) example.">
+    <java classname="joelib2.example.SMARTSMatchingExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+          <arg value="resources/trans_butene.mol"/>
+    	  <arg value="C\C=C/C"/>
+    </java>
+  </target>
+
+  <target name="ExternalProcessFilterExample" description="APPLICATION: External, process and filter test.">
+    <java classname="joelib2.example.ExternalProcessFilterExample" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="-isdf"/>
+      <arg value="resources/test.mol"/>
+      <arg value="MOL_TITLE"/>
+    </java>
+  </target>
+
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Javadoc
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="javadoc.plucker" depends="compile, javadoc"  if="plucker.available" description="PROJECT: Generates the JavaDoc-API-Documentation in the Plucker E-Book format.">
+    <echo>Copying exclusion definitions to avoid errors for not supported links.</echo>
+    <copy todir="${javadoc.directory}">
+      <fileset dir="${documentation.directory}">
+        <include name="plucker.exclude.txt" />
+      </fileset>
+    </copy>
+    <echo>Creating Plucker E-Book API documentation. This may take a while ...</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <jvmarg value="-Xmx512m"/>
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-API"/>
+      <arg value="--verbosity=1"/>
+      <arg value="--doc-name=${project.name.full}-API"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${javadoc.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${javadoc.directory}"/>
+      <arg value="--maxdepth=3"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=8"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--no-urlinfo"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/overview-summary.html"/>
+    </java>
+  </target>
+
+
+  <target name="javadoc" depends="compile" description="PROJECT: Generates the JavaDoc-API-Documentation for JOELib2.">
+    <javadoc
+    packagenames="${project.name.cvs}.*"
+    windowtitle ="${project.name.full} API Documentation"
+    doctitle    ="${project.name.full} API Documentation"
+    author      ="true"
+    public      ="true"
+    version     ="true"
+    use         ="true"
+    destdir="${javadoc.directory}"
+    private     ="false"
+    overview    ="${source.directory}/overview.html"
+    additionalparam=" ${javadoc.proxy} -J-Dwsi.ra.taglets.CVSVersion.path=${basedir}/${source.directory}/ "
+    >
+
+      <!-- BEGIN: ONLY for Ant 1.5 and JDK 1.4.1 users ! -->
+      <packageset dir="src" defaultexcludes="yes">
+        <include name="**" />
+        <exclude name="wsi/ra/taglets/**"/>
+        <exclude name="jmat/**"/>
+        <exclude name="org/**"/>
+      </packageset>
+      <taglet name="wsi.ra.taglets.Author" path="${build.directory}"/>
+      <taglet name="wsi.ra.taglets.CVSVersion" path="${build.directory}"/>
+      <taglet name="wsi.ra.taglets.License" path="${build.directory}"/>
+      <taglet name="wsi.ra.taglets.ToDo" path="${build.directory}"/>
+      <taglet name="wsi.ra.taglets.Cite" path="${build.directory}"/>
+      <taglet name="wsi.ra.taglets.WikipediaEN" path="${build.directory}"/>
+
+      <!-- END: ONLY for Ant 1.5 and JDK 1.4.1 users ! -->
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      
+      <sourcepath>
+        <pathelement path="${source.directory}" />
+      </sourcepath>
+
+      <doctitle><![CDATA[<h1>${project.name.full}</h1>]]></doctitle>
+
+      <header><![CDATA[<font size="-1"><b><i>
+                       <A HREF="http://joelib.sourceforge.net"
+                           target="_top">JOELib2<br>ChemInformatics/Computational Chemistry Package
+                       </A>
+                       </b></i></font>]]>
+      </header>
+
+      <footer><![CDATA[<A HREF="http://joelib.sourceforge.net"
+                       target="_top">JOELib2<br>ChemInformatics/Computational Chemistry Package
+                       </A><br>
+   	               <A HREF="mailto:wegner@users.sourceforge.net"
+                       target="_top">Comments and Questions?  mail to J.K.Wegner</A>]]>
+      </footer>
+
+
+      <!--  If you are OFFLINE -->
+<!--
+      <link offline="false"
+             href="http://java.sun.com/j2se/1.4/docs/api"
+             packagelistLoc="${env.JAVA_HOME}/docs/api"
+      />
+-->
+
+<!--
+      <link offline="false"
+             href="http://java.sun.com/j2se/1.4/docs/api"
+             packagelistLoc="${env.JAVA_HOME}/docs/api"
+      />
+-->
+
+      <!--  If you are ONLINE -->
+      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+    </javadoc>
+
+    <!-- copy image -->
+    <copy todir="${javadoc.directory}">
+      <fileset dir="${source.directory}">
+        <include name="joelib.png" />
+      </fileset>
+    </copy>
+    <!-- copy reference file -->
+    <copy todir="${javadoc.directory}">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <!-- WORKAROUND for inline citation in package.html -->
+    <copy todir="${javadoc.directory}/${project.name.cvs}/algo">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <copy todir="${javadoc.directory}/${project.name.cvs}/jcamp">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <copy todir="${javadoc.directory}/${project.name.cvs}/ring">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <copy todir="${javadoc.directory}/${project.name.cvs}/smarts">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <copy todir="${javadoc.directory}/${project.name.cvs}/smiles">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+    <copy todir="${javadoc.directory}/${project.name.cvs}/io/types/cml">
+      <fileset dir="${source.directory}/docs">
+        <include name="literature.html" />
+      </fileset>
+    </copy>
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Tutorial
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="tutorial" depends="init, compileInfo, compile, tutorial.core, tutorial.plucker" description="PROJECT: Generates the JOELib tutorial.">
+  </target>
+
+  <target name="tutorial.plucker" depends="init" if="plucker.available" description="PROJECT: Generates the JOELib tutorial for plucker E-Book for palm devices.">
+    <echo>Copying exclusion definitions to avoid errors for not supported links.</echo>
+    <copy todir="${tutorial.directory}">
+      <fileset dir="${documentation.directory}">
+        <include name="plucker.exclude.txt" />
+      </fileset>
+    </copy>
+    <echo>Creating Plucker E-Book tutorial for a color device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-HiRes-color"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=8"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--no-urlinfo"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+    <echo>Creating Plucker E-Book tutorial for a grayscale device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-HiRes-grayscale"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=2"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+    <echo>Creating Plucker E-Book tutorial for a black/white device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-HiRes-bw"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=1"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+    <echo>Creating Plucker E-Book tutorial for a color device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-color"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=8"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+    <echo>Creating Plucker E-Book tutorial for a grayscale device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-grayscale"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=2"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+    <echo>Creating Plucker E-Book tutorial for a black/white device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-bw"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=1"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+  </target>
+
+
+  <target name="tutorial.equations" >
+    <java classname="jtt.docbook.DocBookEquations" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../${docbook.directory}"/>
+    </java>
+  </target>
+
+  <target name="tutorial.molStructures" >
+    <java classname="jtt.docbook.DocBookMolecules" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../${docbook.directory}"/>
+      <arg value="molStructSummary"/>
+    </java>
+  </target>
+
+  <target name="tutorial.single.documentations" >
+    <java classname="jtt.docbook.DocBookArticles" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../docs/docbook/descriptors"/>
+      <arg value="../docs/docbook/descriptors/documentation"/>
+      <arg value="../../bibliography.sgml"/>
+    </java>
+    <java classname="jtt.docbook.DocBookArticles" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../docs/docbook/algorithms"/>
+      <arg value="../docs/docbook/algorithms/documentation"/>
+      <arg value="../../bibliography.sgml"/>
+    </java>
+  </target>
+
+
+
+  <target name="tutorial.core" depends="init" description="PROJECT: Generates the JOELib tutorial in HMTL and RTF format.">
+    <mkdir dir="${tutorial.directory}" />
+    <mkdir dir="${docbook.directory}/documentation" />
+    <mkdir dir="${tutorial.directory}/documentation" />
+    <mkdir dir="${docbook.directory}/basics" />
+    <mkdir dir="${tutorial.directory}/basics" />
+    <mkdir dir="${docbook.directory}/install" />
+    <mkdir dir="${tutorial.directory}/install" />
+    <mkdir dir="${docbook.directory}/functionalities" />
+    <mkdir dir="${tutorial.directory}/functionalities" />
+    <mkdir dir="${tutorial.directory}/applications" />
+    <mkdir dir="${tutorial.directory}/descriptors" />
+    <mkdir dir="${tutorial.directory}/algorithms" />
+    <mkdir dir="${tutorial.directory}/examples" />
+
+    <!-- delete old files -->
+    <delete>
+      <fileset dir="${docbook.directory}" includes="**/*.html" />
+      <fileset dir="${docbook.directory}" includes="**/*.htm" />
+      <fileset dir="${docbook.directory}" includes="**/*.rtf" />
+    </delete>
+
+    <echo>If the processing halts, there occured possibly an error
+in the LaTeX formula expression. Break process with [Ctrl][C],
+check the formula and try again.
+    </echo>
+    <!-- create formula images-->
+    <antcall target="tutorial.equations"/>
+
+    <!-- create molecular structure images -->
+    <antcall target="tutorial.molStructures"/>
+    <copy todir="${docbook.directory}/../structures">
+      <fileset dir="${docbook.directory}/structures">
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+
+    <!-- create algorithm formulas -->
+    <copy todir="${docbook.directory}/descriptors/formulas">
+      <fileset dir="${docbook.directory}/formulas/descriptors">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${docbook.directory}/algorithms/formulas">
+      <fileset dir="${docbook.directory}/formulas/algorithms">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${docbook.directory}/miscellaneous/formulas">
+      <fileset dir="${docbook.directory}/formulas/miscellaneous">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${docbook.directory}/formulas">
+      <fileset dir="${docbook.directory}/formulas/descriptors">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${docbook.directory}/formulas">
+      <fileset dir="${docbook.directory}/formulas/algorithms">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${docbook.directory}/formulas">
+      <fileset dir="${docbook.directory}/formulas/miscellaneous">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <!-- create the complete DocBook tutorial -->
+    <echo></echo>
+    <echo>Create complete Tutorial from the DocBook files.</echo>
+    <exec dir="${docbook.directory}" executable="sh">
+       <arg line="generate.sh"/>
+    </exec>
+
+    <echo></echo>
+    <echo>Create single information documentation.</echo>
+    <antcall target="tutorial.single.documentations"/>
+    <!-- copy descriptor formulas to single descriptor information directory
+         and create the single descriptor informations
+    -->
+    <mkdir dir="${docbook.directory}/descriptors/documentation/formulas" />
+    <copy todir="${docbook.directory}/descriptors/documentation/formulas">
+      <fileset dir="${docbook.directory}/formulas/descriptors">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+      </fileset>
+    </copy>
+    <echo>Create single information documentation: DESCRIPTORS.</echo>
+    <exec dir="${docbook.directory}/descriptors/documentation" executable="sh">
+       <arg line="generate.sh"/>
+    </exec>
+
+    <!-- copy algorithm formulas to single algorithm information directory
+         and create the single algorithm informations
+    -->
+    <mkdir dir="${docbook.directory}/algorithms/documentation/formulas" />
+    <copy todir="${docbook.directory}/algorithms/documentation/formulas">
+      <fileset dir="${docbook.directory}/formulas/algorithms">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+      </fileset>
+    </copy>
+    <echo>Create single information documentation: ALGORITHMS.</echo>
+    <exec dir="${docbook.directory}/algorithms/documentation" executable="sh">
+       <arg line="generate.sh"/>
+    </exec>
+
+    <echo></echo>
+    <echo>Copy all formulas, images and documentation files to the tutorial directory.</echo>
+    <!-- move HMTL and RTF documents to the tutorial directory
+         and copy all images also
+    -->
+    <move todir="${tutorial.directory}">
+      <fileset dir="${docbook.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.rtf" />
+      </fileset>
+    </move>
+    <mkdir dir="${tutorial.directory}/formulas" />
+    <copy todir="${tutorial.directory}/formulas">
+      <fileset dir="${docbook.directory}/formulas">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${tutorial.directory}">
+      <fileset dir="${docbook.directory}">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <exclude name="formulas/**/*" />
+      </fileset>
+    </copy>
+
+    <!-- copy the images for the single descriptor information to
+         a sub-directory in tutorial
+    -->
+    <mkdir dir="${tutorial.directory}/descriptors/formulas" />
+    <copy todir="${tutorial.directory}/descriptors/formulas">
+      <fileset dir="${docbook.directory}/formulas/descriptors">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+      </fileset>
+    </copy>
+
+    <!-- copy the images for the single algorihm information to
+         a sub-directory in tutorial
+    -->
+    <mkdir dir="${tutorial.directory}/algorithms/formulas" />
+    <copy todir="${tutorial.directory}/algorithms/formulas">
+      <fileset dir="${docbook.directory}/formulas/algorithms">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+      </fileset>
+    </copy>
+
+    <delete dir="${docbook.directory}/../structures" />
+  </target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Open Organic Chemistry Conent (O2C2) Document
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="o2c2" depends="init, compileInfo, compile, o2c2.core, o2c2.plucker" description="PROJECT: Generates the O2C2 document.">
+  </target>
+
+  <target name="o2c2.plucker" depends="init" if="plucker.available" description="PROJECT: Generates the O2C2 document for plucker E-Book for palm devices.">
+    <echo>Copying exclusion definitions to avoid errors for not supported links.</echo>
+    <copy todir="${tutorial.o2c2.directory}">
+      <fileset dir="${documentation.directory}">
+        <include name="plucker.exclude.txt" />
+      </fileset>
+    </copy>
+    <echo>Creating Plucker E-Book O2C2 document for a color device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=O2C2-HiRes-color"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=O2C2"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=8"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--no-urlinfo"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/O2C2.html"/>
+    </java>
+    <echo>Creating Plucker E-Book O2C2 document for a grayscale device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-HiRes-grayscale"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=O2C2"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=2"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/O2C2.html"/>
+    </java>
+    <echo>Creating Plucker E-Book O2C2 document for a black/white device with high resolution.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=O2C2-HiRes-bw"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=O2C2"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=1"/>
+      <arg value="--maxwidth=315"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/O2C2.html"/>
+    </java>
+    <echo>Creating Plucker E-Book O2C2 document for a color device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=O2C2-color"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=O2C2"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=8"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/O2C2.html"/>
+    </java>
+    <echo>Creating Plucker E-Book O2C2 document for a grayscale device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=O2C2-grayscale"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=O2C2"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.o2c2.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=2"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/O2C2.html"/>
+    </java>
+    <echo>Creating Plucker E-Book O2C2 document for a black/white device.</echo>
+    <java classname="pluckit" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="--doc-file=${project.name.full}-bw"/>
+      <arg value="--verbosity=0"/>
+      <arg value="--doc-name=${project.name.full}"/>
+      <arg value="--pluckerhome=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--pluckerdir=${basedir}${file.separator}${tutorial.directory}"/>
+      <arg value="--maxdepth=2"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--bpp=1"/>
+      <arg value="--maxwidth=155"/>
+      <arg value="--zlib-compression"/>
+      <arg value="--beamable"/>
+      <arg value="--stayonhost"/>
+      <arg value="--exclusion-list"/>
+      <arg value="plucker.exclude.txt"/>
+      <arg value="--home-url=plucker:/JOELibPrimer.html"/>
+    </java>
+  </target>
+
+
+  <target name="o2c2.equations" >
+    <java classname="jtt.docbook.DocBookEquations" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../${docbook.o2c2.directory}"/>
+    </java>
+  </target>
+
+  <target name="o2c2.molStructures" >
+    <java classname="jtt.docbook.DocBookMolecules" fork="yes"
+          dir="${build.directory}">
+      <classpath refid="project.class.path" />
+      <arg value="../${docbook.o2c2.directory}"/>
+      <arg value="molStructSummary"/>
+    </java>
+  </target>
+
+  <target name="o2c2.core" depends="init" description="PROJECT: Generates the O2C2 document in HMTL and RTF format.">
+    <mkdir dir="${tutorial.o2c2.directory}" />
+    <mkdir dir="${docbook.o2c2.directory}/formulas" />
+    <mkdir dir="${docbook.o2c2.directory}/structures" />
+
+    <mkdir dir="${docbook.o2c2.directory}/alicycles" />
+    <mkdir dir="${tutorial.o2c2.directory}/alicycles" />
+    <mkdir dir="${docbook.o2c2.directory}/aromatics" />
+    <mkdir dir="${tutorial.o2c2.directory}/aromatics" />
+    <mkdir dir="${docbook.o2c2.directory}/basics" />
+    <mkdir dir="${tutorial.o2c2.directory}/basics" />
+    <mkdir dir="${docbook.o2c2.directory}/documentation" />
+    <mkdir dir="${tutorial.o2c2.directory}/documentation" />
+    <mkdir dir="${docbook.o2c2.directory}/higgledypiggledy" />
+    <mkdir dir="${tutorial.o2c2.directory}/higgledypiggledy" />
+    <mkdir dir="${docbook.o2c2.directory}/heterocycles" />
+    <mkdir dir="${tutorial.o2c2.directory}/heterocycles" />
+    <mkdir dir="${docbook.o2c2.directory}/typicalreactions" />
+    <mkdir dir="${tutorial.o2c2.directory}/typicalreactions" />
+    <mkdir dir="${docbook.o2c2.directory}/woodwardhoffmann" />
+    <mkdir dir="${tutorial.o2c2.directory}/woodwardhoffmann" />
+
+    <!-- delete old files -->
+    <delete>
+      <fileset dir="${docbook.o2c2.directory}" includes="**/*.html" />
+      <fileset dir="${docbook.o2c2.directory}" includes="**/*.htm" />
+      <fileset dir="${docbook.o2c2.directory}" includes="**/*.rtf" />
+    </delete>
+
+    <echo>If the processing halts, there occured possibly an error
+in the LaTeX formula expression. Break process with [Ctrl][C],
+check the formula and try again.
+    </echo>
+    <!-- create formula images-->
+    <antcall target="o2c2.equations"/>
+    <copy todir="${docbook.o2c2.directory}/../formulas">
+      <fileset dir="${docbook.o2c2.directory}/formulas">
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+
+    <!-- create molecular structure images -->
+    <antcall target="o2c2.molStructures"/>
+    <copy todir="${docbook.o2c2.directory}/../structures">
+      <fileset dir="${docbook.o2c2.directory}/structures">
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+
+    <!-- copy algorithm formulas -->
+<!--    <copy todir="${docbook.directory}/formulas">
+      <fileset dir="${docbook.directory}/formulas/descriptors">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+-->
+    <!-- create the complete DocBook tutorial -->
+    <echo></echo>
+    <echo>Create complete Tutorial from the DocBook files.</echo>
+    <exec dir="${docbook.o2c2.directory}" executable="sh">
+       <arg line="generate.sh"/>
+    </exec>
+
+    <echo></echo>
+    <echo>Copy all formulas, images and documentation files to the tutorial directory.</echo>
+    <!-- move HMTL and RTF documents to the tutorial directory
+         and copy all images also
+    -->
+    <move todir="${tutorial.o2c2.directory}" overwrite="true">
+      <fileset dir="${docbook.o2c2.directory}">
+        <include name="**/*.html" />
+        <include name="**/*.rtf" />
+      </fileset>
+    </move>
+    <mkdir dir="${tutorial.o2c2.directory}/formulas" />
+    <copy todir="${tutorial.o2c2.directory}/formulas" overwrite="true">
+      <fileset dir="${docbook.o2c2.directory}/formulas">
+        <include name="*.png" />
+        <include name="*.gif" />
+      </fileset>
+    </copy>
+    <copy todir="${tutorial.o2c2.directory}" overwrite="true">
+      <fileset dir="${docbook.o2c2.directory}">
+        <include name="**/*.png" />
+        <include name="**/*.gif" />
+        <exclude name="formulas/**/*" />
+      </fileset>
+    </copy>
+
+    <delete dir="${docbook.o2c2.directory}/../structures" />
+    <delete dir="${docbook.o2c2.directory}/../formulas" />
+  </target>
+
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        What's about the software design ?!;-)
+
+        Download required libraries from the JOELib download site:
+        http://sourceforge.net/projects/joelib
+
+        Package name: optional-softwaredesign-libs
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+
+   <target name="junit-tests" depends="init,compile">
+      <echo>Performing JUnit testing for the JOELib2 project.</echo>
+      <javac destdir="${build.directory}"
+             optimize="on"
+             debug="${project.debug.mode}"
+             nowarn="${switchOff.compiler.warnings}"
+             deprecation="on" target="1.5">
+        <src path="${source.testing.directory}" />
+
+      <classpath>
+        <pathelement path="${project.class.path}" />
+
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      </javac>
+
+      <!-- copy resource data -->
+      <copy todir="${build.directory}/resources_test">
+        <fileset dir="${source.testing.directory}/resources_test" includes="**/*" />
+      </copy>
+
+      <junit printsummary="yes" haltonfailure="yes" fork="yes">
+          <classpath>
+          <pathelement path="${project.class.path}" />
+            <fileset dir="${library.directory}">
+              <include name="*.jar" />
+            </fileset>
+          <pathelement location="${build.directory}"/>
+          </classpath>
+          <test name="tests.JOELib2Tests"
+                haltonfailure="no"
+                todir="${build.directory}"
+                outfile="junitTests4JOELib2-${DSTAMP}">
+                <formatter type="plain" />
+          </test>
+      </junit>
+
+     <echo>result written to ${basedir}/${build.directory}/junitTests4JOELib2-${DSTAMP}.txt</echo>
+  </target>
+
+  <target name="pmd" depends="init" description="SOFTWAREDESIGN: Project Mess Detector !;-)">
+      <echo>Checking Project Mess Detection (PMD) rulesets.</echo>
+      <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+        <classpath>
+          <pathelement path="${project.class.path}" />
+          <fileset dir="${library.directory}">
+            <include name="*.jar" />
+          </fileset>
+        </classpath>
+      </taskdef>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/basic.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_basic.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_basic.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/braces.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_braces.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_braces.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/codesize.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_codesize.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_codesize.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/controversial.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_controversial.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_controversial.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/coupling.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_coupling.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_coupling.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/optimizations.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_optimizations.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_optimizations.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/finalizers.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_finalizers.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_finalizers.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/imports.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_imports.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_imports.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/naming.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_naming.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_naming.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/strictexception.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_strictexception.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_strictexception.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/strings.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_strings.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_strings.html</echo>
+
+      <pmd shortFilenames="true" rulesetfiles="rulesets/unusedcode.xml" failonerror="no">
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JOELib2-${DSTAMP}_unusedcode.html"/>
+          <fileset dir="${source.directory}">
+              <include name="**/*.java"/>
+          </fileset>
+      </pmd>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4JOELib2-${DSTAMP}_unusedcode.html</echo>
+
+      <!-- check for duplicated code -->
+      <echo>WARNING: use environment variable: ANT_OPTS=-Xmx512m or this task will fail.</echo>
+      <echo>Checking for duplicated code using the Copy/Paste Detector (CPD).</echo>
+      <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" >
+        <classpath>
+          <pathelement path="${project.class.path}" />
+          <fileset dir="${library.directory}">
+            <include name="*.jar" />
+          </fileset>
+        </classpath>
+      </taskdef>
+      <cpd format="text" minimumTokenCount="200" outputFile="${build.directory}/duplicatedCodeReport4JOELib-${DSTAMP}.txt">
+        <fileset dir="${source.directory}">
+            <include name="**/*.java"/>
+        </fileset>
+      </cpd>
+    <echo>result written to ${basedir}/${build.directory}/duplicatedCodeReport4JOELib-${DSTAMP}.txt</echo>
+  </target>
+
+
+  <target name="javancss" depends="init" description="SOFTWAREDESIGN: Determining the NCSS and CCN code metrics for JOELib.">
+    <echo>Starts JavaNCSS ...</echo>
+    <taskdef name="javancss" classname="javancss.JavancssAntTask">
+      <classpath>
+          <pathelement path="${project.class.path}" />
+          <fileset dir="${library.directory}">
+            <include name="*.jar" />
+          </fileset>
+        </classpath>
+    </taskdef>
+    <echo>Cyclomatic
+Complexity             Ease of       Risk
+Number (CCN)           maintenance
+(McCabe metric)
+---------------------------------------------
+1-10, simple           easy          minimum
+11-20, complex         moderate      moderate
+21-50, more complex    hard          high
+>50, unstable          very hard     very high
+
+</echo>
+     <javancss srcdir="${source.directory}"
+            includes="**/*.java"
+            excludes="jama/**/*.java, jmat/**/*.java, cformat/**/*.java"
+            abortOnFail="false"
+            ccnPerFuncMax="30"
+            generateReport="true"
+            outputfile="${build.directory}/javancssReport4JOELib2-${DSTAMP}.txt"
+            format="text"
+            packageMetrics="true"
+            classMetrics="false"
+            functionMetrics="false"
+            />
+    <echo>result written to ${basedir}/${build.directory}/javancssReport4JOELib2-${DSTAMP}.txt</echo>
+  </target>
+
+
+  <target name="jscs" depends="init" description="SOFTWAREDESIGN: Java Coding Standard Checker.">
+    <taskdef name="jcsc" classname="rj.tools.jcsc.ant.JCSCTask"/>
+    <jcsc destdir="${build.directory}"
+        resultsformatter="rj.tools.jcsc.formatter.ConsoleResultsFormatter"
+        >
+    <fileset dir="${source.directory}"
+             includes="**/*.java"/>
+  </jcsc>
+  </target>
+
+  <target name="jalopy" description="SOFTWAREDESIGN: source code formatter using the JOELib convention.">
+    <taskdef name="jalopy" classname="com.triemax.JalopyTask">
+      <classpath refid="project.class.path" />
+    </taskdef>
+    <jalopy classpathref="project.class.path"
+            fileformat="unix"
+            fork="false"
+            convention="../${source.directory}/jalopy.format.convention.xml"
+            history="adler32"
+            loglevel="error"
+            threads="2"
+            backup="false">
+      <fileset dir="${source.directory}">
+        <include name="**/*.java"/>
+      </fileset>
+    </jalopy>
+  </target>
+  
+  <target name="jdepend" depends="init" >
+   <jdepend outputfile="${basedir}/${build.directory}/jdependReport4JOELib2-${DSTAMP}.txt" fork="yes">
+    <classespath>
+        <pathelement location="${build.directory}"/>
+    </classespath>
+    <classpath>
+        <pathelement location="${build.directory}"/>
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+   </jdepend>
+<!--   <style basedir="${basedir}/${build.directory}" destdir="${basedir}/${build.directory}"  includes="jdependReport4JOELib2-${DSTAMP}.xml" style="${optional.files.dir}/jdepend/jdepend.xsl"/>
+   contrib/jdepend2dot.xsl
+-->
+  </target>
+
+  <target name="vizant" description="SOFTWAREDESIGN: create dependency graph for ANT files for the JOELib project.">
+    <echo>Starts VizANT ...</echo>
+    <taskdef name="vizant" classname="net.sourceforge.vizant.Vizant">
+      <classpath>
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
+    <vizant antfile="ant/build.xml" outfile="${build.directory}/vizant_build.dot">
+      <attrstmt type="node">
+        <attr name="style" value="filled"/>
+        <attr name="shape" value="egg"/>
+        <attr name="color" value="grey90"/>
+      </attrstmt>
+    </vizant>
+    <vizant antfile="ant/build.xml" outfile="${build.directory}/vizant_check.dot">
+      <attrstmt type="node">
+        <attr name="style" value="filled"/>
+        <attr name="shape" value="egg"/>
+        <attr name="color" value="grey90"/>
+      </attrstmt>
+    </vizant>
+    <!-- Here you will need GraphViz at http://www.research.att.com/sw/tools/graphviz/ -->
+<!--
+    <exec executable="dot" ><arg line="-Tsvg ${build.directory}/vizant_build.dot -o ${build.directory}/vizant_build.svg"/></exec>
+    <exec executable="dot" ><arg line="-Tsvg ${build.directory}/vizant_check.dot -o ${build.directory}/vizant_check.svg"/></exec>
+-->
+    <echo>result written to ${basedir}/${build.directory}/vizant_build.dot ...</echo>
+    <echo>result written to ${basedir}/${build.directory}/vizant_check.dot.</echo>
+  </target>
+
+  <target name="findbugs.calculate" depends="compile">
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+      <classpath>
+        <pathelement location="${env.JAVA_HOME}/jre/lib/rt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/dt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
+    <property name="findbugs.home" value="${basedir}/lib/findbugs" />
+    <findbugs home="${findbugs.home}"
+              output="xml"
+              outputFile="build/joelib-fb.xml" >
+      <auxClasspath>
+        <pathelement location="${env.JAVA_HOME}/jre/lib/rt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/dt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+      </auxClasspath>
+      <sourcePath path="${basedir}/${source.directory}" />
+      <class location="${basedir}/${build.directory}" />
+    </findbugs>
+  </target>
+
+  <target name="findbugsGUI">
+    <property name="findbugs.home" value="${basedir}/lib/findbugs" />
+    <java classname="edu.umd.cs.findbugs.gui.FindBugsFrame" fork="yes"
+          dir="${build.directory}">
+      <classpath>
+        <pathelement location="${env.JAVA_HOME}/jre/lib/rt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/dt.jar" />
+        <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+        <pathelement path="${project.class.path}" />
+        <fileset dir="${library.directory}">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${library.directory}/findbugs/lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <jvmarg value="-Dfindbugs.home=${findbugs.home}"/>
+    </java>
+  </target>
+
+  <target name="findbugs" depends="compile" description="SOFTWAREDESIGN: Run bug detector for JOELib and comfortable GUI to analyze results.">
+    <echo>Starts findBugs ...</echo>
+    <antcall target="findbugs.calculate"/>
+    <echo>result written to ${basedir}/${build.directory}/joelib-fb.xml, now you can open this file with the findBugs GUI ...</echo>
+    <echo>open with 'File->LoadBugs' then open '${basedir}/${build.directory}/joelib-fb.xml'.</echo>
+    <antcall target="findbugsGUI"/>
+  </target>
+
+<!--
+  <target name="statcvs">
+    <taskdef name="statcvs" classname="net.sf.statcvs.ant.StatCvsTask"/>
+	<statcvs
+        projectName="StatCvs"
+        projectDirectory="d:/statcvs"
+        cvsLogFile="d:/statcvs/cvs.log"
+        outputDirectory="d:/statcvs/stas"
+        cssFile="http://statcvs.sf.net/stats/statcvs.css"
+        showCredits="yes"/>
+  </target>
+  -->
+</project>
+
+<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   END OF FILE
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->

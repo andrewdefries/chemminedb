@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Interfaces to other libraries</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Morgan: Unique atom numbering"
+HREF="algorithms/Morgan.html"><LINK
+REL="NEXT"
+TITLE="Interfaces to C/C++ libraries using the Java native interface (JNI)"
+HREF="jniinterfaces.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="algorithms/Morgan.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="jniinterfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.INTERFACES"
+></A
+>Chapter 7. Interfaces to other libraries</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="interfaces.html#AEN1951"
+>Interfaces to Java libraries</A
+></DT
+><DT
+><A
+HREF="jniinterfaces.html"
+>Interfaces to C/C++ libraries using the Java native interface (JNI)</A
+></DT
+><DT
+><A
+HREF="matlabinterface.html"
+>Matlab interface</A
+></DT
+></DL
+></DIV
+><P
+>abc.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1951"
+>Interfaces to Java libraries</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1953"
+>Chemical Development Kit (CDK)</A
+></H2
+><P
+>The most relevant interface methods for the <A
+HREF="http://sourceforge.net/projects/cdk"
+TARGET="_top"
+>Chemical Development Kit (CDK)</A
+>
+library are available in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/util/cdk/CDKTools.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/util/cdk/CDKTools.java</TT
+></A
+> helper class.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1959"
+>Weka data mining library</A
+></H2
+><P
+>The most relevant interface methods for the <A
+HREF="http://www.cs.waikato.ac.nz/ml/weka/"
+TARGET="_top"
+>Weka data mining library</A
+>
+library are available in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/algo/weka/InstancesHelper.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/algo/weka/InstancesHelper.java</TT
+></A
+> helper class.
+For using Weka you should modify the constructors in weka.core.Attributes from 'protected' to 'public' and use the recompiled Weka sources.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="algorithms/Morgan.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="jniinterfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Morgan: Unique atom numbering</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Interfaces to C/C++ libraries using the Java native interface (JNI)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,971 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Atom properties</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Descriptors"
+HREF="../descriptors/descriptors.html"><LINK
+REL="PREVIOUS"
+TITLE="Descriptors"
+HREF="../descriptors/descriptors.html"><LINK
+REL="NEXT"
+TITLE="Fingerprints"
+HREF="../descriptors/fingerprints.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../descriptors/descriptors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Descriptors</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../descriptors/fingerprints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMPROPERTIES.ONE"
+>Atom properties</A
+></H1
+><A
+NAME="AEN1423"
+></A
+><P
+>The formal definition of atom properties is given in chapter <A
+HREF="../basics/basics.html"
+>Chapter 2</A
+>.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINACCEPTOR"
+>Atom in acceptor</A
+></H2
+><P
+>Is this atom a hydrogen acceptor atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>acceptor</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.
+We used here the interpretation of B&ouml;hm/Klebe [<A
+HREF="../bibliography.html#BK02"
+>bk02</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINCONJENVIRONMENT"
+>Atom in conjugated environment</A
+></H2
+><P
+>Atom in conjugated environment <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>conj</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#WFZ04A"
+>wfz04a</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>,<A
+HREF="../bibliography.html#FWZ04"
+>fwz04</A
+>].
+<DIV
+CLASS="TABLE"
+><A
+NAME="AEN1444"
+></A
+><P
+><B
+>Table 5-1. SMARTS definitions for assigning the conjugated atom property flag</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="smarts"><COL
+WIDTH="1*"
+TITLE="description"><THEAD
+><TR
+><TH
+>SMARTS</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>a</TD
+><TD
+>Aromatic atoms</TD
+></TR
+><TR
+><TD
+>*=,#*-,=*=,#*</TD
+><TD
+>All butadien analogues</TD
+></TR
+><TR
+><TD
+>[N,P,O,S]=,#*-[*;!H0]</TD
+><TD
+>alpha, beta unsaturated (pi effect)</TD
+></TR
+><TR
+><TD
+>*=,#*-[F,Cl,Br,I]</TD
+><TD
+>alpha, beta unsaturated (sigma effect)</TD
+></TR
+><TR
+><TD
+>*=,#*-[N,P,O,S;!H0]</TD
+><TD
+>alpha, beta unsaturated (pi effect, tautomer)</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINDONACC"
+>Atom in donor or acceptor</A
+></H2
+><P
+>Is this atom a hydrogen donor or acceptor atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>don,acc</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.
+We used here the interpretation of B&ouml;hm/Klebe [<A
+HREF="../bibliography.html#BK02"
+>bk02</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINDONOR"
+>Atom in donor</A
+></H2
+><P
+>Is this atom a hydrogen donor atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>donor</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.
+We used here the interpretation of B&ouml;hm/Klebe [<A
+HREF="../bibliography.html#BK02"
+>bk02</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINRING"
+>Atom in ring</A
+></H2
+><P
+>Is this atom a ring atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>inRing</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMINTERMINALCARBON"
+>Atom is terminal carbon</A
+></H2
+><P
+>Is this atom a terminal carbon atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>methylen</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMISNEGATIVE"
+>Atom is negative</A
+></H2
+><P
+>Is this atom a negative charged atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>negative</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMISPOSITIVE"
+>Atom is positive</A
+></H2
+><P
+>Is this atom a positive charged atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>positive</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMMASS"
+>Atom masss</A
+></H2
+><P
+>Atom mass.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMVALENCE"
+>Valence</A
+></H2
+><P
+>Valence.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ATOMVANDERWAALSVOLUME"
+>Van der Waals volume</A
+></H2
+><P
+>Van der Waals volume.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.CONJELECTROTOPOLSTATE"
+>Conjugated electrotopological state</A
+></H2
+><P
+>Conjugated electrotopological state [<A
+HREF="../bibliography.html#WZ03"
+>wz03</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>].
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1521"
+></A
+><P
+><B
+>Equation 5-7. Conjugated electrotopological state</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/cets.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>I<SUB
+>i</SUB
+></B
+></SPAN
+> is the intrinsic state of atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> (<A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.INTRINSICSTATE"
+>the Section called <I
+>Intrinsic topological state</I
+></A
+>)
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>k</B
+></SPAN
+> the distance influence. The distance influence is reduced by the conjugated topological distance
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1531"
+></A
+><P
+><B
+>Equation 5-8. Conjugated topological distance</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/ctd.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>C<SUB
+>i</SUB
+></B
+></SPAN
+> is the conjugated atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> (<A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINCONJENVIRONMENT"
+>the Section called <I
+>Atom in conjugated environment</I
+></A
+>)
+of the molecule.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ELECTROGEOMETRICALSTATE"
+>Electrogeometrical state</A
+></H2
+><P
+>Electrogeometrical state <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>EGstate</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#WZ03"
+>wz03</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>].
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1548"
+></A
+><P
+><B
+>Equation 5-9. Electrogeometrical state</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/egs.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>I<SUB
+>i</SUB
+></B
+></SPAN
+> is the intrinsic state of atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> (<A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.INTRINSICSTATE"
+>the Section called <I
+>Intrinsic topological state</I
+></A
+>)
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>k</B
+></SPAN
+> the distance influence.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ELECTRONAFFINITY"
+>Electron affinity</A
+></H2
+><P
+>Electron affinity.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ELECTRONEGATIVITYPAULING"
+>Electronegativity after Pauling</A
+></H2
+><P
+>Electronegativity after Pauling.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ELECTROTOPOLOGICALSTATE"
+>Electrotopological state</A
+></H2
+><P
+>Electrotopological state <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>Estate</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>].
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1572"
+></A
+><P
+><B
+>Equation 5-10. Electrotopological state</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/ets.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>I<SUB
+>i</SUB
+></B
+></SPAN
+> is the intrinsic state of atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> (<A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.INTRINSICSTATE"
+>the Section called <I
+>Intrinsic topological state</I
+></A
+>)
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>k</B
+></SPAN
+> the distance influence.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GASTEIGERMARSILI"
+>Gasteiger-Marsili</A
+></H2
+><P
+>Calculation of atom partial charges (Gasteiger-Marsili) <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>GM</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#GM78"
+>gm78</A
+>].
+The Partial Equalization of Orbital Electronegativities (PEOE) sigma charges of atoms can be calculated using
+an iterative algorithm. There exists a dependency between the electronegativity
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&chi;<SUB
+>i,A</SUB
+></B
+></SPAN
+>
+and the charge <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>q<SUB
+>A</SUB
+></B
+></SPAN
+>
+of an atom:
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1593"
+></A
+><P
+><B
+>Equation 5-11. Orbital electronegativity based on atom charge</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/electronegativity_charge.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> is the orbital and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A</B
+></SPAN
+> the atom.</P
+><P
+>The algorithm requires the polynomial coefficients <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>a<SUB
+>i</SUB
+></B
+></SPAN
+>,
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>b<SUB
+>i</SUB
+></B
+></SPAN
+>,
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>c<SUB
+>i</SUB
+></B
+></SPAN
+> the damping factor <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;</B
+></SPAN
+>
+and the maximal number of iterations <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>N<SUB
+>max</SUB
+></B
+></SPAN
+>.
+Because the amount of charge transferred at each iteration is damped with an exponentially decreasing factor the convergence is
+guaranteed.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GRAPHPOTENTIALS"
+>Graph potentials</A
+></H2
+><P
+>Graph potentials <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>GP</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#WY96"
+>wy96</A
+>] or rotational symmetry descriptor. Only the connection table
+is needed to calculate the external rotational symmetry, or topological equivalent atoms.
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1617"
+></A
+><P
+><B
+>Equation 5-12. Graph potentials</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/graphpotentials_1.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>v<SUB
+>i</SUB
+></B
+></SPAN
+> is the valence (vertex degree) of the atom
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.INTRINSICSTATE"
+>Intrinsic topological state</A
+></H2
+><P
+>Intrinsic topological state <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>Istate</SUB
+>(G,V,A<SUB
+>chem</SUB
+>|JOELib,kernelID)</B
+></SPAN
+> [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>].
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1633"
+></A
+><P
+><B
+>Equation 5-13. Intrinsic topological state</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/istate.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>L<SUB
+>i</SUB
+></B
+></SPAN
+> is the principal quantum number,
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&delta;<SUB
+>i</SUB
+><SUP
+>&nu;</SUP
+></B
+></SPAN
+>
+is the number of valence electrons, and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&delta;<SUB
+>i</SUB
+></B
+></SPAN
+>
+is the number of sigma electrons of the
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+>th atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>a<SUB
+>i</SUB
+></B
+></SPAN
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../descriptors/descriptors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../descriptors/fingerprints.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Descriptors</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../descriptors/descriptors.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Fingerprints</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

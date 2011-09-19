@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/!svn/ver/98/trunk/cms/templatetags
+END
+cms_extras.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/!svn/ver/67/trunk/cms/templatetags/cms_extras.py
+END
+cms_admin.py
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/67/trunk/cms/templatetags/cms_admin.py
+END
+cms_base.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/98/trunk/cms/templatetags/cms_base.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/12/trunk/cms/templatetags/__init__.py
+END

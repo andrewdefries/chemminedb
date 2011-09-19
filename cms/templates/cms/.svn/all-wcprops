@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/!svn/ver/94/trunk/cms/templates/cms
+END
+navigation_item.html
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/18/trunk/cms/templates/cms/navigation_item.html
+END
+navigation.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/!svn/ver/79/trunk/cms/templates/cms/navigation.html
+END
+field.html
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/!svn/ver/18/trunk/cms/templates/cms/field.html
+END
+page_add.html
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/!svn/ver/94/trunk/cms/templates/cms/page_add.html
+END
+search.html
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/63/trunk/cms/templates/cms/search.html
+END
+page_submit_row.html
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/49/trunk/cms/templates/cms/page_submit_row.html
+END
+breadcrumbs.html
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/!svn/ver/69/trunk/cms/templates/cms/breadcrumbs.html
+END
+base.html
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/!svn/ver/69/trunk/cms/templates/cms/base.html
+END
+pagecontent_form.html
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/69/trunk/cms/templates/cms/pagecontent_form.html
+END

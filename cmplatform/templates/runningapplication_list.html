@@ -1,0 +1,53 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block content %}
+<h1>My Recent Runs</h1>
+<div style="width:80%; margin-left:10%; margin-top:20px" id="runningapps">
+	{% if not object_list %}
+		You have no tools in your history.
+	{% else %}
+	<form method="post" action="">
+		<input type="button" name="select_all" value="Select All"/>
+		<input type="button" name="select_none" value="Select None"/>
+		<input type="button" name="select_inverse" value="Inverse Selection"/>
+		<input type="submit" name="delete" value="Delete Selected Tools"/>
+		<table style="text-align:center; width:100%">
+			<thead>
+				<tr><td></td><td>Tool Name</td><td>Status</td></tr>
+			</thead>
+			<tbody>
+		{% for object in object_list %}
+				<tr class="{% cycle odd,even %}">
+				<td><input type="checkbox" name="ra_{{object.id}}"/></td>
+				<td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+				<td>{{object.get_status_display}}</td>
+				</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+	</form>
+	{% endif %}
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("input[name=select_all]").click(function() {
+		$("table input[type=checkbox]").each(function() {
+			$(this).get(0).checked = true;
+		});
+	});
+	$("input[name=select_none]").click(function() {
+		$("table input[type=checkbox]").each(function() {
+			$(this).get(0).checked = false;
+		});
+	});
+	$("input[name=select_inverse]").click(function() {
+		$("table input[type=checkbox]").each(function() {
+			$(this).get(0).checked = ! $(this).get(0).checked ;
+		});
+	});
+	$("input[name=delete]").click(function() {
+		return confirm("Are you sure you want to proceed? Deleting a tool will also delete any saved output associated with it upon your next login.");
+	});
+});
+</script>
+{% endblock %}

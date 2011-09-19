@@ -1,0 +1,11 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block content %}
+<h1>Adding a New User Object</h1>
+{% if error %}<div class="error">{{error}}</div>{% endif %}
+<form method="post"><table>
+	{{form.as_table}}
+</table>
+<input type="submit" name="submit" value="Submit"/>
+</form>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block content %}
+  {% if form.errors %}
+    <p class="error">Sorry, that's not a valid username or password</p>
+  {% endif %}
+  {% if user.is_authenticated and not user_is_anonymous %}
+  	<p>You are logged in as {{user.first_name}} {{user.last_name}}({{user.email}}).</p>
+  	<a href="{% url logout %}" class="button">Log Out</a>
+  	<a href="{% url change_password %}" class="button">Change Password</a>
+  {% else %}
+  	<h1>Accounts</h1>
+	<div id="tabs">
+	<ul>
+		<li><a href="#login">Log In</a></li>
+		<li><a href="#signup">New Account</a></li>
+	</ul>
+	<div id="login">
+		<form action='.' method='post'>
+		<input type="hidden" name="l" value="{{l}}"/>
+		  <table>
+			{% for field in form %}
+			<tr class="{% cycle odd,even %}">
+				{% ifequal field.label 'Username' %}<th><label for="id_username">E-mail</label></th>
+				{% else %}<th>{{ field.label_tag }}</th>
+				{% endifequal %} 
+				<td>
+					{% if field.errors %} <div class="error">{{field.errors}}</div>{% endif %}
+					{{ field }}
+				</td>
+			</tr>
+			{% endfor %}
+		  </table>
+		  <div><a href="{% url django.contrib.auth.views.password_reset %}">forgot password?</a></div>
+		  <input type="submit" value="Log In" />
+		  <input type="hidden" name="next" value="{{ next|escape }}" />
+		</form>
+	</div>
+	<div id="signup">
+		<form action='.' method='post'>
+		  <table>
+			{% for field in form_signup %}
+			<tr class="{% cycle odd,even %}">
+				<th>{{ field.label_tag }}</th>
+				<td>
+					{% if field.errors %} <div class="error">{{field.errors}}</div>{% endif %}
+					{{ field }}
+				</td>
+			</tr>
+			{% endfor %}
+		  </table>
+		  <input type="submit" value="create account" />
+		  <input type="hidden" name="newaccount" value="1" />
+		  <input type="hidden" name="next" value="{{ next|escape }}" />
+		</form>
+	</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#tabs").tabs();
+			{% if form_signup.errors %}
+			$("#tabs").tabs("select", 1);
+			{% endif %}
+		});
+	</script>
+  {% endif %}
+
+{% endblock %}

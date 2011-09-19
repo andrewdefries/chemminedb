@@ -1,0 +1,315 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Search {%if query %} - {{query}}{%endif%}</title>
+{% endblock %}
+{% block content %}
+<div id="query-form">
+<form method="GET" action=".">
+<input type="hidden" name="p" value="1"/>
+<label>type search terms below</label><br/>
+<input id="query-field" type="text" name="query" size="80" value="{{query}}"/><button class="submit" type="submit">Search</button>
+</form>
+</div>
+{% if query %}
+{% else %}
+<div id="search-builder" class="form-frame">
+<div class="form-frame-title">Advanced Search Builder</div>
+<div class="search-modifier">
+<label> Limit search in: </label>
+<select id="library-selector">
+<option value="">all {{libraries|length}} libraries</option>
+{% for lib in libraries %}
+<option value="{{lib}}">{{lib}}</option>
+{% endfor %}
+</select>
+</div>
+<div class="search-modifier">
+<label> Limit search in: </label>
+<select id="field-selector">
+<option value="">all fields</option>
+<option value="name">Compound ID</option>
+<option value="annotation">Annotations</option>
+<option value="plate">Plate identifier</option>
+<option value="well">Well identifier</option>
+</select>
+</div>
+<div class="form-frame" id="property-constraint">
+<div class="form-frame-title">Physicochemical Property Constraints</div>
+<div id="property-constraint-template">
+<select class="property-selector">
+<option value="">Select a property</option>
+{% for f in fields %}
+<option value="{{f.0}}" title="{{f.1}}">{{f.0}}</option>
+{% endfor %}
+</select>
+<select class="operator-selector">
+<option value="">Select an operator</option>
+<option value="&gt;" title="greater than">&gt;</option>
+<option value="&lt;" title="less than">&lt;</option>
+<option value="=" title="equal to">=</option>
+</select>
+<input type="text" size="3"/>
+<a href="#" class="constraint-delete button"><img src="{{MEDIA_URL}}icons/minus.png"/>Remove</a>
+<div><label class="property"></label> <label class="operator"></label> <label class="value"></label></div>
+</div>
+<br/>
+<a class="add-a-constraint button" style="margin-bottom:10px; float:none" href="#"><img src="{{MEDIA_URL}}icons/add.png"/> Add a constraint</a>
+</div>
+<div class="form-frame" id="platewell-constraint">
+<div class="form-frame-title">Plate and/or Well Constraints</div>
+<div style="display:none" id="platewell-input">
+<div><label>Limit to the following plate and/or well. Leave blank if not known.</label></div>
+<div style="margin-left:30px"><label>plate </label><input type="text" size="5" name="plate"/> <label> and well </label><input type="text" size="5" name="well"/></div> 
+</div>
+<br/>
+<a class="add-a-constraint button" style="margin-bottom:10px; float:none" href="#"><img src="{{MEDIA_URL}}icons/add.png"/> Add a constraint</a>
+</div>
+
+</div>
+{% endif %}
+
+{% if error %}
+<div class="error">{{error}}</div>
+{% else %}
+{% if matches %}
+<div id="search-results">
+<ul>
+{% for match in matches %}
+<li><a href="#in-{{match.0}}">Search in {{match.0}} {% ifequal p 1 %}<b>({% if match.2 %} &gt; {% endif %}{{ match.1|length }})</b>{% endifequal %}</a></li>
+{% endfor %}
+</ul>
+{% for match in matches %}
+<div class="view-modifier table-view">
+	<div class="search-result" id="in-{{match.0}}">
+{% ifequal p 1 %}
+<div class="match-summary">{% if match.2 %} More than {% endif %}
+{{ match.1|length }} matching <em>{{pure_query}}</em> in {{match.0}}</div>
+{% endifequal %}
+<div class="view-mode-selector">
+<select>
+<option value="table-view">Table View</option>
+<option value="table-view extended-view">Extended View</option>
+<option value="grid-view">Grid View</option>
+</select>
+</div>
+<div class="scroll-right-note">Press &rarr; on your keyboard to scroll to the right to see more</div>
+<div style="clear:both"></div>
+<div id="results-area"><div>
+<div id="table-head">
+	<div class="compound-structure">structure</div>
+	<div class="compound-id">Library &amp; ID</div>
+	<div class="formula">Formula</div>
+	<div class="mw"><abbr style="font-size:100%" title="Molecular Weight">M.W.</abbr></div>
+	<div class="screens">Screens</div>
+	{% for f in fields %}<div class="property" ><abbr title="{{f.1}}">{{f.0}}</abbr></div>{% endfor %}
+</div>
+{% for compound in match.1 %}
+<a class="compound" title="{{compound.0.name}}" href="{% url compound_detail library=compound.0.libname,cid=compound.0.cid,resource=''%}">
+	<div class="compound-structure"><img src="{{RENDERER_URL}}smiles;{{compound.0.smiles.split|first}}" width="120" height="120" /> </div>
+	<div class="compound-info compound-id"><span class="libname">{{compound.0.libname}}</span><span class="cid"> {{compound.0.cid}}</span></div>
+	<div class="compound-info formula"> {{compound.0.formula}} </div>
+	<div class="compound-info mw"> {{compound.0.weight}} </div>
+	<div class="compound-info screens">N/A</div>
+	{% for p in compound.1 %}<div class="compound-info property">{{p|floatformat:2}}</div>{% endfor %}
+</a>
+{% endfor %}
+</div></div>
+{% ifequal p 1 %}{% if match.2 %}<div><a href="#more-{{match.0}}" class="load-more">there is more...</a></div>{% endif %}
+{% else %}
+<div style="clear:both"></div>
+<div class="prev-page"><a href="#more-{{match.0}}" class="load-less">previous page</a></div>
+<div class="next-page">{% if match.2 %}<a href="#more-{{match.0}}" class="load-more">next page</a>{% else %}<span>at the last page</span>{% endif %}</div>
+{% endifequal %}
+</div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% if query %}
+<script type="text/javascript">
+var page = {{p}};
+var query = '{{query|escapejs}}';
+var in_specified = "{{matches|length}}" == "1";
+$(document).ready(function() {
+	$(".load-more, .load-less").click(function() {
+		if ($(this).hasClass('load-more')) page ++;
+		else page --;
+		if (! in_specified)
+			query += (' in:' + $(this).attr('href').substring(6));
+		f = $("#query-form form").get(0);
+		f.p.value = page;
+		f.query.value = query;
+		f.submit();
+		return false;
+	});
+});
+</script>
+{% else %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#query-field").get(0).focus();
+	$("#query-form .sample a").click(function() {
+		f = $("#query-form form").get(0);
+		f.query.value = $(this).text();
+		f.submit();
+		return false;
+	});
+	$("button.submit").click(function(){
+		mpmetrics.track("annotation search");
+		return true;
+	});
+});
+</script>
+{% endif %}
+<script type="text/javascript">
+var err;
+function pad(s) {if (s.length == 0) return ''; if (s.match(" "+"$")==" ") return ""; return " "}
+function validate_properties()
+{
+	err = false;
+	var mq = $("#query-field").get(0).value; // master_query
+	$(".constraint").each(function(index) {
+		var p = $(this).find("div label.property").text();
+		var o = $(this).find("div label.operator").text();
+		var v = $(this).find("div label.value").text();
+		if (p == '' || o == '' || v == '') {
+			$(this).addClass('error');
+			err = true;
+		} else {
+			var p = $(this).find(".property-selector").get(0).value;
+			var old_p = $(this).find("label.property").data("old_value");
+			if (old_p == null) old_p = 'IMPOSSIBLE';
+			var o = $(this).find(".operator-selector").get(0).value;
+			var q= p + o + v;
+			$(this).removeClass('error');
+			var p1 = RegExp(p + "\\s*" + o + '\\s*[-0-9.]+');
+			var p2 = RegExp(p + "\\s*[><=]\\s*" + v);
+			var p3 = RegExp(old_p + "\\s*" + o + "\\s*"+ v);
+			if (mq.match(p1)) {
+				mq = mq.replace(p1,q);
+			} else if (mq.match(p2)) {
+				mq = mq.replace(p2,q);
+			} else if (mq.match(p3)) {
+				mq = mq.replace(p3,q);
+			} else {
+				mq = q + " " + mq;
+			}
+		}
+	});
+	var lib = $("#library-selector").get(0).value;
+	var field = $("#field-selector").get(0).value;
+	var plate = $("input[name=plate]").get(0).value;
+	var well = $("input[name=well]").get(0).value;
+
+	//deferred library clause update because it must be at the end
+	var lib_clause = '';
+	if (mq.match(/library\s*:/i))
+		mq = mq.replace(/\s*library\s*:.*/i, "");
+	if (lib) 
+		lib_clause = "library:" + lib;
+
+	if (field) {
+		if (mq.match(/in\s*:/i))
+			mq = mq.replace(/in\s*:[^ ]*/i, "in:" + field);
+		else
+			mq += pad(mq) + "in:" + field;
+	} else {
+		if (mq.match(/in\s*:/i))
+			mq = mq.replace(/\s*in\s*:[^ ]*/i, "");
+	}
+	if (plate) {
+		if (mq.match(/plate\s*:/i))
+			mq = mq.replace(/plate\s*:[^ ]*/i, "plate:" + plate);
+		else
+			mq += pad(mq) + "plate:" + plate;
+	} else {
+		if (mq.match(/plate\s*:/i))
+			mq = mq.replace(/\s*plate\s*:[^ ]*/i, "");
+	}
+	if (well) {
+		if (mq.match(/well\s*:/i))
+			mq = mq.replace(/well\s*:[^ ]*/i, "well:" + well);
+		else
+			mq += pad(mq) + "well:" + well;
+	} else {
+		if (mq.match(/well\s*:/i))
+			mq = mq.replace(/\s*well\s*:[^ ]*/i, "");
+	}
+	$("#query-field").get(0).value = mq + pad(mq) + lib_clause;
+	return !err;
+}
+
+$(document).ready(function() {
+	$("#search-results").tabs();
+	if ($("#search-results ul li").length == 1) {
+		$("#search-results ul").hide();
+	}
+	$("#query-form form").submit(function() {
+		validate_properties();
+		if (err) {
+			alert("There are incomplete constraints. Check the highlighted section.");
+			return false;
+		}
+	});
+	$(".view-mode-selector select").change(function() {
+		$(".view-modifier").removeClass("extended-view").removeClass("table-view").removeClass("grid-view").addClass($(this).get(0).value);
+		$(".view-mode-selector select").attr('value', $(this).get(0).value);
+		$.cookie("default-view-mode", $(this).get(0).value, {expires:365});
+	});
+	if ($.cookie("default-view-mode") == 'grid-view') {
+		$(".view-modifier").removeClass("table-view").addClass("grid-view");
+		$(".view-mode-selector select").attr('value', "grid-view");
+	} else if ($.cookie("default-view-mode") == 'table-view extended-view') {
+		$(".view-modifier").addClass("extended-view");
+		$(".view-mode-selector select").attr('value', "table-view extended-view");
+	}
+	$("#property-constraint a.add-a-constraint").click(function() {
+		$(this).siblings("br").before("<div class=\"constraint\">" + $("#property-constraint-template").html() + "</div>");
+		return false;
+	});
+	$("#platewell-constraint a.add-a-constraint").click(function() {
+		$(this).siblings("#platewell-input").fadeIn('slow');
+		$(this).hide();
+		return false;
+	});
+	$(".constraint .property-selector").live('change', function(event) {
+		var l = $(this).parent().find("label.property");
+		l.text($(this).find("option[selected=true]").attr('title'));
+		l.data("old_value", l.data("value"));
+		l.data("value", $(this).get(0).value);
+		validate_properties();
+	});
+	$(".constraint .operator-selector").live('change', function(event) {
+		$(this).parent().find("label.operator").text($(this).find("option[selected=true]").attr('title'));
+		validate_properties();
+	});
+	$(".constraint input[type=text]").live('change', function(event) {
+		$(this).parent().find("label.value").text($(this).get(0).value);
+		validate_properties();
+	});
+	$(".constraint a.constraint-delete").live('click', function(event) {
+		$(this).parent().fadeOut(500);
+		var self=$(this).parent();
+		var p = $(this).siblings(".property-selector").get(0).value;
+		var o = $(this).siblings(".operator-selector").get(0).value;
+		var v = $(this).siblings("input[type=text]").get(0).value;
+		var ptn = RegExp(p + '\\s*' + o + '\\s*' + v + '\\s*');
+		var mq = $("#query-field").get(0).value;
+		$("#query-field").get(0).value = mq.replace(ptn, '');
+		setTimeout(function(){self.remove();}, 500);
+		return false;
+	});
+	$("#library-selector, #field-selector, #platewell-input input").change(function() {
+		validate_properties();
+	});
+	$(document).keyup(function(e){
+		if (e.keyCode == 39)
+			$("div#results-area").scrollTo("+=130px")
+		else if (e.keyCode == 37)
+			$("div#results-area").scrollTo("-=130px")			
+	});
+});
+</script>
+{% endif %}
+{% endblock %}

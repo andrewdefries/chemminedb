@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Processes and filters</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Molecule operation methods and classes"
+HREF="../functionalities/molecule.html"><LINK
+REL="PREVIOUS"
+TITLE="SMiles ARbitrary Target Specification (SMARTS)-substructure search"
+HREF="../functionalities/mol-smarts.html"><LINK
+REL="NEXT"
+TITLE="Input and output"
+HREF="../functionalities/mol-io.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../functionalities/mol-smarts.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Molecule operation methods and classes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../functionalities/mol-io.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.MOLECULE.PROCESS"
+>Processes and filters</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.PROCESS.INTERNAL"
+>Processes (internal, Java)</A
+></H2
+><P
+>A process can be a simple process or combined processes with filtering rules, e.g.
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/process/ProcessPipe.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.process.ProcessPipe</TT
+></A
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.PROCESS.FILTER"
+>Process filters</A
+></H2
+><P
+>A filter allows you to define processes which are only processed if the filter rule fits. E.g.
+you can define a filter which checks if an descriptor value exists and a filter which
+accept all molecules which fits the 'Rule of 5' (By the way, i'm interested in a
+freely available logP calculation program, let me know if you can offer one).</P
+><P
+>For a simle example see the external process example:
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/test/Title2DataTest.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.test.Title2DataTest</TT
+></A
+>.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.PROCESS.EXTERNAL"
+>External processes</A
+></H2
+><P
+>External processes uses external programs or shared libraries AND are system specific.
+External processes are derived from processes and have an additional method
+<VAR
+CLASS="LITERAL"
+>isThisOSsupported()</VAR
+>
+There are three different possibilities to call external code (if you also consider client/server techniques
+like CORBA and RMI even more):</P
+><P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Using the Java Native Interface (JNI) to use C/C++ code from shared libraries.
+       This possiblitity is only available for programs with a very good defined
+       programming interface or where the source code is available.</P
+></LI
+><LI
+><P
+>Using the pipe mechanism or standard input/output/error of programs to call
+       external programs where the source code is not available. But the precondition
+       for this mechanism is that the programs support the pipe mechanism (mostly only
+       for linux programs)</P
+></LI
+><LI
+><P
+>The last and not very comfortable method is to use files to exchange data
+       between JOELib and other programs. Fortran programs need this mechanism,
+       even if the source code is available ! If anyone has a good solution for calling
+       Fortran programs from Java i would be very interested !!!</P
+></LI
+></OL
+><P
+>For a simple example see the external process example:</P
+><P
+><A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/test/Title2DataTest.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.test.Title2DataTest</TT
+></A
+>.
+This program needs the compiled linux version of
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/lib/linux/title2data.cpp?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>lib/linux/title2data.cpp</TT
+></A
+>,
+which can be compiled with
+<B
+CLASS="COMMAND"
+>g++ title2data.cpp -o title2data</B
+></P
+><P
+>The binary file should be located in <VAR
+CLASS="LITERAL"
+>joelib/lib/linux/</VAR
+>.</P
+><P
+>The windows version can be generated with the Visual C++ compiler.</P
+><P
+>Unfortunately there seems to be problems with JDK's pipe mechanism (JDK bug !) under Windows,
+therefore the example don't work properly under Windows. If you want to use the example anyway
+you should not use the pipe mechanism. It would be better to write a little
+JNI wrapper to call external programs.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../functionalities/mol-smarts.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../functionalities/mol-io.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../functionalities/molecule.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Input and output</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,181 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Structure Search {%if compounds %} Result {%endif%}</title>
+{% endblock %}
+{% block extrahead %}
+<script type="text/javascript" src="{{MEDIA_URL}}jquery.scrollTo.js"></script>
+{% endblock %}
+{% block content %}
+<div id="structure-form">
+<form id="library-selection">
+<label>Select the libraries to search in:</label><a class="small-button" id="select-all" href="#">all</a><a class="small-button" id="select-none" href="#">none</a><br/>
+{% for library in libraries %}
+<div class="library-checkbox">
+<input type="checkbox" name="library" id="library-{{forloop.counter}}" value="{{library.name}}" {% if library.selected %}checked="checked"{% endif %} /><label for="library-{{forloop.counter}}">{{library.name}}</label>
+</div>
+{% endfor %}
+</form>
+<ul id="tab-menu">
+	<li><a href="#smiles-input">SMILES Input</a></li>
+	<li><a href="#draw">Structural Drawing</a></li>
+	<li><a href="#sdf-input">SDF Input</a></li>
+	<li><a href="#sdf-upload">SDF Upload</a></li>
+</ul>
+<div id="smiles-input">
+<p>
+Please type or copy and paste your single-molecule SMILES below, and click "Search". 
+</p>
+<form action="." method="post" accept-charset="utf-8">
+	<label for="smiles">SMILES:</label>
+	<input id="smiles" type="text" name="smiles" value="{{post_data.smiles}}" size="60"/><br/>
+	<button class="submit" type="submit">Start Search</button>
+</form>
+</div>
+<div id="draw">
+<p>
+Please draw a structure below and click "Search".
+</p>
+<applet code="JME.class" name="applet" archive="{{MEDIA_URL}}JME.jar" width="300" height="300">
+      Please enable Java and JavaScript on your machine.
+</applet>
+<form id="drawform" action="." method="post" accept-charset="utf-8">
+	<input type="hidden" name="sdf" value="{{post_data.sdf}}"/><br/>
+	<input type="hidden" name="draw" value="1"/>
+	<button class="submit" type="submit">Start Search</button>
+</form>
+</div>
+<div id="sdf-input">
+<p>
+Please copy and paste your single-molecule SDF below. If multiple compounds are supplied, only the first one will be used.
+</p>
+<form action="." method="post" accept-charset="utf-8">
+	<label for="sdf_box">SDF Content:</label><br/>
+	<textarea id="sdf_box" name="sdf" cols="80" rows="12">{{post_data.sdf}}</textarea><br/>
+	<button class="submit" type="submit">Start Search</button>
+</form>
+</div>
+<div id="sdf-upload">
+<p>
+Please upload a single-molecule SDF below. If multiple compounds are found in the SDF, only the first one will be used.
+</p>
+<form action="." method="post" enctype="multipart/form-data">
+	<label for="sdf_file">SDF File:</label>
+	<input id="sdf_file" name="sdf" type="file"/>
+	<button class="submit" type="submit">Start Search</button>
+</form>
+</div>
+</div>
+{% if compounds %}
+<div class="view-modifier table-view">
+<div id="structure-search-results">
+<div class="summary">
+Search <img width="100" height="100" class="query-structure" src="{{query_url}}"/> in {{selected_libs|join:", "}}:
+<a class="small-button" id="edit-search" href="#">Edit Search</a>
+</div>
+<div class="view-mode-selector">
+See results in <select>
+<option value="table-view">Table View</option>
+<option value="table-view extended-view">Extended View</option>
+<option value="grid-view">Grid View</option>
+</select>
+</div>
+<div class="scroll-right-note">Press &rarr; on your keyboard to scroll to the right to see more</div>
+<div style="clear:both"></div>
+<div id="results-area"><div class="search-result">
+<div id="table-head">
+	<div class="compound-structure">Query</div>
+	<div class="compound-structure">Structure</div>
+	<div class="compound-id">Library &amp; ID</div>
+	<div class="formula">Formula</div>
+	<div class="mw"><abbr style="font-size:100%" title="Molecular Weight">M.W.</abbr></div>
+	<div class="screens">Screens</div>
+	<div class="score">Similarity</div>
+	{% for f in fields %}<div class="property" ><abbr title="{{f.1}}">{{f.0}}</abbr></div>{% endfor %}
+</div>
+
+{% for compound in compounds %}
+<a class="compound" title="{{compound.0.name}}" href="{% url compound_detail library=compound.0.libname,cid=compound.0.cid,resource=''%}">
+	<div class="compound-structure query-structure"><img src="{{query_url}}" width="120" height="120" /> </div>
+	<div class="compound-structure"><img src="{{RENDERER_URL}}smiles;{{compound.0.smiles.split|first}}" width="120" height="120" /> </div>
+	<div class="compound-info compound-id"><span class="libname">{{compound.0.libname}}</span><span class="cid"> {{compound.0.cid}}</span></div>
+	<div class="compound-info formula"> {{compound.0.formula}} </div>
+	<div class="compound-info mw"> {{compound.0.weight}} </div>
+	<div class="compound-info screens">N/A</div>
+	<div class="compound-info score">{{compound.0.s|floatformat:2}}</div>
+	{% for p in compound.1 %}<div class="compound-info property">{{p|floatformat:2}}</div>{% endfor %}
+</a>
+{% endfor %}
+</div></div>
+</div>
+</div>
+{% endif %}
+<script type="text/javascript">
+var mol;
+$(document).ready(function() {
+	mol = $("#drawform").get(0).sdf.value + "";
+	mol = mol.replace(/\n/g, '|');
+
+	if (! window.location.hash) {
+		if ("{{input_mode}}")
+			window.location.replace(window.location + "#" + "{{input_mode}}");
+	}
+	$("#structure-form").tabs();
+	{% if not compounds %}
+	$("#structure-form").show();
+	{% else %}
+	{% endif %}
+	$("#smiles").get(0).focus();
+	$("#drawform").submit(function() {
+		$(this).get(0).sdf.value = document.applet.molFile();
+		if(!document.applet.smiles().replace(' ', '').length()) {
+			alert("You need to draw a query structure.");
+			return false;
+		}
+		return true;
+	});
+	$("button.submit").click(function(){
+		mpmetrics.track("structure search");
+		if ($("#library-selection").find("input[checked=true]").length == 0) {
+			alert("You must select at least one library to search in.");
+			return false;
+		}
+		$("form[method=post]").find("input[type=checkbox]").remove();
+		$("#library-selection").find("input[type=checkbox]").clone().css('display', 'none').appendTo($("form[method=post]"));
+		return true;
+	});
+	$("a#edit-search").click(function() {
+		$("#structure-form").fadeIn();
+		setTimeout('document.applet.readMolFile(mol)', 0);
+	});
+	$("a#select-all").click(function() {
+		$("#library-selection").find("input").each(function() {
+			$(this).get(0).checked = true;
+		});
+	});
+	$("a#select-none").click(function() {
+		$("#library-selection").find("input").each(function() {
+			$(this).get(0).checked = false;
+		});
+	});
+	$(".view-mode-selector select").change(function() {
+		$(".view-modifier").removeClass("extended-view").removeClass("table-view").removeClass("grid-view").addClass($(this).get(0).value);
+		$(".view-mode-selector select").attr('value', $(this).get(0).value);
+		$.cookie("default-view-mode", $(this).get(0).value, {expires:365});
+	});
+	if ($.cookie("default-view-mode") == 'grid-view') {
+		$(".view-modifier").removeClass("table-view").addClass("grid-view");
+		$(".view-mode-selector select").attr('value', "grid-view");
+	} else if ($.cookie("default-view-mode") == 'table-view extended-view') {
+		$(".view-modifier").addClass("extended-view");
+		$(".view-mode-selector select").attr('value', "table-view extended-view");
+	}
+	$(document).keyup(function(e){
+		if (e.keyCode == 39)
+			$("div#results-area").scrollTo("+=130px")
+		else if (e.keyCode == 37)
+			$("div#results-area").scrollTo("-=130px")			
+	});
+});
+</script>
+{% endblock %}

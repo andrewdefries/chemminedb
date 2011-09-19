@@ -1,0 +1,537 @@
+########################################################################
+# Version:  $Revision: 1.15 $
+#           $Date: 2006/07/24 22:29:14 $
+########################################################################
+# Copyright OELIB:          OpenEye Scientific Software, Santa Fe,
+#                           U.S.A., 1999,2000,2001
+# Copyright JOELIB/JOELib2: Dept. Computer Architecture, University of
+#                           Tuebingen, Germany, 2001,2002,2003,2004,2005
+# Copyright JOELIB/JOELib2: ALTANA PHARMA AG, Konstanz, Germany,
+#                           2003,2004,2005
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+########################################################################
+
+Change Log :
+-----------------------------------------------------------------------------
+
+- JOELib2:2006-07-24 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/smiles/SMILESParser.java
+     Bugfix for problems with aromatic systems (bond order forwarding).
+
+- JOELib2:2006-02-22 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Some minor but nasty bugs are fixed. Especially the default feature 
+     calculation should now work for non-experts, also.
+     IF NOT, just let me know. Test is:
+     >export JOELIB2=`pwd`
+     >sh featureCalculation.sh +ap +countSMARTS +binarySMARTS +jcc +SSKey src/resources/multiple.mol multiple_features.sdf yourSMARTSpattern.txt > logging.txt
+     >sh featureStatistic.sh multiple_features.sdf > logging-stat.txt
+     The two generated files
+   - yourSMARTSPattern.txt file might contain:
+[CX4H3][#6]
+[CX4H2]([#6])[#6]
+[CX4H1]([#6])([#6])[#6]
+[CX4]([#6])([#6])([#6])[#6]
+[CX3;$([H2]),$([H1][#6]),$(C([#6])[#6])]=[CX3;$([H2]),$([H1][#6]),$(C([#6])[#6])] 
+[CX2]#[CX2]
+[CX3]=[CX2]=[CX3]
+[ClX1][CX4]
+[FX1][CX4]
+
+- JOELib2:2005-03-03 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/data/BasicAromaticityTyper.java
+     joelib2/src/joelib2/molecule/KekuleHelper.java
+     joelib2/src/joelib2/io/types/MDLSD.java
+     Allow users to switch off the automatic aromaticity check and assignment.
+     This will enable query yinput graphs, which must not have a valid
+     aromatic system.
+   - Some minor bug fixes.
+
+- JOELib2:2005-02-12 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/molecule/Molecule.java
+     joelib2/src/joelib2/molecule/BasicConformerMolecule.java
+     Bug fix: Consolidated caller pipe for protonation model. Now it is
+     allways called in the endModify method of the molecule. This fixes
+     several 'now we miss a hydrogen atom'-bugs, e.g. in the SMARTS
+     matching, SDF export.
+
+   - joelib2/src/joelib2/molecule/IsomerismHelper.java
+     Bug fix: Resolving dependency on neighborhood occurene and ignore
+     double bonds in rings.
+
+- JOELib2:2005-02-08 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/molecule/BasicConformerAtom.java
+     joelib2/src/joelib2/molecule/BasicConformerMolecule.java
+     joelib2/src/joelib2/molecule/BasicBond.java
+     Added consistency check for atom and bond access. Ensure that the
+     developer uses always the same parent molecule, otherwise the debugging
+     will get hard.
+
+- JOELib2:2005-02-06 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/types/atomlabel/*.java
+     Bug fix: Use also the atom with the largest index.
+
+   - joelib2/src/joelib2/types/CharacteristicPolynomial*.java
+     Le Verrier-Faddeev-Frame method to calculate the characteristic
+     polynomial of general weighted graphs allowing atom and bond labels.
+
+- JOELib2:2005-01-26 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/data/BasicAtomTyper.java
+     Bug fix: ensure applied proton model and assigned aromaticity flags for
+     query matching.
+
+- JOELib2:2005-01-20 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/molecule/Molecule.java
+     joelib2/src/joelib2/molecule/BasicConformerMolecule.java
+     Hardened policy: Never delete atoms without calling endModify, which
+     causes RuntimeException.
+
+- JOELib2:2005-01-20 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/molecule/KekuleHelper.java
+     Bug fix for returning not successfull flag for cases in which the
+     kekulization is estimade in the first round. Added debug messages.
+
+   - joelib2/src/joelib2/data/BasicImplicitValenceTyper.java
+     Calling pH model correction before calculating implicite valence
+
+- JOELib2:2005-01-16 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Code cleanup: Heavily refactored classes and interfaces, especially for
+     joelib2.util, joelib2.molecule.types, joelib2.smarts, joelib2.data.
+
+- JOELib2:2005-01-14 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Code cleanup: Trying to reduce the distance to the optimal
+     Instability/Abstractness line. See Code Analysis Plugin for Eclipse
+     for details:
+     http://sourceforge.net/projects/cap4e/
+
+- JOELib2:2005-01-09 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib2/src/joelib2/feature/result/DynamicArrayResult.java
+     Bug fix: Corrected fromString method, which affects also all atom and
+     bond labels.
+
+- JOELib2:2005-01-08 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Bug fix: Fixing the recursive atom label assignment dependencies
+     previously hidden in the method calling hierarchy.
+
+- JOELib2:2005-01-07 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Bug fix: Avoid the replacement of valid bond orders with invalid kekule
+     bond orders, if the kekulization algorithm is unable to find a solution.
+
+- JOELib2:2004-12-29 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Added dependency identifiers for all feature calculators and an hashed
+     identifier for each class, which includes also the chemistry kernel
+     identifier.
+     This is based on a Java hack to obtain all loaded classes by tracing
+     back the caller hierarchy and reflection call for the public static
+     dependency and CVS-tag methods.
+
+- JOELib2:2004-12-06 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Complete redesign and refactoring. Now we are back in pre-alpha mode.
+
+- JOELib2:2004-11-04 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/molecule/JOEAtom.java
+     0. PMD convention refactoring
+     1. Externalized feature functionality for JOEAtom
+        see joelib.desc.types.AtomIs...
+     2. TODO: Replace atom flags with feature caching
+
+   - joelib/src/joelib/molecule/JOEBond.java
+     PMD convention refactoring
+
+   - joelib/src/joelib/desc/types/AtomIs....java
+     Classes for atom properties externalized from JOEAtom
+
+- 2004-09-24 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Renamed abstract helper classes for descriptor calculation
+     AtomsCounter.java        --> AbstractAtomsCounter.java
+     SMARTSCounter.java       --> AbstractSMARTSCounter.java
+     BooleanDesc.java         --> AbstractBooleanDesc.java
+     DoubleDesc.java          --> AbstractDoubleDesc.java
+     IntDesc.java             --> AbstractIntDesc.java
+     StringAtomProperty.java  --> AbstractStringAtomProperty.java
+     DynamicAtomProperty.java --> AbstractDynamicAtomProperty.java
+     DoubleAtomProperty.java  --> AbstractDoubleAtomProperty.java
+
+- 2004-09-22 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/math/distance/AtomDistanceHelper.java
+     Added helper class for easier access to the atom-atom distances.
+     So you do not need to access the distance descriptors directly.
+
+- 2004-08-30 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/*.java
+     Reduced number for some of the PMD metrics for different classes.
+     But for some metrics i've furthermore reduced the number of warnings
+     for more than a half since the last release version.
+
+- 2004-08-30 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/io/types/MDLSD.java
+     PMD 'codesize': Reduced cyclomatic complexity (from 42 to <10)
+
+   - Code cleanup warning:
+     Dear developer and user. I've started with refactoring the sources
+     following the PMD rules. Until now i've corrected the 'basic',
+     'coupling' and 'import' rules. Two of them causes no problems.
+     But the 'coupling' rule has forced me to change 'Vector-->List',
+     'HashMap-->Map'. So, this affects method calls and forces you to
+     change these things also, if you are using the JOELib library for
+     your own implementations.
+     This causes three main changes for you:
+     0. joelibMethod(myVector);
+        Nothing to do here, because List is an interface for the Vector class
+     1. Vector myVector=joelibMethod();
+        Must be changed to:
+        List myList=joelibMethod();
+        or you should use casting from Vector to List and vice versa. Depends
+        on your implementation.
+     2. Vector myVector=joelibMethod();
+        Enumeration enum=myVector.enumeration();
+        enum.hasNextElement();
+        enum.nextElement();
+        Must be changed to:
+        Iteration iter=myVector.iterator();
+	iter.hasNext();
+        iter.next();
+     3. All users which have used the 'addElement', 'getElementAt' should
+        use the access method, which are recommended from the interface:
+        'add' and 'get'
+        And 'setElementAt(object, index)' should be replaced by
+        'set(index, object)' interchanging the order of the
+        arguments.
+
+- 2004-08-27 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/desc/SimpleStringAtomProperty.java
+     Added calculations class for String based atom properties
+
+   - joelib/src/joelib/desc/result/StringArrayResult.java
+     Added result class for String based arrays
+
+   - joelib/src/joelib/desc/result/AtomStringResult.java
+     Added result class for String based atom properties
+
+   - joelib/src/joelib/desc/types/AtomType.java
+     Added JOELib internal atom type as String based atom property descriptor
+
+   - joelib/src/joelib/desc/types/AtomInAromaticSystem.java
+     Added atom property descriptor for aromatic status of atoms
+
+   - joelib/src/joelib/util/JOEPropertyHelper.java
+     Bug fix: Fixed null pointer exception
+
+   - joelib/src/joelib/desc/types/atompair/TopologicalAtomPair.java
+     Bug fix: Fixed null pointer exception for parameter initalization
+
+   - joelib/src/joelib/util/LineArrayHelper.java
+     joelib/src/joelib/util/ArrayHelper.java
+     Added String based storing and loading methods for String arrays
+
+- 2004-07-29 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/smarts/ParseSmart.java
+     Bug fix: AGAIN! SMARTS encoder writes Stereo-Up as '\' and
+     Stereo-Down as '/' but the specification says it vise versa.
+     And added unspecific matching using '\?' and '/?', please remember that
+     the implementation in JOELib requires C/?C=C/?C to match CC=CC
+     sucessfully
+
+- 2004-07-25 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - Partial code cleanup.
+
+   - Added formal definition of a molecular graph to the DocBook-Tutorial.
+
+- 2004-07-07 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/io/MDLSD.java
+     Added dummy atom support for 'Du' entries.
+
+   - joelib/src/joelib/data/plain/types.txt
+     Internal representation of dummy atoms changed from 'X' to 'Xx'.
+     Now we are conform with joelib/src/joelib/data/plain/element.txt
+
+- 2004-07-02 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/smarts/ParseSmart.java
+     Cis/trans detection was replaced by IsomerismDetection.isCisTransBond.
+
+   - joelib/src/joelib/util/IsomerismDetection.java
+     Cis/trans detection from 2D/3D contains now up/up flags for cis and
+     up/down flags for trans bonds.
+
+- 2004-07-02 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/smarts/ParseSmart.java
+     Added cis/trans support or more correctly up/down detection ability.
+
+   - joelib/src/joelib/smiles/JOEMol2Smi.java
+     Bug fix: Wrong detection of the 'a' atom in a 'abcd' cis/trans pattern
+     corrected.
+
+   - joelib/src/resources/smartsEvaluation/cis_ and trans_butene.mol
+     joelib/src/resources/smartsEvaluation/evaluation.txt
+     Added testing methods for MDL SDF import with cis/trans autodetection
+     and then SMARTS matching.
+
+- 2004-06-29 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/desc/DescriptorHelper.java
+     Bug fix for handling empty DescResult and avoiding to calculate it
+     twice.
+
+   - joelib/src/joelib/smarts/ParseSmart.java
+     Bug fix: SMARTS encoder writes Stereo-Up as '\' and Stereo-Down as '/'
+     but the specification says it vise versa.
+
+- 2004-06-21 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/io/types/MDLSD.java
+     Stabelized kekule-writting mode. Uses now directly isKSingle/isKDouble/
+     isKTriple instead of mol.kekulize().
+
+   - wsi/ra/PropertyHolder.java
+     Allow additional joelib.properties in user.home/.joelib-directory.
+     If found, this will used, otherwise the one in the classpath/jar-file.
+
+- 2004-06-15 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/src/joelib/smarts/test/SMARTSEvaluation.java
+     SMARTS matching test class to check cross-dependencies for the atom
+     typer or simple testing purpose. So, this is the first step to be
+     able to formulate a classification problem for the atom type
+     assignment process. So let me know if you are interested to
+     discuss the details for this idea. I think this can be published, also.
+     Data files are located in:
+     joelib/src/resource/smartsEvaluation/evaluation.txt
+     joelib/src/resource/smartsEvaluation/*.mol
+
+   - joelib/src/wsi/ra/io/RegExpFilenameFilter.java
+     Regular expression filter for files.
+
+- 2004-05-28 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - viewer*.sh
+     New shell scripts to allow easier access to the 'primitive' viewers.
+     Especially the 2D visualisation has not a good user interface at
+     the moment (only one molecule allowed). But SMARTS highlighting
+     and retro-synthetical cutting visualisation is still possible.
+
+- 2004-04-20 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.algo.datamining.weka.*
+     Weka specific Instances with molecular data.
+     The first step to general similarity/dissimilarity metrics for the
+     already introduced joelib.math.similarity interfaces.
+
+   - joelib.desc.data.*
+     Introduced MoleculeCache interface to store data.
+
+   - joelib.util.MDMatrixCache renamed to joelib.util.MoleculeDataCacheHolder
+     Molecule data holder for matrices AND Weka-Molecule-instances.
+
+   - Corrected usage of kekulization for MDL SD export and visualization using
+     JOEMol.kekulize()
+
+   - Slightly updated DocBook-tutorial.
+
+- 2004-03-20 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.io.types.cml.*
+     Bug fixes for complex descriptor entries.
+
+   - joelib.io.types.Amber
+     joelib.io.types.Mopac
+     Added support for 'Amber PREP' and 'Mopac Out' format.
+
+   - joelib.io.Sybyl
+     Corrected reading of partial charges from Sybyl format.
+     Now the readed partial charges will not be overwritten by JOELib's
+     Gasteiger-Marsili partial charges.
+
+   - joelib.molecule.JOEMol
+     Added partial charge vendor to allow to store this information in CML2.
+
+- 2004-03-18 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.io.MoleculeCallback
+     joelib.io.types.cml.CMLSequentialSAXReader
+     Support for reading sequentially huge uncompressed CML files using
+     a molecule callback method.
+
+   - joelib.io.types.ChemicalMarkupLanguage
+     Added molecule string reader and support for using this facility e.g.
+     for loading huge CML files in compressed ZIP files (workaround to avoid
+     using the SAX parser directly)
+
+   - joelib.io.types.cml.MoleculeAttributeArray
+     Added for allowing CML in RSS feeds by avoiding showing single entries
+     (attributes are not shown, e.g. in Mozilla).
+
+   - joelib.io.types.cml.MoleculeArray
+     Added missing stereochemistry 'bondStereo'.
+
+   - joelib.test.GhemicalTest
+     Added geometry optimization test using Ghemical. This can be only used
+     under Linux or from the Cygwin shell !
+
+- 2004-03-16 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.data.*
+     Added hashed chemistry kernel identifier, which is always used by
+     descriptor calculation and file format conversion.
+     Now you know which version was used. This kernel ID is written to
+     SDF as comment and CML as metadata !
+
+   - joelib.io.types.MDLSD
+     Added missing stereochemistry informations to MDL SD writer.
+
+   - joelib.gui.render.Renderer2D
+     Corrected bond visualization for stereochemistry (cis/trans should
+     not be drawn as hash/wedge!:-)
+
+   - joelib.io.types.cml.*
+     Updated to CML2 support with namespace and CML2 tags !
+
+   - joelib.io.types.ZIP
+     Added compressed file reader/writer. Can read multiple files in one
+     ZIP file, except CML entries, because the SAX parser closes after
+     the first readed entry. Please send me a workaround if you find one.
+
+   - joelib.gui.test.ConvertPanel
+     Added '+split' option to panel.
+
+   - joelib.gui.test.InfoPanel
+     Added chemistry kernel (used expert systems) informations to panel.
+
+- 2004-01-24 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.desc.types.*
+     Added a hug amount of descriptor calculation methods.
+
+- 2003-12-09 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.molecule.JOEMol
+     Fixed 'dead loop' in deleteAtom(JOEAtom) for heavy weight atoms. Concerns also
+     stripSalts().
+
+- 2003-12-09 Gerd Mueller (gerd@smb-tec.com)
+
+   - wsi.ra.tool.ResourceLoader
+     Fixed resource locations for paths with white spaces.
+
+- 2003-12-03 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.desc.data.MoleculesDescriptorMatrix
+     The generated 'yourMoleculeFile.matrix'-files contains now also
+     informations if the descriptor is a binary-descriptor. So if you have
+     already such files, please delete them and let JOELib them create again.
+   - joelib.desc.result.IntResult
+     The descriptor class can now also read double values and stores also
+     double values set by setDoubleNV(double). This is important if you
+     plan to normalize your data.
+   - joelib/molecule/JOEMol
+     Dead-loop-bug was fixed in deleteHydrogen(JOEAtom)
+
+- 2003-11-01 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/test/Convert.java
+     Added 'split' option to generate splitted files
+   - joelib/data/JOEAromaticTyper.java
+     Avoiding two root atoms in one ring !
+
+- 2003-10-20 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/io/types/PDF.java
+     Improved layout and storage of descriptor values
+
+   - joelib/lib/vecmath.jar
+     Added, because the 2D renderer requires some classes. This is not
+     really necessary for Java3D users, but for the others we will obtain
+     some errors without it.
+
+- 2003-10-13 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/gui/render
+     2D molecule rendering facility using AWT
+   - joelib/io/SimpleImageWriter
+     joelib/io/types/BMP, GIF, JPEG, PDF, PPM
+     2D molecule rendering image writting classes
+
+- 2003-10-01 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/molecule/JOEMol
+     assigning stereo flags for tempoary JOEVirtualBond when adding bonds to an
+     molecule where an atom is missing
+
+- 2003-09-15 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib/docs/docbook:
+     Changing .xml to .sgml for avoiding misunderstanding of the SGML-DocBook-Files !
+     Index and Glossary was added when changing from DocBook 4.1 to 4.2 !
+     Java based equation generation jtt/docbook/* without shell scripts and
+     changed docbook generation shell script joelib/docs/docbook/generate.sh
+
+- 2003-08-26 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.test.Convert:
+     joelib.test.ConvertSkip:
+     Recognize file output type correctly (and do not use the input file name !;-)
+
+   - joelib.molecule.JOEBond:
+     Calculate correct bond length.
+
+- 2003-08-19 Gert Sclep (http://sourceforge.net/users/gsclep/)
+
+   - joelib.gui.molviewer.java3d.Viewer:
+     joelib.gui.molviewer.java3d.util.Java3DHelper:
+     When molecules couldn't be drawn due to a buggy Java3D,
+     the ViewerFrame was still shown when executing the Viewer
+     class.
+
+- 2003-08-19 Joerg Kurt Wegner (http://sourceforge.net/users/wegner/)
+
+   - joelib.molecule.GenericDataHolder:
+     Return null for emtpy descriptor names.
+
+   - joelib.data.JOEAromaticTyper:
+     Find new root ring atoms, if more than 2 other neighbour ring atoms
+     (ignore non-heavy weight atoms).
+
+- 2003-08-19 Gert Sclep (http://sourceforge.net/users/gsclep/)
+
+   - joelib.io.types.ClearTextFormat:
+     Comment of a CTX-file was added to the JOEMol object as an empty
+     JOECommentData-object.
+
+- 2003-08-12 Gert Sclep (http://sourceforge.net/users/gsclep/)
+
+   -joelib.io.types.ClearTextFormat:
+     Code for parsing /2DCOORD section of CTX-format wasn't compliant with
+     CTX-format produced by CACTVS program (version 2.95).

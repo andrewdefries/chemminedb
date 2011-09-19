@@ -1,0 +1,54 @@
+CMS settings
+=============
+
+1. cd cms && cp cms_settings.py.dist cms_settings.py
+2. Edit cms_settings.py
+
+
+Setup media files and templates
+===============================
+
+In your project directory:
+
+mkdir site_media
+cd site_media
+ln -s <path-to-django-cms>/cms/media/cms cms
+
+urls.py
+=======
+
+urlpatterns = patterns('',
+    (r'^admin/', include('django.contrib.admin.urls')),
+    (r'', include('cms.urls')),
+)
+
+
+settings.py
+===========
+
+Make sure LocaleMiddleware (either cms.middleware.locale.LocaleMiddleware or 
+django.middleware.locale.LocaleMiddleware) is in your MIDDLEWARE_CLASSES:
+
+MIDDLEWARE_CLASSES = (
+    'cms.middleware.util.BenchmarkMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    'cms.middleware.util.XHTMLToHTMLMiddleware',
+)
+
+INSTALLED_APPS = (
+    ...
+    'django.contrib.admin',
+    'cms',
+)
+
+Also the app template loader needs to be enabled -- TEMPLATE_LOADERS should 
+look something like this:
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.load_template_source',
+    'django.template.loaders.app_directories.load_template_source',
+)

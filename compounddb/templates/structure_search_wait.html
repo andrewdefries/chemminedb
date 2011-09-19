@@ -1,0 +1,35 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Structure Search - Searching...</title>
+{% endblock %}
+{% block content %}
+<div class="summary" id="wait">
+<h1>Searching</h1>
+{% if query_url %}<img width="100" height="100" class="query-structure" src="{{query_url}}"/>
+<div class="hint" style="text-transform:uppercase"> in </div>
+<div class="library-list">{{selected_libs|join:", "}}</div>
+{% endif %}
+<div><img id="progress" width="200" src="{{MEDIA_URL}}icons/ajax-loader.gif"/></div>
+<div class="hint">(This can take up to 5 minutes)</div>
+</div>
+<script type="text/javascript">
+function read()
+{
+	$.getJSON("./?ajax={{hash}}", function(data) {
+		if (data.status == 'wait')
+			window.setTimeout(read, 1000);
+		else if (data.status == 'ok')
+			window.location.replace("./?ref={{hash}}");
+		else if (data.status == 'error') {
+			$("#progress").hide();
+			alert("Server error");
+			alert(data.status);
+		}
+	});
+}
+$(document).ready(function() {
+	read();
+});
+</script>
+{% endblock %}

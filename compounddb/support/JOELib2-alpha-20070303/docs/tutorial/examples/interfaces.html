@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Interfaces</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="JOELib examples and code snippets"
+HREF="../examples/examples.html"><LINK
+REL="PREVIOUS"
+TITLE="Import/Export"
+HREF="../examples/importexport.html"><LINK
+REL="NEXT"
+TITLE="Database"
+HREF="../examples/database.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../examples/importexport.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. JOELib examples and code snippets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../examples/database.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.EXAMPLES.INTERFACES"
+>Interfaces</A
+></H1
+><P
+>abc.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2305"
+>Java interfaces</A
+></H2
+><P
+>abc.</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2308"
+>Chemical Development Kit (CDK)</A
+></H3
+><P
+>The <A
+HREF="http://sourceforge.net/projects/cdk"
+TARGET="_top"
+>Chemical Development Kit (CDK)</A
+> interface
+supports only the generation of 2D coordinates.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.INTERFACES.CDK"
+></A
+><P
+><B
+>Example 9-25. Chemical Development Kit (CDK) interface</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>TestSMILES joeMolTest = new TestSMILES();
+JOEMol mol = new JOEMol(IOTypeHolder.instance().getIOType("SMILES"),
+                        IOTypeHolder.instance().getIOType("SDF"));
+
+System.out.println("Generate molecule from SMILES: \"" + smiles + "\"");
+// create molecule from SMILES string
+if (!JOESmilesParser.smiToMol(mol, smiles, "Name:" + smiles))
+{
+  System.err.println("Molecule could not be generated from \"" + smiles + "\".");
+}
+
+// Layout test
+System.out.println("Generate 2D coordinates:");
+CDKTools.generate2D(mol);
+// show molecule with 2D coordinates
+System.out.println(mol);</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2315"
+>Weka data mining interface</A
+></H3
+><P
+>The <A
+HREF="http://www.cs.waikato.ac.nz/ml/weka/"
+TARGET="_top"
+>Weka data mining library</A
+> data mining
+interface can be used mainly designed for clustering and classification tasks. For regression
+it's recommended to use e.g. the <A
+HREF="http://www-ra.informatik.uni-tuebingen.de/software"
+TARGET="_top"
+>JavaNNS</A
+> interface
+or other interfaces this group will provide.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.INTERFACES.WEKA"
+></A
+><P
+><B
+>Example 9-26. Weka data mining interface</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// open file input stream
+FileInputStream in = null;
+JOEMolVector mols = null;
+// create molecule vector
+try
+{
+  in = new FileInputStream(inputFile);
+  mols = new JOEMolVector(in);
+}
+catch (Exception ex)
+{
+  ex.printStackTrace();
+  System.exit(1);
+}
+
+// load descriptor binning
+DescBinning binning = DescBinning.getDescBinning(mols);
+
+// create Weka attribute types
+// we assume the following format:
+// all attributes are numeric, except the class index, which is
+// a nominal attribute.
+// Please refer for further help the Weka tutorial and mailing list
+Enumeration enum = binning.getDescriptors();
+String attributes[] = new String[binning.numberOfDescriptors()];
+int attributeTypes[] = new int[binning.numberOfDescriptors()];
+int i = 0;
+int classAttributeIndex = -1;
+for (; enum.hasMoreElements(); i++)
+{
+  attributes[i] = (String) enum.nextElement();
+  if (attributes[i].equals(classAttributeName))
+  {
+    classAttributeIndex = i;
+    attributeTypes[i] = Attribute.NOMINAL;
+  }
+  else
+  {
+    attributeTypes[i] = Attribute.NUMERIC;
+  }
+}
+// check class index
+if (classAttributeIndex == -1)
+{
+  logger.error("Class attribute " + classAttributeName + " not found.");
+  System.exit(1);
+}
+
+// create Weka instances
+MolInstances instances = MolInstances.createMolInstances(mols, attributes, attributeTypes);
+
+// set class index
+instances.setClassIndex(classAttributeIndex);</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2323"
+>C/C++ interfaces using JNI</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2325"
+>Some Java implementions to test Ghemical</A
+></H3
+><P
+>To use <A
+HREF="http://bioinformatics.org"
+TARGET="_top"
+>LibGhemical</A
+> you must install the system specififc
+JNI interfaces under <TT
+CLASS="FILENAME"
+>lib/linux</TT
+> and <TT
+CLASS="FILENAME"
+>lib/windows</TT
+>.
+The LibGhemical parameter sets for initializing the force field must be also already installed. The
+default path is <TT
+CLASS="FILENAME"
+>/usr/local/share/libghemical/1.51/</TT
+>, but these things can vary with a new release
+or if you have compiled LibGhemical on your own (recommended).</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.INTERFACES.GHEMICAL.TEST"
+></A
+><P
+><B
+>Example 9-27. Create 3D coordinates using the Ghemical force field (molecular mechanics)</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>TestSMILES joeMolTest = new TestSMILES();
+JOEMol mol = new JOEMol(IOTypeHolder.instance().getIOType("SMILES"),
+                        IOTypeHolder.instance().getIOType("SDF"));
+
+System.out.println("Generate molecule from SMILES: \"" + smiles + "\"");
+// create molecule from SMILES string
+if (!JOESmilesParser.smiToMol(mol, smiles, "Name:" + smiles))
+{
+  System.err.println("Molecule could not be generated from \"" + smiles + "\".");
+}
+
+// Layout test
+System.out.println("Generate 3D coordinates:");
+double tresholdDeltaE = 1.0e-14;
+double tresholdStep = 6.0e-11;
+int numSteps = 2000;
+// when all coordinates are zero the molecule coordinates will be initialized
+// with random coordinates
+if (!GhemicalInterface.instance().doGeometryOptimization(
+  mol,
+  numSteps,
+  tresholdDeltaE,
+  tresholdStep,
+  true))
+{
+  logger.error("Could not apply energy minimization.");
+  System.exit(1);
+}
+
+// show molecule with 2D coordinates
+System.out.println(mol);</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2335"
+>Matlab interface</A
+></H2
+><P
+>abc.</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2338"
+>Matlab to Java connection</A
+></H3
+><P
+>Download the <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib-Matlab toolbox</A
+> to use this feature.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.INTERFACES.MATLAB"
+></A
+><P
+><B
+>Example 9-28. Load native descriptors under Matlab</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>cd yourWorkingDirectory/
+descriptors=loaddescriptors('test_moe_desc.mol', 'SDF');</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2345"
+>Java to Matlab connection</A
+></H3
+><P
+>This can be esablished when using the JMatLink JNI interface (see also <A
+HREF="../install/matlab.html"
+>the Section called <I
+>Matlab toolbox</I
+> in Chapter 1</A
+>).</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../examples/importexport.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../examples/database.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Import/Export</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

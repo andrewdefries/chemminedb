@@ -1,0 +1,641 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Molecule operation methods and classes</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Molecule"
+HREF="../basics/struct-molecule.html"><LINK
+REL="NEXT"
+TITLE="SMiles ARbitrary Target Specification (SMARTS)-substructure search"
+HREF="../functionalities/mol-smarts.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../basics/struct-molecule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../functionalities/mol-smarts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.MOLECULE"
+></A
+>Chapter 3. Molecule operation methods and classes</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="../functionalities/molecule.html#JOELIB.MOLECULE.DATA"
+>Molecule</A
+></DT
+><DT
+><A
+HREF="../functionalities/mol-smarts.html"
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</A
+></DT
+><DT
+><A
+HREF="../functionalities/mol-process.html"
+>Processes and filters</A
+></DT
+><DT
+><A
+HREF="../functionalities/mol-io.html"
+>Input and output</A
+></DT
+><DT
+><A
+HREF="../atomtyper.html"
+>Assigning atom types, aromatic flags, hybridization and hydrogens</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN440"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.MOLECULE.DATA"
+>Molecule</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN444"
+>Molecule data entries</A
+></H2
+><P
+>Data entries.</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN447"
+></A
+><P
+><B
+>Table 3-1. Predefined data types/names</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="type"><COL
+WIDTH="1*"
+TITLE="name"><COL
+WIDTH="1*"
+TITLE="occurence"><THEAD
+><TR
+><TH
+>Data type</TH
+><TH
+>Data name</TH
+><TH
+>Allowed occurence</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_UNDEFINED_DATA</VAR
+></TD
+><TD
+>Undefined</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_VIRTUAL_BOND_DATA</VAR
+></TD
+><TD
+>VirtualBondData</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_ROTAMER_LIST</VAR
+></TD
+><TD
+>RotamerList</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_EXTERNAL_BOND_DATA</VAR
+></TD
+><TD
+>ExternalBondData</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_COMPRESS_DATA</VAR
+></TD
+><TD
+>CompressData</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_COMMENT_DATA</VAR
+></TD
+><TD
+>Comment</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_ENERGY_DATA</VAR
+></TD
+><TD
+>EnergyData</TD
+><TD
+>multiple</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_PAIR_DATA</VAR
+></TD
+><TD
+>PairData</TD
+><TD
+>single attribute name</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN499"
+>Molecule descriptors</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN501"
+>Set and get descriptor data entries</A
+></H3
+><P
+>The typical data type to store descriptors is the <VAR
+CLASS="LITERAL"
+>JOEDataType.JOE_PAIR_DATA</VAR
+>.</P
+><P
+>Every descriptor can be accessed by his name. To access the descriptor data
+entries efficiently the descriptor data entries are stored in a dictionary.
+Therefore descriptors can only occure once in a molecule.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.DATA.GET"
+></A
+><P
+><B
+>Example 3-1. Getting descriptor data entries</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// getting an iterator over all data elements
+// including SSSR informations and other stuff
+GenericDataIterator  gdit  = mol.genericDataIterator();
+while ( gdit.hasNext() )
+{
+  // get the next data element
+  genericData = gdit.nextGenericData();
+  // use only the data elements which contains descriptor
+  // or user defined data
+  if ( genericData.getDataType() == JOEDataType.JOE_PAIR_DATA )
+  {
+    // write this descriptor data as typical data block
+    // to an SD file
+    ps.printf( "&#62;  &#60;%s&#62;", genericData.getAttribute() );
+    pairData = ( JOEPairData ) genericData;
+    // write data in SD format, lines not longer than 80 characters
+    // per line and remove empty lines in data entries with
+    // ? or a character of your choice
+    ps.println( pairData.toString( IOTypeHolder.instance().getIOType( "SDF" ) ) );
+  }
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.DATA.SET"
+></A
+><P
+><B
+>Example 3-2. Setting descriptor data entries</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// add a user defined data entry to the molecule
+JOEPairData   dp = new JOEPairData();
+// the data entry has the name 'attribute'
+dp.setAttribute( attribute );
+// and a typical String value
+// own types must have the fromString and toString method !!!
+dp.setValue( dataEntry.toString() );
+mol.addData( dp );</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN512"
+>Using external calculated descriptors</A
+></H3
+><P
+>A big advantage is that you can use descriptors from other programs. If no calculation
+routine in JOELib exists all unknown descriptors (e.g. additional data elements in
+SDF-files) are handled as String's.
+If you know the data type you can simply define your own data parser/writer. All known
+decsriptors can be defined in
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/knownResults.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/knownResults.txt</TT
+></A
+>.
+If you access data elements with <VAR
+CLASS="LITERAL"
+>mol.getData("DataName")</VAR
+> the data element
+will be automatically parsed if the data type is known (e.g. atom or bond properties or matrices
+or ...).</P
+><P
+>You can supress data parsing by using <VAR
+CLASS="LITERAL"
+>mol.getData("DataName", false)</VAR
+>
+which can be usefull if you not want to modify all data elements (should be faster !).</P
+><P
+>If you have special atom or bond properties you should always implement the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/molecule/types/AtomProperties.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.molecule.types.AtomProperties</TT
+></A
+>
+or the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/molecule/types/BondProperties.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.molecule.types.BondProperties</TT
+></A
+>
+classes which guarantees you to access the data elements by the atom index or bond index
+which were used in JOELib.
+All implemented result classes are available at
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/result"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/result</TT
+></A
+>
+and contains simple
+types like int or double but also complex types like double array or int matrix.
+If you want use this data types in different file formats you should add your needs to the
+<VAR
+CLASS="LITERAL"
+>fromString(IOType ioType, String sValue)</VAR
+> and
+<VAR
+CLASS="LITERAL"
+>toString(IOType ioType)</VAR
+>.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN529"
+>Available descriptors</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>Kier Shape 1 descriptor [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>] (see also <A
+HREF="../descriptors/descriptors.html#JOELIB.DESCRIPTORS.KIERSHAPE1"
+>the Section called <I
+>Kier Shape 1</I
+> in Chapter 5</A
+>)</P
+></LI
+><LI
+><P
+>Number of hydrogen bond donors (see also <A
+HREF="../descriptors/descriptors.html#JOELIB.DESCRIPTORS.HBD1"
+>the Section called <I
+>Number of Hydrogen Bond Donors (HBD) 1</I
+> in Chapter 5</A
+>)</P
+></LI
+><LI
+><P
+>Number of nitrogen atoms(see also <A
+HREF="../descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFN"
+>the Section called <I
+>Number of nitrogen atoms</I
+> in Chapter 5</A
+>)</P
+></LI
+><LI
+><P
+>External rotational symmetry or graph potentials [<A
+HREF="../bibliography.html#WY96"
+>wy96</A
+>] (see also <A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.GRAPHPOTENTIALS"
+>the Section called <I
+>Graph potentials</I
+> in Chapter 5</A
+>)</P
+></LI
+><LI
+><P
+>Partial charges after Gasteiger-Marsili [<A
+HREF="../bibliography.html#GM78"
+>gm78</A
+>] (see also <A
+HREF="../descriptors/atomProperties.html#JOELIB.DESCRIPTORS.GASTEIGERMARSILI"
+>the Section called <I
+>Gasteiger-Marsili</I
+> in Chapter 5</A
+>)</P
+></LI
+></UL
+><P
+>Descriptor calculation example:
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/test/TestDescriptor.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.test.TestDescriptor</TT
+></A
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="JOELIB.MOLECULE.DESCRIPTOR"
+>Writing your own descriptor and result classes</A
+></H3
+><P
+>All new descriptors should implement the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/Descriptor.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.desc.Descriptor</TT
+></A
+>-interface
+and be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file.</P
+><P
+>A simple example is the Kier descriptor
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/types/KierShape1.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.desc.types.KierShape1</TT
+></A
+>.
+If you have a group of similar descriptors which uses the same initilization and result class
+you can write a wrapper class like
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SMARTSCounter.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.desc.SMARTSCounter</TT
+></A
+>
+which can very easily be used to create a lot of SMARTS pattern count descriptors, e.g.
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/types/HBD1.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.desc.types.HBD1</TT
+></A
+>
+to count the number of hydrogen donors in a molecule.</P
+><P
+>To remain user and developer friendly you should always produce a simple
+set of documentation files (XML, HTML, RTF) in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/docs/"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>docs</TT
+></A
+>-directory:</P
+><P
+>The easiest way would be to create a XML <A
+HREF="http://www.docbook.org/"
+TARGET="_top"
+>DocBook</A
+> documentation file in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/docs/docbook/descriptors"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>docbook/descriptors</TT
+></A
+>-directory.
+These files can be easily transformed to HTML, RTF and PDF files.
+If you want using a formation in these descriptor documentation files you must use &lt;sect1&#62;...&lt;/sect1&#62;
+or &lt;sect2&#62;...&lt;/sect2&#62;, the &lt;chapter&#62; entries were already used by
+the tutorial book. Futhermore you can use listitems, tables or analoge elements. All these single descriptor documentation files will be
+generated by the Ant makefile mechanism (calling <VAR
+CLASS="LITERAL"
+>ant tutorial</VAR
+>) and be available as HTML- and RTF-files in the <TT
+CLASS="FILENAME"
+>docs/tutorial/descriptors/documentation</TT
+>-directory</P
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../basics/struct-molecule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../functionalities/mol-smarts.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Molecule</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

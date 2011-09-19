@@ -1,0 +1,5 @@
+Bioactivity Data Based on Primary Screen: yes,
+Verification in Follow-up Screen: yes,
+Additional Verification Experiments: bioactivity in Arabidopsis thaliana,
+Evidence for activity: secretion of vacuolar cargo,
+Concentration Range to Obtain Bioactivity [mg/ml]: 10mg/L

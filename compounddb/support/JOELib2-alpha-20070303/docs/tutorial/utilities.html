@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Used utilities</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Assigning atom types, aromatic flags, hybridization and hydrogens"
+HREF="atomtyper.html"><LINK
+REL="NEXT"
+TITLE="Maintenance"
+HREF="utilities-maintenance.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="atomtyper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="utilities-maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.UTILITIES"
+></A
+>Chapter 4. Used utilities</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="utilities.html#JOELIB.UTILITIES.DEVELOPMENT"
+>Development</A
+></DT
+><DT
+><A
+HREF="utilities-maintenance.html"
+>Maintenance</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.UTILITIES.DEVELOPMENT"
+>Development</A
+></H1
+><P
+>Utilities used for faciliating development and avoiding to invent the wheel twice.</P
+><P
+></P
+><UL
+><LI
+><P
+>A memory efficient data structure to store flags for atoms and bonds;
+       <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/util/JOEBitVec.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.util.JOEBitVec</TT
+></A
+>
+       mainly derived from <VAR
+CLASS="LITERAL"
+>java.util.BitSet</VAR
+>. It's also used
+       for SMARTS substructure search and ring search.</P
+></LI
+><LI
+><P
+>Comfortable logging framework with Log4J from
+    <A
+HREF="http://jakarta.apache.org/log4j/docs/index.html"
+TARGET="_top"
+>http://jakarta.apache.org/log4j/docs/index.html</A
+>
+    </P
+></LI
+><LI
+><P
+>Well known scanff and printf formating classes from John E. Lloyd at
+    <A
+HREF="http://www.cs.ubc.ca/\~lloyd/java/doc/cformat.html"
+TARGET="_top"
+>http://www.cs.ubc.ca/\~lloyd/java/doc/cformat.html</A
+></P
+><P
+>Here a slightly modified version of the
+       <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/cformat/ScanfReader.java"
+TARGET="_top"
+>cformat.ScanfReader</A
+>
+       class is used, to take
+       white spaces at the beginning of lines into account. To activate this modification
+       call the <VAR
+CLASS="LITERAL"
+>useCstandard(false)</VAR
+>-method. </P
+></LI
+><LI
+><P
+>Good matrix operation classes with Jama from
+    <A
+HREF="http://math.nist.gov/javanumerics/jama/"
+TARGET="_top"
+>http://math.nist.gov/javanumerics/jama/</A
+>
+    </P
+></LI
+><LI
+><P
+>Chemical Markup Language (CML) support based on the Chemical Data Object
+       Programming Interface (CDOPI) (used as kernel for JOELib)
+      <A
+HREF="http://www.openscience.org/~egonw/cdopi/"
+TARGET="_top"
+>http://www.openscience.org/~egonw/cdopi/</A
+>.We extended the basic version for
+      accepting descriptors and CML2 support.
+      </P
+></LI
+><LI
+><P
+>Scientific Graphics Toolkit (SGT)
+      <A
+HREF="http://www.epic.noaa.gov/java/sgt/"
+TARGET="_top"
+>http://www.epic.noaa.gov/java/sgt/</A
+>
+      </P
+></LI
+><LI
+><P
+>ACME Labs Java utilities for image creation (GIF, PPM)
+      <A
+HREF="http://www.acme.com/java/"
+TARGET="_top"
+>http://www.acme.com/java/</A
+>
+      </P
+></LI
+><LI
+><P
+>JpegEncoder of James R. Weeks and BioElectroMech. for image creation (JPEG)</P
+></LI
+><LI
+><P
+>BMPEncoder of Jean-Pierre Dube, Christian Ribeaud, and Egon Willighagen for image creation (BMP)
+    </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="atomtyper.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="utilities-maintenance.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Assigning atom types, aromatic flags, hybridization and hydrogens</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Maintenance</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

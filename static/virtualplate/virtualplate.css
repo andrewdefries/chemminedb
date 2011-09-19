@@ -1,0 +1,11 @@
+body {font-family:Verdana, Verdana, Geneva, sans-serif}
+#navigation {text-align:center; line-height:24px; background-color:black; color:white; padding:10px 0 10px 0}
+#navigation label, #navigation select, #navigation input[type=submit] {position:relative; bottom:8px}
+.caption {font-family:Georgia, Georgia, serif; font-size:1.3em; font-weight:bold;margin-top:10px}
+.note {font-size:1.0em; font-family: Verdana, Verdana, Geneva, sans-serif}
+#min_span , #max_span {color:#ffb342; font-weight:bold;}
+#plateview {text-align:center}
+#viewctrl {font-size:0.8em}
+table {border:2px solid #eee; margin-left:auto; margin-right:auto}
+table td, table th {border:1px solid #ccc}
+table th {color:#666; font-family: "Trebuchet MS", Helvetica, sans-serif; padding:10px}

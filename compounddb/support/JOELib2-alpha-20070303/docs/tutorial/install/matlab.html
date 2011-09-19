@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Matlab toolbox</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Installing JOELib"
+HREF="../install/install.html"><LINK
+REL="PREVIOUS"
+TITLE="Installing and starting JOELib"
+HREF="../install/inst-joelib.html"><LINK
+REL="NEXT"
+TITLE="JOELib basics"
+HREF="../basics/basics.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../install/inst-joelib.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Installing JOELib</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../basics/basics.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.INSTALLING.MATLAB"
+>Matlab toolbox</A
+></H1
+><P
+><A
+HREF="http://www.mathworks.com/"
+TARGET="_top"
+>Mathworks-Matlab</A
+>
+is mathematical, scientific environment with a very good Java connection and lot's of toolboxes.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.INSTALLING.MATLAB.OTHERJDK"
+>Using another JDK</A
+></H2
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>    Get an up-to-date version of the
+    <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib library</A
+> and the <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib-Matlab toolbox</A
+>.
+    </P
+></LI
+><LI
+><P
+>    You must add all required Java libraries to the Matlab <VAR
+CLASS="LITERAL"
+>CLASSPATH</VAR
+> which are defined in the file
+    <VAR
+CLASS="LITERAL"
+>yourMatlabPath/toolbox/local/classpath.txt</VAR
+>:
+    <PRE
+CLASS="PROGRAMLISTING"
+>$matlabroot/java/jarext/joelib.jar
+$matlabroot/java/jarext/log4j.jar
+    </PRE
+>
+    </P
+></LI
+><LI
+><P
+>    Copy all the required libraries to the directory <VAR
+CLASS="LITERAL"
+>yourMatlabPath/java/jarext</VAR
+>.
+    </P
+></LI
+><LI
+><P
+>    for using Java 1.4 or higher you must add/change your system variable <VAR
+CLASS="LITERAL"
+>MATLAB_JAVA</VAR
+> to
+    <PRE
+CLASS="PROGRAMLISTING"
+>MATLAB_JAVA 1.4.1_01
+    </PRE
+>
+    if you are using JDK1.4.1.
+    </P
+></LI
+><LI
+><P
+>    then copy your JRE directory to the matlab directory <VAR
+CLASS="LITERAL"
+>yourMatlabPath/sys/java/jre/win32/jre1.4.1_01</VAR
+>.
+    </P
+></LI
+></OL
+></DIV
+><P
+>JOELib can directly be used under Matlab (the GUI is Java based, too) or vice versa using the JNI interface
+<A
+HREF="http://www.held-mueller.de/JMatLink/"
+TARGET="_top"
+>JMatLink</A
+> which requires some experience with the JNI.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../install/inst-joelib.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../basics/basics.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Installing and starting JOELib</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../install/install.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>JOELib basics</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

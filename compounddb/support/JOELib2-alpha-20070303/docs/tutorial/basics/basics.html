@@ -1,0 +1,620 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>JOELib basics</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Matlab toolbox"
+HREF="../install/matlab.html"><LINK
+REL="NEXT"
+TITLE="Bonds"
+HREF="../basics/struct-bonds.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../install/matlab.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../basics/struct-bonds.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.BASICS"
+></A
+>Chapter 2. JOELib basics</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="../basics/basics.html#AEN201"
+>Atoms</A
+></DT
+><DT
+><A
+HREF="../basics/struct-bonds.html"
+>Bonds</A
+></DT
+><DT
+><A
+HREF="../basics/struct-molecule.html"
+>Molecule</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN201"
+>Atoms</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN203"
+>Accessing atoms</A
+></H2
+><P
+>Atoms <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>V</B
+></SPAN
+> in
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/molecule/JOEAtom.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.molecule.JOEAtom</TT
+></A
+>
+are represented as nodes of a molecular graph <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>G</B
+></SPAN
+>.</P
+><P
+>For getting all atoms of a molecule you can use an iterator or a simple index access.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.ATOMS.ITERATOR"
+></A
+><P
+><B
+>Example 2-1. Using an iterator for accessing atoms</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEAtom atom;
+AtomIterator ait = molecule.atomIterator();
+while(ait.hasNext())
+{
+  atom = ait.nextAtom();
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.ATOMS.INDEX"
+></A
+><P
+><B
+>Example 2-2. Using the atom index for accessing atoms</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEAtom atom;
+for(int index=1;index&#60;=molecule.numAtoms();index++)
+{
+  atom = molecule.getAtom(index);
+}</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN217"
+>Chemical properties</A
+></H2
+><P
+>Atoms <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>V</B
+></SPAN
+> are in fact unlabeled nodes of a molecular graph <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>G</B
+></SPAN
+>. The chemical atom properties
+are assigned with a set <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A={&alpha;<SUB
+>1</SUB
+>,&alpha;<SUB
+>1</SUB
+>,...,&alpha;<SUB
+>|A|</SUB
+>}</B
+></SPAN
+> of
+labelling functions <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>i</SUB
+>:G,V,A<SUB
+>j&ne;i</SUB
+>&rarr;W<SUB
+>V,i</SUB
+></B
+></SPAN
+>.
+We can distinguish between a set of critical labelling functions <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A<SUB
+>chem</SUB
+></B
+></SPAN
+> (chemical kernel) and all other optional chemical properties.</P
+><P
+></P
+><UL
+><LI
+><P
+>The chemical kernel or chemical base knowledge uses the following functions for which the dependencies are also shown:</P
+><P
+></P
+><UL
+><LI
+><P
+>The chemical element <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>elem</SUB
+>(V)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>JOEElementTable.instance().getSymbol(atom.getAtomicNum())</VAR
+>.</P
+></LI
+><LI
+><P
+>Valence or bond order <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>val</SUB
+>(G,V)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.getValence()</VAR
+>.</P
+></LI
+><LI
+><P
+>Ring size <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>ring</SUB
+>(G,V)</B
+></SPAN
+> which is based on a ring search algorithm, e.g. the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Smallest Set of Smallest Ring</I
+></SPAN
+> (SSSR) [<A
+HREF="../bibliography.html#FIG96"
+>fig96</A
+>].
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.isInRing()</VAR
+> or <VAR
+CLASS="LITERAL"
+>atom.isInRingSize(int)</VAR
+>.</P
+></LI
+><LI
+><P
+>Binary aromaticity flag <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>arom</SUB
+>(G,V,&alpha;<SUB
+>elem</SUB
+>,&alpha;<SUB
+>val</SUB
+>)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.isAromatic()</VAR
+>.</P
+></LI
+><LI
+><P
+>Hybridisation <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>hyb</SUB
+>(G,V,&alpha;<SUB
+>val</SUB
+>,&alpha;<SUB
+>arom</SUB
+>)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.getHyb()</VAR
+>.</P
+></LI
+><LI
+><P
+>Chirality informations <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>stereo</SUB
+>(G,V,&alpha;<SUB
+>val</SUB
+>,&alpha;<SUB
+>hyb</SUB
+>)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.isClockwise()</VAR
+> or <VAR
+CLASS="LITERAL"
+>atom.isAntiClockwise()</VAR
+>.</P
+></LI
+><LI
+><P
+>The implicite valence (hydrogen saturation) <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>iVal</SUB
+>(G,V,&alpha;<SUB
+>val</SUB
+>,&alpha;<SUB
+>hyb</SUB
+>)</B
+></SPAN
+>.
+          This atom property can be accessed by <VAR
+CLASS="LITERAL"
+>atom.getImplicitValence()</VAR
+>.</P
+></LI
+></UL
+><P
+>So we obtain as chemical base knowledge (chemical kernel) <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A<SUB
+>chem</SUB
+>(lib=JOELib,kernelID)={&alpha;<SUB
+>elem</SUB
+>,&alpha;<SUB
+>val</SUB
+>,&alpha;<SUB
+>ring</SUB
+>,&alpha;<SUB
+>arom</SUB
+>,&alpha;<SUB
+>hyb</SUB
+>,&alpha;<SUB
+>stereo</SUB
+>,&alpha;<SUB
+>iVal</SUB
+>}</B
+></SPAN
+></P
+></LI
+><LI
+><P
+>Other atom properties are available through <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>look-up</I
+></SPAN
+> tables or other algorithms based on <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A<SUB
+>chem</SUB
+>(lib=JOELib,kernelID)</B
+></SPAN
+>.
+    The most important one is the atom type <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&alpha;<SUB
+>type</SUB
+>(G,V,A<SUB
+>chem</SUB
+>)</B
+></SPAN
+> which uses the
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Programmable ATom TYper</I
+></SPAN
+> (PATTY) [<A
+HREF="../bibliography.html#BS93"
+>bs93</A
+>] based on the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Smiles ARbitrary Target Specification</I
+></SPAN
+> (SMARTS) substructure search [<A
+HREF="../bibliography.html#SMARTS"
+>smarts</A
+>].
+    By using an internal <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>look-up</I
+></SPAN
+> table
+    (<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/JOETypeTable.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.data.JOETypeTable</TT
+></A
+>)
+    we can now create easily chemical file formats, like Sybyl MOL2 or AMBER.</P
+><P
+>More atom property assignment functions and algorithms are can be found in <A
+HREF="../descriptors/atomProperties.html"
+>the Section called <I
+>Atom properties</I
+> in Chapter 5</A
+>.</P
+></LI
+></UL
+><P
+>All atom properties are automatically assigned by the expert systems (<A
+HREF="../atomtyper.html"
+>the Section called <I
+>Assigning atom types, aromatic flags, hybridization and hydrogens</I
+> in Chapter 3</A
+>).
+We can also see that there is much room for interpreting the single assignment functions and we strongly recommend an indentifier and version number for
+each single function. We have introduced also a chemical kernel identifier, especially to grant identically results for all kind of algorithms, like SMARTS substructure search, similarity searches, descriptor calculations and much more.</P
+><P
+>If you are going to work on graph based algorithms: please remember that typical chemical atom types are ONLY a special case of much more labels for the atoms of molecular structures.
+The number is possibly infinite or at least a very large finite number, and we have also properties like <VAR
+CLASS="LITERAL"
+>atom.isHeteroatom()</VAR
+>, <VAR
+CLASS="LITERAL"
+>atom.isAxial()</VAR
+> and much more.
+Especially if you take also calculated atom properties, like e.g. CESTATE, into account. So sooner or later we will face the combinatorial optimization problem to find a good set
+of atom property assignment functions to fit to our problem, e.g. finding descriptors using atom properties for model building, similarity searches, and so on. Finally, we can see that
+there is a strong relationship between atom label assignment functions and the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>NP complete feature selection</I
+></SPAN
+> problem [<A
+HREF="../bibliography.html#WZ03"
+>wz03</A
+>, <A
+HREF="../bibliography.html#WFZ04A"
+>wfz04a</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>,<A
+HREF="../bibliography.html#FWZ04"
+>fwz04</A
+>].</P
+><P
+>Internally atoms have special atom types, which were defined as
+SMARTS [<A
+HREF="../bibliography.html#SMARTS"
+>smarts</A
+>] patterns in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+>-file.
+These types can be used to develop descriptors or to export molecules
+easily to other file formats (e.g. force field or ab inito programs).
+For the last task there is the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/JOETypeTable.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.data.JOETypeTable</TT
+></A
+> helper class available,
+which uses the default converting types defined in
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/types.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/types.txt</TT
+></A
+>.
+The atom properties can be changed with standard set and get methods.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../install/matlab.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../basics/struct-bonds.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Matlab toolbox</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bonds</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

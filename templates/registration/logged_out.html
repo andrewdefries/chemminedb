@@ -1,0 +1,26 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block extrahead %}
+<meta http-equiv="refresh" content="5; URL=/">
+{% endblock %}
+{% block content %}
+<p class="notice">You have successfully logged out. Will redirect you to homepage <span id="redirect">in <span id="seconds">5</span> second<span id="plural">s</span></span>.</p>
+<script type="text/javascript">
+function countdown()
+{
+	var time_now = parseInt($("#seconds").text());
+	if (time_now > 1) {
+		$("#seconds").text(time_now - 1);
+		if (time_now - 1 == 1)
+			$("#plural").text('');
+		setTimeout('countdown()', 1000);
+	} else {
+		$("#redirect").text('now');
+	}
+}
+
+$(document).ready(function() {
+	setTimeout('countdown()', 200);
+});
+</script>
+{% endblock %}

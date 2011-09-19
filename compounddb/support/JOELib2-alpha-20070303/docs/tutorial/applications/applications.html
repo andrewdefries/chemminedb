@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Example applications</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Miscellaneous"
+HREF="../examples/miscellaneous.html"><LINK
+REL="NEXT"
+TITLE="ConvertSkip"
+HREF="../applications/convertskip.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../examples/miscellaneous.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../applications/convertskip.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.APPLICATIONS"
+></A
+>Chapter 10. Example applications</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="../applications/applications.html#JOELIB.APPLICATIONS.CONVERT"
+>Convert</A
+></DT
+><DT
+><A
+HREF="../applications/convertskip.html"
+>ConvertSkip</A
+></DT
+><DT
+><A
+HREF="../applications/comparison.html"
+>Comparison</A
+></DT
+><DT
+><A
+HREF="../applications/descriptorcalculation.html"
+>Descriptor calculation</A
+></DT
+><DT
+><A
+HREF="../applications/euklidiancomparison.html"
+>EuklidianComparison</A
+></DT
+><DT
+><A
+HREF="../applications/statistic.html"
+>Statistic</A
+></DT
+><DT
+><A
+HREF="../applications/symmetry.html"
+>Point Group Symmetry</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT"
+>Convert</A
+></H1
+><P
+>Example application for file conversion, descriptor calculation and process filters (here only for converting molecules).</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.OPTIONS"
+>Options</A
+></H2
+><P
+><B
+CLASS="COMMAND"
+>sh convert.sh</B
+>  [-? | --help] [-h] [+h] [+p] [-e] [-d] [+d] [+v] [+snd] [+sad] [+sall] [-salt] [-i<VAR
+CLASS="REPLACEABLE"
+>inputFormat</VAR
+>] [-o<VAR
+CLASS="REPLACEABLE"
+>outputFormat</VAR
+>] [+x<VAR
+CLASS="REPLACEABLE"
+>descriptorName</VAR
+>] [-r<VAR
+CLASS="REPLACEABLE"
+>skipDescRule</VAR
+>] [+r<VAR
+CLASS="REPLACEABLE"
+>descRule</VAR
+>] [+s<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>]  <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+>  [<VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+>]</P
+><P
+><P
+>[-? | --help]</P
+>Shows the help screen including all available input/output formats and all native value descriptors.</P
+><P
+><P
+>[-h]</P
+>Removes all hydrogens from the molecule.</P
+><P
+><P
+>[-h]</P
+>Adds hydrogens to molecule.</P
+><P
+><P
+>[+p]</P
+>Adds only polar hydrogens to molecule.</P
+><P
+><P
+>[-e]</P
+>Converts only non-empty molecules.</P
+><P
+><P
+>[-d]</P
+>Removes all descriptors from molecule.</P
+><P
+><P
+>[+d]</P
+>Adds all available descriptors to molecule, which can be calculated by using JOELib.</P
+><P
+><P
+>[+v]</P
+>Switches verbosity mode ON.</P
+><P
+><P
+>[+sall]</P
+>Shows all available descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[+snd]</P
+>Shows all available native value descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[+sad]</P
+>Shows all available atom property descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[-salt]</P
+>Strip salts and gets only largest contigous fragment.</P
+><P
+><P
+>[-i<VAR
+CLASS="REPLACEABLE"
+>inputFormat</VAR
+>]</P
+>Format of the input file.</P
+><P
+><P
+>[-o<VAR
+CLASS="REPLACEABLE"
+>outputFormat</VAR
+>]</P
+>Format of the output file.</P
+><P
+><P
+>[+x<VAR
+CLASS="REPLACEABLE"
+>descriptorName</VAR
+>]</P
+>Converts only molecules, where this descriptor exist. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[-r<VAR
+CLASS="REPLACEABLE"
+>skipDescRule</VAR
+>]</P
+>Skips all molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[+r<VAR
+CLASS="REPLACEABLE"
+>descRule</VAR
+>]</P
+>Converts only molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+></P
+><P
+><P
+>[+s<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>]</P
+>Can be used for an alternate SMILES entry line structure.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+> </P
+>The input file. The input format will be estimated by using the file extension.</P
+><P
+><P
+>[<VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+>]</P
+>The output file. The output format will be estimated by using the file extension.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.EXAMPLES"
+>Examples</A
+></H2
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.HELP"
+></A
+><P
+><B
+>Example 10-1. Show help screen for Convert</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.Convert --help</PRE
+> shows the help screen</P
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.PRINT"
+></A
+><P
+><B
+>Example 10-2. Print molecules to standard output</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.Convert joelib/test/test.mol</PRE
+> Prints the molecule file to
+the screen.</P
+><P
+></P
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../examples/miscellaneous.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../applications/convertskip.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Miscellaneous</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ConvertSkip</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

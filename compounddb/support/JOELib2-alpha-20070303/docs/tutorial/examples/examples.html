@@ -1,0 +1,638 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>JOELib examples and code snippets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="API documentation"
+HREF="../documentation/docu-api.html"><LINK
+REL="NEXT"
+TITLE="Descriptors"
+HREF="../examples/descriptors.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../documentation/docu-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../examples/descriptors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.EXAMPLES"
+></A
+>Chapter 9. JOELib examples and code snippets</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="../examples/examples.html#JOELIB.EXAMPLES.MOLECULE"
+>Molecule</A
+></DT
+><DT
+><A
+HREF="../examples/descriptors.html"
+>Descriptors</A
+></DT
+><DT
+><A
+HREF="../examples/processes.html"
+>Processes and filters</A
+></DT
+><DT
+><A
+HREF="../examples/importexport.html"
+>Import/Export</A
+></DT
+><DT
+><A
+HREF="../examples/interfaces.html"
+>Interfaces</A
+></DT
+><DT
+><A
+HREF="../examples/database.html"
+>Database</A
+></DT
+><DT
+><A
+HREF="../examples/miscellaneous.html"
+>Miscellaneous</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN2116"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE"
+>Molecule</A
+></H1
+><P
+>Here we will present some code snippets for handling basic molecular operations.
+<A
+NAME="AEN2121"
+></A
+></P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2124"
+>Molecules</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2126"
+>Load and store molecules</A
+></H3
+><P
+>For loading molecules we can load them sequentially from molecules files or all can be loaded at once into
+memory, which is only recommended for smaller data sets or when you want process a (sub)set of molecules very often.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.LOAD.LARGE"
+></A
+><P
+><B
+>Example 9-1. Load molecules from large files sequentially</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// open file input stream
+String inputFile="yourInputFile.sdf";
+FileInputStream input = null;
+try
+{
+  input = new FileInputStream(inputFile);
+}
+catch (Exception ex)
+{
+  ex.printStackTrace();
+  // TODO: handle exception
+}
+// create simple reader and
+// estimate file format by file extension
+SimpleReader reader = null;
+try
+{
+  // estimate input file type
+  IOType inType = IOTypeHolder.instance().filenameToType(inputFile);
+  if (inType == null)
+  {
+    // TODO: handle unkown input file type
+  }
+  // open simple reader
+  reader = new SimpleReader(input, inType);
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+  // TODO: handle exception
+}
+
+// load molecules sequentially
+// set output type to input type
+JOEMol mol = new JOEMol(inType, inType);
+for (;;)
+{
+  try
+  {
+    if (!reader.readNext(mol))
+    {
+      // process all molecules until
+      // they are all processed
+      break;
+    }
+  }
+  catch (IOException ex)
+  {
+    // TODO: handle input/output exception
+  }
+  catch (MoleculeIOException ex)
+  {
+    // TODO: handle molecule parsing exception
+  }
+
+  // now the molecule is loaded !;-)
+  // TODO: implement your molecule operation methods
+
+}</PRE
+></DIV
+><P
+>A (sub)set of molecules can be loaded a molecule vector which has vector analogue properties.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.LOAD.MEMORY"
+></A
+><P
+><B
+>Example 9-2. Load molecules from smaller files into memory</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// open file input stream
+String inputFile="yourInputFile.sdf";
+FileInputStream input = null;
+try
+{
+  input = new FileInputStream(inputFile);
+}
+catch (Exception ex)
+{
+  ex.printStackTrace();
+  // TODO: handle exception
+}
+// estimate file format by file extension
+try
+{
+  // estimate input file type
+  IOType inType = IOTypeHolder.instance().filenameToType(inputFile);
+  if (inType == null)
+  {
+    // TODO: handle unkown input file type
+  }
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+  // TODO: handle exception
+}
+
+// load molecules into memory
+JOEMolVector molecules=null;
+try
+{
+  // set output type to input type
+  // skip molecules with corrupted molecule entries !
+  molecules = new JOEMolVector(input, inType, inType);
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+  // TODO: handle exception
+}</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2136"
+>Modify molecules</A
+></H3
+><P
+>Adding atoms is a little bit critical and the required steps will be explained
+in example <A
+HREF="../examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ADD.ATOMS"
+>Example 9-3</A
+>. When atoms are removed
+<VAR
+CLASS="LITERAL"
+>beginModify()</VAR
+> and <VAR
+CLASS="LITERAL"
+>endModify()</VAR
+> must be called also or
+strange results will be obtained.
+Adding and removing bonds is trivial and is not explained in detail.
+
+<A
+NAME="AEN2142"
+></A
+>
+<A
+NAME="AEN2145"
+></A
+>
+<A
+NAME="AEN2148"
+></A
+>
+&#13;</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ADD.ATOMS"
+></A
+><P
+><B
+>Example 9-3. Add atoms to a molecule</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// mol is a new molecule or an already loaded molecule
+//begin molecule modification
+//modifications will only be processed if the modification counter is 0!!!
+mol.beginModify();
+// let's assume we will add 1 atoms
+// This is only essentially if many atoms will be added
+// to avoid multiple internal array swappings
+int natoms=mol.numAtoms()+1;
+mol.reserveAtoms(natoms);
+
+// get last atom to which we will add the new atoms
+JOEAtom atom2add=mol.getAtom(mol.numAtoms());
+
+JOEAtom atom = new JOEAtom();
+XYZVector v = new XYZVector();
+boolean createCoords=true;
+if(createCoords)
+{
+  // get non-corrected bond radii for the atoms, because for the new one
+  // the hybridizations are not really available
+  double bondlen =JOEElementTable.instance().getCovalentRad(nbr.getAtomicNum())+
+                  JOEElementTable.instance().getCovalentRad(frag1.getAtomicNum());
+  atom2add.getNewBondVector(v, bondlen);
+}
+else{
+  v.setX(0.0);
+  v.setY(0.0);
+  v.setZ(0.0);
+}
+// set atom positions
+atom.setVector(v);
+String elementType="C";
+int atomicNumber = JOEElementTable.instance().getAtomicNum(elementType);
+if (atomicNumber == 0)
+{
+  // TODO: handle an unknown element type
+}
+// set atomic nnumber
+atom.setAtomicNum(atomicNumber);
+// set element type
+atom.setType(elementType);
+// add atom to the molecule
+if (!mol.addAtom(atom))
+{
+  // TODO: atom can not be added
+}
+// clear atom object if you want to use it to
+// add more atoms to the molecule
+atom.clear();
+
+//modifications will only be processed if the modification counter is 0!!!
+//If you have called beginModify/endModify twice you can not expect
+//that these changes are already available correctly.
+//This fits especially for deleted and added atoms, because endModify
+//updates the atomId's, writes the atom coordinates to the rotamer
+//arrays and checks the aromaticity.
+mol.endModify();</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2154"
+>Access atoms and bonds of a molecule</A
+></H3
+><P
+>Accessing atoms
+<A
+NAME="AEN2157"
+></A
+>
+<A
+NAME="AEN2161"
+></A
+></P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMS.FOR"
+></A
+><P
+><B
+>Example 9-4. Access atoms using a <VAR
+CLASS="LITERAL"
+>for</VAR
+> statement</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>int atoms = mol.numAtoms();
+JOEAtom atom;
+for (int i=1; i&lt;=atoms; i++)
+{
+  atom=mol.getAtom(i);
+  // TODO: do something with atoms
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMS.ITERATOR"
+></A
+><P
+><B
+>Example 9-5. Access atoms using an <VAR
+CLASS="LITERAL"
+>AtomIterator</VAR
+></B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>AtomIterator ait = mol.atomIterator();
+JOEAtom atom;
+while (ait.hasNext())
+{
+  atom = ait.nextAtom();
+  // TODO: do something with atoms
+}</PRE
+></DIV
+><P
+>Accessing bonds
+<A
+NAME="INDEX.MOLECULE.ACCESS.BONDS.FOR"
+></A
+>&#13;</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.BONDS.FOR"
+></A
+><P
+><B
+>Example 9-6. Access bonds using a <VAR
+CLASS="LITERAL"
+>for</VAR
+> statement</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>int bonds = mol.numBonds();
+JOEBond bond;
+for (int i=0; i&lt;bonds; i++)
+{
+  bond=mol.getBond(i);
+  // TODO: do something with atoms
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.BONDS.ITERATOR"
+></A
+><P
+><B
+>Example 9-7. Access bonds using an <VAR
+CLASS="LITERAL"
+>BondIterator</VAR
+></B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>BondIterator bit = bondIterator();
+JOEBond bond;
+while (bit.hasNext())
+{
+  bond = bit.nextBond();
+  // TODO: do something with atoms
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2184"
+>Special atom methods</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2186"
+>Access the neighbour atoms of an atom</A
+></H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.NEIGHBOURATOM.ITERATOR"
+></A
+><P
+><B
+>Example 9-8. Access neighbour atoms using a <VAR
+CLASS="LITERAL"
+>NbrAtomIterator</VAR
+></B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>NbrAtomIterator nait = atom.nbrAtomIterator();
+JOEBond bond;
+JOEAtom nbrAtom;
+while (nait.hasNext())
+{
+  nbrAtom=nait.nextNbrAtom();
+  bond = nait.actualBond();
+  // TODO: do something with neighbour atoms
+}</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2192"
+>Access the bonds of an atom</A
+></H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMBONDS.ITERATOR"
+></A
+><P
+><B
+>Example 9-9. Access bonds of an atom using a <VAR
+CLASS="LITERAL"
+>BondIterator</VAR
+></B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>BondIterator bit = atom.bondIterator();
+JOEBond bond;
+while (bit.hasNext())
+{
+  bond = bit.nextBond();
+  // TODO: do something with atom bonds
+}</PRE
+></DIV
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../documentation/docu-api.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../examples/descriptors.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>API documentation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Descriptors</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

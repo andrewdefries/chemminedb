@@ -1,0 +1,209 @@
+{% load annotationformat %}
+{% load paginator %}
+{% if compounds %}
+	{% if hideheader %}
+		{% if compounds_limited %}
+		<div class="notice">The current screen view is limited to one selected compound. To see the full screen data, click <a href="{% url screen-detail screen.id %}">here</a>.</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$.scrollTo("#file-block", "fast");
+			});
+		</script>
+		{% endif %}
+	{% else %}
+	<h2>Compound Files</h2>
+	{% paginator 3 %}
+	<div id="compound-list-control" style="display:none">
+	<ul>
+		<li style="font-variant:small-caps; margin-left:10px; padding-right:5px; color:#ccc; font-size:14px; position:relative; top:10px">Compound View Control</li>
+		<li><a href="#in-page-control">In this page</a></li>
+		{% if multipage %}<li><a href="#loader">Load into this page</a></li>{%endif%}
+		<li><a href="#score-filter">Filter by score</a></li>
+	</ul>
+	<div id="in-page-control">
+	<form id="view-ctrl">
+		<div><label>Check or uncheck to show or hide each individual compound listed in this page.</label><a class="button no-float check-all">Check all</a><a class="button no-float uncheck-all">Uncheck all</a></div>
+		{% for c in compounds %}
+			<div class="compound-checkbox"><input type="checkbox" name="{{c.0.id}}" checked="checked"/><label>{{c.0.libname}} {{c.0.cid}}</label></div>
+		{% endfor %}
+	</form>
+	</div>
+	{% if multipage %}
+	<div id="loader">
+		<label>You may load one or more compounds from another page into this page, for example, for comparison purposes. Type in the compound identifiers (library name and compound ID separated by a comma, e.g. <em>ChemBridge Microformat, 5263936</em>), one on each line and click "Load".</label>
+			<form method="GET" action="."><textarea name="candidates" rows="5" cols="80"> </textarea><br/><input type="submit" value="Load"/></form>
+	</div>
+	{% endif %}
+	<div id="score-filter">
+		<label>Screened compounds are scored by a confidence system which allows compound filtering based on six bioactivity evidence levels (S0-5). S0: not active, S1: active in primary screen, S2: active in primary and secondary screen, S3: active in all previous and follow-up screens, S4: target protein(s) identified, S5: selectivity for target protein(s) demonstrated. Select a threshold evidence level to load compounds that are above that level.</label>
+		<form method="GET" action="." style="text-align:center">
+		<label>Assay 1:</label>
+		<select name="t1">
+			<option value="">No threshold set</option>
+			{% for a in active_levels %}
+			<option value="{{a.0}}" {%ifequal thresholds.0 a.0%}selected=selected{%endifequal%}>{{a.1}}</option>
+			{% endfor %}
+		</select><br/>
+		<label>Assay 2:</label>
+		<select name="t2">
+			<option value="">No threshold set</option>
+			{% for a in active_levels %}
+			<option value="{{a.0}}" {%ifequal thresholds.1 a.0%}selected=selected{%endifequal%}>{{a.1}}</option>
+			{% endfor %}
+		</select><br/>
+		<label>Assay 3:</label>
+		<select name="t3">
+			<option value="">No threshold set</option>
+			{% for a in active_levels %}
+			<option value="{{a.0}}" {%ifequal thresholds.2 a.0%}selected=selected{%endifequal%}>{{a.1}}</option>
+			{% endfor %}
+		</select><br/>
+		<input type="submit" value="Reload with these constraints"/>
+		</form>
+	</div>
+	</div>
+	{% endif %}
+	{% for c in compounds %}
+	<div class="compound-block" id="compound-{{c.0.id}}">
+		<div class="compound-name"><a href="{% url compound_detail c.0.libname,c.0.cid,'' %}">{{c.0.libname}} {{c.0.cid}}</a></div>
+		<div class="compound-info">
+			<div class="drawing"> <img src="{{RENDERER_URL}}smiles;{{c.0.smiles.split|first}}" width="200" height="200" /> </div>
+			<table class="compound-basic-info">
+			<tbody>
+			<tr class="lib"><th>Library</th><td>{{c.0.libname}}</td></tr>
+			<tr class="cid"><th>ID</th><td>{{c.0.cid}}</td></tr>
+			<tr class="name"><th>Name</th><td>{{c.0.name}}</td></tr>
+			<tr class="formula"><th>Formula</th><td>{{c.0.formula}}</td></tr>
+			<tr class="weight"><th>Molecular Weight</th><td>
+				{% if c.0.mw %} {{c.0.mw|floatformat:3}} {% else %} {{c.0.weight|floatformat:3}} {% endif %}</td></tr>
+			</tbody>
+			</table>
+			<a style="float:none;display:inline-block" class="button" title="search structurally similar compounds" href="{% url structure-search %}?smiles={{smiles.split|first}}">Use in structure search</a>
+		</div>
+		{% for f in c.1 %}
+		<div class="file {%if f.can_download%}{%else%}nodownload{%endif%}">
+		{% if f.standardcompoundannotation %}
+		{% with f.standardcompoundannotation as sca %}
+		<p class="file-title">{% if f.title %}{{f.title}}<br/>{% endif %}<b>Assay 1:</b> {{sca.a1_score}} {% if sca.a2_name %}<b>Assay 2:</b> {{sca.a2_score}}{% endif %}{% if sca.a3_name %}<b>Assay 3:</b> {{sca.a3_score}}{% endif %}</p>
+		{% endwith %}
+		{% else %}
+		<p class="file-title">
+			{% if f.title %}{{f.title}}{% else %}Untitled File{% endif %}
+		</p>
+		{% endif %}
+		<div class="file-details">
+			{% if f.description %}
+			{% if f.publication.web_url %}
+			<p class="file-description"><a href="{{f.publication.web_url}}">{{f.description|safe}}</a></p>
+			{% else %}
+			<p class="file-description">{{f.description|safe}}</p>
+			{% endif %}
+			{% else %}
+			{% if f.publication.web_url %}
+			<p><a href="{{f.publication.web_url}}">Relevant external website</a></p>
+			{% endif %}
+			{% endif %}
+			<div class="file-id">#{{f.id}}</div>
+			{% if f.publication %}
+				<div class="publication">
+					{% if f.publication.pubmed_id %}<div class="pubmed"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{f.publication.pubmed_id}}">PubMed link</a></div> {% endif %}
+					{% if f.publication.journal %}<div class="journal">{{f.publication.author}}, {% if f.publication.publication_url %}<a href="{{f.publication.publication_url}}">{%endif%}{{f.publication.pub_title}}{% if f.publication.publication_url %}</a>{%endif%}, appeared in {{f.publication.journal}}, <span class="volume">{{f.publication.volume}}</span>, pp {{f.publication.pages}}.</div> {% endif %}
+				</div>
+			{% endif %}
+			
+			{% if f.textfile %}
+				{% if f.textfile.extra_annotation %}
+				<ul class="annotation extra-annotation">{{f.textfile.extra_annotation|annotation_as_li}}</ul>
+				{% endif %}
+				<div class="textfile">
+					<object standby="loading..." width="90%" type="text/plain" class="codeblock" data="{% url serve-file f.id %}"/>
+				</div>
+			{% endif %}
+			{% if f.imagefile %}
+				{% if f.imagefile.extra_annotation %}
+				<ul class="annotation extra-annotation">{{f.imagefile.extra_annotation|annotation_as_li}}</ul>
+				{% endif %}
+				{% if f.imagefile.reference %}
+				<div class="imagefile" style="margin-left:0; width:90%">
+					<div class="label"><div>Main image</div><div>Reference</div></div>
+					<img style="max-width:49%" src="{% url serve-file f.id %}"/>
+					<img style="max-width:49%" src="{% url serve-file f.id 'locref' %}"/>
+				</div>
+				{% else %}
+				{% if global_reference %}
+				<div class="imagefile" style="margin-left:0; width:90%">
+					<div class="label"><div>Main image</div><div>Reference</div></div>
+					<img style="max-width:49%" src="{% url serve-file f.id %}"/>
+					<img style="max-width:49%" src="{% url serve-file global_reference.id 'ref' %}"/>
+				</div>
+				{% else %}
+				<div class="imagefile">
+					<img style="max-width:90%" src="{% url serve-file f.id %}"/>
+				</div>
+				{% endif %}
+				{% endif %}
+			{% endif %}
+			{% if f.annotationfile %}
+				{% if f.annotationfile.extra_annotation %}
+				<ul class="annotation extra-annotation">{{f.annotationfile.extra_annotation|annotation_as_li}}</ul>
+				{% endif %}
+				<ul class="annotationfile annotation">
+					{{f.content|annotation_as_li}}
+				</ul>
+			{% endif %}
+			{% if f.standardcompoundannotation %}
+				{% with f.standardcompoundannotation as sca %}
+				<div class="standardcompoundannotation annotation">
+					<div class="title">Assay 1: {{sca.a1_name}}</div>
+					<ul>
+						{% if sca.a1_desc %}<li><span class="key">Description</span> {{sca.a1_desc}}</li>{% endif %}
+						<li><span class="key">Score</span> {{sca.get_a1_score_display}}</li>
+						<li><span class="key">Concentration</span> {{sca.a1_concentration}}</li>
+					</ul>
+					{% if sca.a2_name %}
+					<div class="title">Assay 2: {{sca.a2_name}}</div>
+					<ul>
+						{% if sca.a2_desc %}<li><span class="key">Description</span> {{sca.a2_desc}}</li>{% endif %}
+						<li><span class="key">Score</span> {{sca.get_a2_score_display}}</li>
+						<li><span class="key">Concentration</span> {{sca.a2_concentration}}</li>
+					</ul>
+					{% endif %}
+					{% if sca.a3_name %}
+					<div class="title">Assay 3: {{sca.a3_name}}</div>
+					<ul>
+						{% if sca.a3_desc %}<li><span class="key">Description</span> {{sca.a3_desc}}</li>{% endif %}
+						
+						<li><span class="key">Score</span> {{sca.get_a3_score_display}}</li>
+						<li><span class="key">Concentration</span> {{sca.a3_concentration}}</li>
+					</ul>
+					{% endif %}
+				</div>
+				{% endwith %}
+			{% endif %}
+			{% if f.otherfile %}
+			<div class="otherfile">
+				Preview not available for file of type {{f.mime}}
+			</div>
+			{% endif %}
+		</div>
+		{% if canadd %}
+			<a class="button no-float edit-file" style="display:none" href="#{{f.id}}">Edit</a>
+		{% endif %}
+		{% if candelete %}
+			<form method="POST" action="{% url serve-file f.id %}"><input type="hidden" name="delete"/><button class="no-float" type="submit">Delete</button></form>
+		{% endif %}
+		{% if f.can_download %}
+		<a class="button no-float download-file" href="{%url serve-file f.id%}?download">Download</a>
+		{% endif %}
+		</div>
+		{% endfor %}
+		</div>
+		<div style="clear:both"></div>
+		
+	{% endfor %}
+	{% if hideheader %}
+	{% else %}
+	<div style="height:50px"></div>
+	{% paginator 3 %}
+	{% endif %}
+{% endif %}

@@ -1,0 +1,90 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>ChemMine::Applications::{{object.name}}</title>
+{% endblock %}
+
+{% block content %}
+
+<div id="user-objects">
+	<div class="title">My Objects</div>
+	{% for obj in user_objects %}
+	<div class="user-object">
+		<span class="user-object-type">{{obj.type}}</span>
+		<span class="user-object-name">{{obj.name}}</span>
+	</div>
+	{% endfor %}
+	<div id="add-object"><a href="{% url add_user_object %}" class="button">add object</a></div>
+	<div style="clear:both"></div>
+	<div id="user-info">
+		{% if user.is_authenticated and not user_is_anonymous %}
+		<span class="quiet">You are logged in as {{user.first_name}} {{user.last_name}}.</span>
+		{% else %}
+		You are not logged in. <a href="{% url login %}">Log in</a> to access your saved objects.
+		{% endif %}
+	</div>
+</div>
+
+<h1 id="appname">{{object.name}}<span class="shortintro">[By {{object.owner}}. <a href="{{object.url}}">link</a>]</span></h1>
+<div id="input-type-menu"> 
+<ul style="display:inline-block">
+	<li><a href="#dnd-input">Object Input</a></li>
+	<li><a href="#raw-input">Raw Text Input</a></li>
+</ul>
+<div id="dnd-input">
+	<form method="post">
+		<input type="hidden" name="object_name" value=""/>
+		<div id="input-droppable">
+			<span class="hint">drop input object here</span>
+		</div>
+		<input type="button" name="clear" value="clear"/>
+		<input type="submit" name="submit_obj" value="Run Application"/>
+	</form>
+</div>
+<div id="raw-input">
+	<form method="post">
+		<label>Input:</label><br/>
+		<textarea name="input" cols="80" rows="20"></textarea><br/>
+		<input type="submit" name="submit_raw" value="Run Application"/>
+	</form>
+</div>
+</div>
+
+<script type="text/javascript">
+var droppable_hint = null;
+var dropped = new Array();
+$(document).ready(function() {
+	droppable_hint = $("#input-droppable").html();
+	$(".user-object").draggable({
+		helper: 'clone',
+		opacity: 0.5	
+	});
+	$("#input-droppable").droppable({
+		accept: ".user-object",
+		activeClass: 'droppable-active',
+		hoverClass: 'droppable-hover',
+		drop: function(ev, ui) {
+			if ($(this).data('clean')) {
+				$(this).empty();
+				$(this).data('clean', false);
+			}
+			$(this).append($(ui.draggable).clone());
+			dropped.push($(ui.draggable).children(".user-object-name").text());
+		}
+	}).data('clean', true);
+	$("input[name=clear]").click(function() {
+		$("#input-droppable").html(droppable_hint);
+		dropped = new Array();
+		$("#input-droppable").data('clean', true);
+	});
+	$("input[name=submit_obj]").click(function() {
+		$("input[name=object_name]").get(0).value = dropped.join("|");
+	});
+	$("#input-type-menu").tabs();
+	$("input[type=submit]").click(function() {
+		mpmetrics.track("start application", {'appname': '{{obj.name}}' });
+		return true;
+	});
+});
+</script>
+{% endblock %}

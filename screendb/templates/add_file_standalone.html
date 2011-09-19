@@ -1,0 +1,64 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Screen #{{screen_id}} - Add a file </title>
+{% endblock %}
+{% block content %}
+<h1>
+Add A File To Screen #{{screen_id}}
+</h1>
+{% if err %}<div class="error">{{err}}</div>{%endif%}
+{% if form %}
+<form method="POST" action="." enctype="multipart/form-data" style="display:none">
+	<input type="hidden" name="type" value="{{type}}"/>
+	<table>
+	{{ form.as_table }}
+	</table>
+	<input type="submit" value="Submit"/>
+</form>
+{% else %}
+<select id="file-type">
+<option>Select the type of file to upload...</option>
+{% for form in forms %}
+<option value="{{form.0|slugify}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.0}}</option>
+{%endfor%}
+</select>
+{% for form in forms %}
+<div class="file-upload-box" id="{{form.0|slugify}}" style="display:none">
+<h3>Add {{form.0}}</h3>
+<form method="POST" action="." enctype="multipart/form-data">
+	<input type="hidden" name="type" value="{{form.0}}"/>
+	<table>
+	{{ form.1.as_table }}
+	</table>
+	<input type="submit" value="Submit"/>
+</form>
+</div>
+{% endfor %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#file-type").change(function() {
+		if ($(this).get(0).value) {
+			$(this).siblings("div.file-upload-box").hide();
+			$("#" + $(this).get(0).value).fadeIn();
+		}
+	});
+});
+</script>
+{% endif %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".breadcrumbs .active").text("Screen {{screen_id}}");
+});
+</script>
+<script type="text/javascript" src="{{MEDIA_URL}}/screenform.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.form.js"></script>
+
+{% if form %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("form").show();	// avoid splash of screen
+});
+</script>
+{% endif %}
+{% endblock %}

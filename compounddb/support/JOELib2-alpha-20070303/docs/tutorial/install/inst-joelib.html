@@ -1,0 +1,434 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Installing and starting JOELib</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Installing JOELib"
+HREF="../install/install.html"><LINK
+REL="PREVIOUS"
+TITLE="Ant - XML based makefile mechanism"
+HREF="../install/inst-ant.html"><LINK
+REL="NEXT"
+TITLE="Matlab toolbox"
+HREF="../install/matlab.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../install/inst-ant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Installing JOELib</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../install/matlab.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.INSTALLING.JOELIB"
+>Installing and starting JOELib</A
+></H1
+><P
+>Get an up-to-date version of the JOELib library from the homepage at
+<A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>http://joelib.sourceforge.net</A
+>.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.INSTALLING.JOELIB.LINUX"
+>Linux/Unix</A
+></H2
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>    Get an up-to-date version of the
+    <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib library</A
+>.
+    </P
+></LI
+><LI
+><P
+>    Get an up-to-date version of the Ant library (see <A
+HREF="../install/inst-ant.html"
+>the Section called <I
+>Ant - XML based makefile mechanism</I
+></A
+>).
+    </P
+></LI
+><LI
+><P
+>    Set the environent variables <VAR
+CLASS="LITERAL"
+>JAVA_HOME</VAR
+> and
+    <VAR
+CLASS="LITERAL"
+>ANT_HOME</VAR
+> and extend the <VAR
+CLASS="LITERAL"
+>PATH</VAR
+>
+    variable with <VAR
+CLASS="LITERAL"
+>$ANT_HOME/bin</VAR
+>.
+    </P
+><PRE
+CLASS="PROGRAMLISTING"
+>setenv JAVA_HOME /usr/local/j2sdk1.4.0
+setenv ANT_HOME ~/tmp/ant141
+setenv PATH ${PATH}:$ANT_HOME/bin
+    </PRE
+></LI
+><LI
+><P
+>    Change your current directory to <VAR
+CLASS="LITERAL"
+>joelib/ant</VAR
+>. Now
+    you can compile and start an example with:
+    </P
+><PRE
+CLASS="PROGRAMLISTING"
+>    <B
+CLASS="COMMAND"
+>ant compile</B
+>
+    <B
+CLASS="COMMAND"
+>ant MoleculeLoadTest</B
+>
+    </PRE
+><P
+>    You can use <B
+CLASS="COMMAND"
+>ant -projecthelp</B
+> to get a list
+    of other examples.
+    </P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.INSTALLING.JOELIB.WINDOWS"
+>Windows 2000/NT</A
+></H2
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>    Get an up-to-date version of the
+    <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib library</A
+>.
+    </P
+></LI
+><LI
+><P
+>    Get an up-to-date version of the Ant library (see <A
+HREF="../install/inst-ant.html"
+>the Section called <I
+>Ant - XML based makefile mechanism</I
+></A
+>).
+    </P
+></LI
+><LI
+><P
+>    Open a MS-DOS box.
+    </P
+></LI
+><LI
+><P
+>    Set the environent variables <VAR
+CLASS="LITERAL"
+>JAVA_HOME</VAR
+> and
+    <VAR
+CLASS="LITERAL"
+>ANT_HOME</VAR
+> and extend the <VAR
+CLASS="LITERAL"
+>PATH</VAR
+>
+    variable with <VAR
+CLASS="LITERAL"
+>$ANT_HOME/bin</VAR
+>.
+    </P
+><PRE
+CLASS="PROGRAMLISTING"
+>set JAVA_HOME=C:\Programme\j2sdk1.4.0
+set ANT_HOME=C:\lib\java\ant1.4.1
+set PATH=%PATH%:%ANT_HOME%\bin
+    </PRE
+></LI
+><LI
+><P
+>    Change your current directory to <VAR
+CLASS="LITERAL"
+>joelib/ant</VAR
+>. Now
+    you can compile and start an example with:
+    </P
+><PRE
+CLASS="PROGRAMLISTING"
+>    <B
+CLASS="COMMAND"
+>ant compile</B
+>
+    <B
+CLASS="COMMAND"
+>ant MoleculeLoadTest</B
+>
+    </PRE
+><P
+>    You can use <B
+CLASS="COMMAND"
+>ant -projecthelp</B
+> to get a list
+    of other examples.
+    </P
+></LI
+></OL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.INSTALLING.JOELIB.WIN98"
+>Windows 95/98/XP</A
+></H2
+><P
+>Unfortunately Windows98 don't support the makefile-mechanism entirely so it's
+necessary to change the standard calling mechanism.</P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>    Get an up-to-date version of the
+    <A
+HREF="http://joelib.sourceforge.net"
+TARGET="_top"
+>JOELib library</A
+>.
+    </P
+></LI
+><LI
+><P
+>    Get an up-to-date version of the Ant library (see <A
+HREF="../install/inst-ant.html"
+>the Section called <I
+>Ant - XML based makefile mechanism</I
+></A
+>).
+    </P
+></LI
+><LI
+><P
+>    Open a MS-DOS box.
+    </P
+></LI
+><LI
+><P
+>    Open the
+    <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/ant/build.xml?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>ant/build.xml</TT
+></A
+>-file
+    and comment the following line:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>&lt;property environment="env"/&#62;
+    </PRE
+><P
+>with</P
+><PRE
+CLASS="PROGRAMLISTING"
+>&lt;!-- &lt;property environment="env"/&#62; --&#62;
+    </PRE
+><P
+>Add the paths to your Java Development Kit and Ant with
+    the following lines:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>&lt;property name="env.JAVA_HOME" value="C:/Programme/j2sdk1.4.0" /&#62;
+&lt;property name="env.ANT_HOME" value="C:/lib/java/ant1.4.1" /&#62;
+    </PRE
+></LI
+><LI
+><P
+>    Change your current directory to <VAR
+CLASS="LITERAL"
+>joelib</VAR
+>. Now
+    you can compile and start an example with:
+    </P
+><PRE
+CLASS="PROGRAMLISTING"
+>    <B
+CLASS="COMMAND"
+>build.bat compile</B
+>
+    <B
+CLASS="COMMAND"
+>build.bat MoleculeLoadTest</B
+>
+    </PRE
+><P
+>    You can use <B
+CLASS="COMMAND"
+>build.bat -projecthelp</B
+> to get a list
+    of other examples.
+    </P
+></LI
+></OL
+></DIV
+><P
+>If you were using a batch file it's important to use the '\'-slash under Windows98 !
+Windows XP works also with the '/'-slash.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../install/inst-ant.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../install/matlab.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Ant - XML based makefile mechanism</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../install/install.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Matlab toolbox</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

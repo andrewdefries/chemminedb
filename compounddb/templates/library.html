@@ -1,0 +1,28 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - {{libname}} - Page {{compounds_page.number}}</title>
+{% endblock %}
+{% block content %}
+<h1>{{libname}}</h1>
+<div class="pager">
+	<a href=":1" title="go to the first page">&lt;&lt;</a>
+	{%if compounds_page.has_previous%}<a href=":{{compounds_page.previous_page_number}}" title="go to the previous page">&lt;</a>{%else%}<span>&lt;</span>{%endif%}
+	<span class="current-page" style="width:200px">Page {{compounds_page.number}} of {{compounds_page.paginator.num_pages}}</span>
+	{%if compounds_page.has_next%}<a href=":{{compounds_page.next_page_number}}" title="go to the next page">&gt;</a>{%else%}<span>&gt;</span>{%endif%}
+	<a href=":{{compounds_page.paginator.num_pages}}" title="go to the last page">&gt;&gt;</a>
+	</div>
+<div id="previous-page">{%if compounds_page.has_previous%}<a href=":{{compounds_page.previous_page_number}}" title="go to the previous page">&lt;</a>{%else%}<span>&lt;</span>{%endif%}</div>
+<div class="in-library">
+{% for compound in compounds_page.object_list %}
+<a class="compound" href="{% url compound_detail library=libname,cid=compound.cid,resource=''%}"> <img src="{{RENDERER_URL}}smiles;{{compound.smiles.split|first}}" width="120" height="120" /> 
+<div class="compound-id"><span>{{compound.cid}}</span></div></a>
+{% endfor %}
+</div>
+<div id="next-page">{%if compounds_page.has_next%}<a href=":{{compounds_page.next_page_number}}" title="go to the next page">&gt;</a>{%else%}<span>&gt;</span>{%endif%}</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".breadcrumbs .active").html("{{libname}}");
+});
+</script>
+{% endblock %}

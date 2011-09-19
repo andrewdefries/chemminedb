@@ -1,0 +1,324 @@
+<HTML
+><HEAD
+><TITLE
+>Convert</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="PREVIOUS"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="NEXT"
+TITLE="Bibliography"
+HREF="../bibliography.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Example applications</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../bibliography.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT"
+></A
+>Convert</H1
+><P
+>Example application for file conversion, descriptor calculation and process filters (here only for converting molecules).</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.OPTIONS"
+></A
+>Options</H2
+><P
+><B
+CLASS="COMMAND"
+>java -cp joelib.jar joelib.test.Convert</B
+>  [-? | --help] [-h] [+h] [+p] [-e] [-d] [+d] [+v] [+snd] [+sad] [+sall] [-i<TT
+CLASS="REPLACEABLE"
+><I
+>inputFormat</I
+></TT
+>] [-o<TT
+CLASS="REPLACEABLE"
+><I
+>outputFormat</I
+></TT
+>] [+x<TT
+CLASS="REPLACEABLE"
+><I
+>descriptorName</I
+></TT
+>] [-r<TT
+CLASS="REPLACEABLE"
+><I
+>skipDescRule</I
+></TT
+>] [+r<TT
+CLASS="REPLACEABLE"
+><I
+>descRule</I
+></TT
+>]  <TT
+CLASS="REPLACEABLE"
+><I
+>inputFile</I
+></TT
+>  [<TT
+CLASS="REPLACEABLE"
+><I
+>outputFile</I
+></TT
+>]</P
+><P
+><P
+>[-? | --help]</P
+>Shows the help screen including all available input/output formats and all native value descriptors.</P
+><P
+><P
+>[-h]</P
+>Removes all hydrogens from the molecule.</P
+><P
+><P
+>[-h]</P
+>Adds hydrogens to molecule.</P
+><P
+><P
+>[+p]</P
+>Adds only polar hydrogens to molecule.</P
+><P
+><P
+>[-e]</P
+>Converts only non-empty molecules.</P
+><P
+><P
+>[-d]</P
+>Removes all descriptors from molecule.</P
+><P
+><P
+>[+d]</P
+>Adds all available descriptors to molecule, which can be calculated by using JOELib.</P
+><P
+><P
+>[+v]</P
+>Switches verbosity mode ON.</P
+><P
+><P
+>[+sall]</P
+>Shows all available descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[+snd]</P
+>Shows all available native value descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[+sad]</P
+>Shows all available atom property descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[-i<TT
+CLASS="REPLACEABLE"
+><I
+>inputFormat</I
+></TT
+>]</P
+>Format of the input file.</P
+><P
+><P
+>[-o<TT
+CLASS="REPLACEABLE"
+><I
+>outputFormat</I
+></TT
+>]</P
+>Format of the output file.</P
+><P
+><P
+>[+x<TT
+CLASS="REPLACEABLE"
+><I
+>descriptorName</I
+></TT
+>]</P
+>Converts only molecules, where this descriptor exist. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[-r<TT
+CLASS="REPLACEABLE"
+><I
+>skipDescRule</I
+></TT
+>]</P
+>Skips all molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[+r<TT
+CLASS="REPLACEABLE"
+><I
+>descRule</I
+></TT
+>]</P
+>Converts only molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+><P
+> <TT
+CLASS="REPLACEABLE"
+><I
+>inputFile</I
+></TT
+> </P
+>The input file. The input format will be estimated by using the file extension.</P
+><P
+><P
+>[<TT
+CLASS="REPLACEABLE"
+><I
+>outputFile</I
+></TT
+>]</P
+>The output file. The output format will be estimated by using the file extension.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERT.EXAMPLES"
+></A
+>Examples</H2
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.Convert --help</PRE
+> shows the help screen</P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.Convert joelib/test/test.mol</PRE
+> Prints the molecule file to
+the screen.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../bibliography.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Example applications</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bibliography</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

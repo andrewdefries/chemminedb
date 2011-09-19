@@ -1,0 +1,13 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Libraries</title>
+{% endblock %}
+{% block content %}
+<h1>{{object_list|length}} Libraries</h1>
+<ul id="library-list">
+{% for lib in object_list %}
+<li><a href="{% url library_content library=lib.name%}"><span class="library">{{lib.name}}</span> <span class="count">({{lib.count}})</span></a></li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,40 @@
+##
+## Leading and trailing white space is ignored.
+## emty lines or lines starting with a '#' are considered comments
+## everything else should be of the form:
+##  <prio>:<action>:<regexp>
+## where:
+##  <prio>: is an integer (negative numbers are also valid) specifing
+##          the priority.  Rules with higher priorities are considered
+##          before rules with lower priorities.  Rules of equal priority
+##          are considered in the sequence that they appear in the file.
+##  <action>: is either a plus or a minus sign.  Plus means 'include this
+##            document' while minus means 'do not include this document'.
+##  <regexp>: a valid regular expression (as known, e.g. from perl).
+##
+
+# all rules in this file have priority 0, so you can use easily
+# override things by using higher priorities.
+
+## ----------------------------------------------------------------------
+
+##
+## Ignore files with too many links:
+##
+0:-:.*index-all\.html$
+
+##
+## Ignore files that we know we cannot handle:
+##
+0:-:.*\.pdf$
+0:-:.*\.ps$
+0:-:.*\.rtf$
+0:-:.*\.pdb$
+0:-:.*\.bz2$
+0:-:.*\.tgz$
+0:-:.*\.gz$
+0:-:.*\.z$
+0:-:.*\.Z$
+0:-:.*\.zip$
+0:-:.*\.rar$
+0:-:.*\.tar$

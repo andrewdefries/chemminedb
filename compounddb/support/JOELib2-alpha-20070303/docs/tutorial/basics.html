@@ -1,0 +1,252 @@
+<HTML
+><HEAD
+><TITLE
+>JOELib basics</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.72
+"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Preface"
+HREF="preface.html"><LINK
+REL="NEXT"
+TITLE="Bonds"
+HREF="struct-bonds.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="preface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="struct-bonds.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.BASICS"
+>Chapter 1. JOELib basics</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="basics.html#AEN34"
+>Atoms</A
+></DT
+><DT
+><A
+HREF="struct-bonds.html"
+>Bonds</A
+></DT
+><DT
+><A
+HREF="struct-molecule.html"
+>Molecule</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN34"
+>Atoms</A
+></H1
+><P
+>Atoms in 
+<A
+HREF="../../src/joelib/molecule/JOEAtom.java"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.molecule.JOEAtom</TT
+></A
+>
+are represented as nodes of a graph.
+The atom properties can be changed with standard set and get methods.</P
+><P
+>Internally atoms have special atom types, which were defined as
+SMARTS [<A
+HREF="bibliography.html#SMARTS"
+>smarts</A
+>] patterns in the
+<A
+HREF="../../src/joelib/data/plain/atomtype.txt"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+>-file.
+These types can be used to develop descriptors or to export molecules
+easily to other file formats (e.g. force field or ab inito programs).
+For the last task there is the
+<A
+HREF="../../src/joelib/data/JOETypeTable.java"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.data.JOETypeTable</TT
+></A
+> helper class available,
+which uses the default converting types defined in
+<A
+HREF="../../src/joelib/data/plain/types.txt"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/types.txt</TT
+></A
+>.</P
+><P
+>For getting all atoms of a molecule you can use an iterator or a simple index access.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.ATOMS.ITERATOR"
+></A
+><P
+><B
+>Example 1-1. Using an iterator for acessing atoms</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEAtom atom;
+AtomIterator ait = molecule.atomIterator();
+while(ait.hasNext())
+{
+  atom = ait.nextAtom();
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.ATOMS.INDEX"
+></A
+><P
+><B
+>Example 1-2. Using the atom index for acessing atoms</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEAtom atom;
+for(int index=1;index&#60;=molecule.numAtoms();index++)
+{
+  atom = molecule.getAtom(index);
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="preface.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="struct-bonds.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Preface</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bonds</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

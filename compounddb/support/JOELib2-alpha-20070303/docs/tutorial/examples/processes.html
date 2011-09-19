@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Processes and filters</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="JOELib examples and code snippets"
+HREF="../examples/examples.html"><LINK
+REL="PREVIOUS"
+TITLE="Descriptors"
+HREF="../examples/descriptors.html"><LINK
+REL="NEXT"
+TITLE="Import/Export"
+HREF="../examples/importexport.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../examples/descriptors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. JOELib examples and code snippets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../examples/importexport.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES"
+>Processes and filters</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2258"
+>Applying processes and filters</A
+></H2
+><P
+>Processes can be get by using an instance or by using the factory helper class. In general getting plain instances
+of these process classes would be more easier, because most of them have special initialization methods, which must be called
+after getting an instance of these classes.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES.GET.INSTANCE"
+></A
+><P
+><B
+>Example 9-17. Get a molecule process by creating an instance</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEProcess process=new DescVarianceNorm();</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES.GET.FACTORY"
+></A
+><P
+><B
+>Example 9-18. Get a molecule process by using the process factory</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JOEProcess process=null;
+try
+{
+  process=  ProcessFactory.instance().getProcess("VarianceNormalization");
+}
+catch (JOEProcessException ex)
+{
+  // TODO: handle exception, when process can not be found
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES.GET.INIT"
+></A
+><P
+><B
+>Example 9-19. Use initialization method for a process (depends on the process!)</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>try
+{
+  ((DescVarianceNorm)process).init(inType,inputFile);
+}
+catch (Exception ex)
+{
+  // TODO: handle exception
+}</PRE
+></DIV
+><P
+>For building more complex process pies with applying special filter functionalities there exists a simple process pipe. More
+extended things, like process trees or somethings else sj´hould not be too difficult to implement.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES.GET.FILTERPIPE"
+></A
+><P
+><B
+>Example 9-20. Get a molecule process pipe with filter functionalities</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>//initialize filter
+DescriptorFilter descFilter = new DescriptorFilter();
+// filter accepts only molecules where all descriptors given by the
+// file at the descNamesURL exists. Commented descriptors names will
+// be ignored
+descFilter.init(descNamesURL, false);
+
+// initialize process and pipe
+DescSelectionWriter dsw = null;
+ProcessPipe processPipe = null;
+dsw = new DescSelectionWriter();
+processPipe = new ProcessPipe();
+// initialize output options for the
+// descriptor selection writer
+try
+{
+  dsw.init(outputFile, outType, desc2write, descOutType);
+  dsw.setDelimiter(delimiter);
+}
+catch (Exception ex)
+{
+}
+
+// use descriptor selection filter only when
+// all descriptor names given by the file at the
+// descNamesURL are available.
+// For more complex filter mechanism there
+// exists still AND and OR combinations for filters
+processPipe.addProcess(dsw, descFilter);</PRE
+></DIV
+><P
+>When a molecule has been loaded it is really simple the process:</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.PROCESSES.APPLY"
+></A
+><P
+><B
+>Example 9-21. Apply a process to a molecule</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>try
+{
+  // call process without additional paramameters
+  processPipe.process(mol, null);
+}
+catch (JOEProcessException ex)
+{
+  // TODO: catch process exception
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../examples/descriptors.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../examples/importexport.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Descriptors</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Import/Export</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

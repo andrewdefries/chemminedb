@@ -1,0 +1,190 @@
+8
+
+dir
+99
+http://svn.django-cms.org/trunk/cms
+http://svn.django-cms.org
+
+
+
+2008-10-30T10:20:33.663192Z
+99
+divio
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+92ec8317-e278-4cfe-9719-05471b91e6e2
+
+media
+dir
+
+admin.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+1276938f306b00907be1cea5d5eae77f
+2008-10-10T10:24:50.069860Z
+59
+jezdez
+
+dynamicforms.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+973557527a81d78ba86c9ef103313c01
+2008-08-23T21:57:00.628136Z
+39
+tom
+
+views.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+f453fb32d672586fa747115b9aed61f4
+2008-10-24T09:51:17.913392Z
+96
+jezdez
+
+__init__.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+d41d8cd98f00b204e9800998ecf8427e
+2007-12-05T01:57:00.600551Z
+12
+divio
+
+templatetags
+dir
+
+cms_settings.py.dist
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+e20b0fdb0bd9518ef582b4a963983ab6
+2008-10-28T14:04:34.077804Z
+98
+divio
+
+templates
+dir
+
+locale
+dir
+
+util.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+28d71a7b1b3035d9e0f56624b1147a59
+2008-10-12T13:54:34.282013Z
+64
+jezdez
+
+decorators
+dir
+
+INSTALL
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+ea20e1ec74c0c6a20192a2c55bbd7bdc
+2008-10-15T15:04:31.909289Z
+75
+jezdez
+
+COPYRIGHT
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+5c069c257b38b516af02ca49cdda43e1
+2007-12-05T01:57:00.600551Z
+12
+divio
+
+cms_global_settings.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+913ce4e4cbfb4c3e8f5041dcbccd9dd6
+2008-10-12T13:54:38.643445Z
+65
+jezdez
+
+models.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+232acecf84953ef3bcc468b55666aa84
+2008-10-15T14:12:35.474208Z
+72
+jezdez
+
+urls.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+f84cab1581fdb248b03d01ebb25512cd
+2008-10-12T13:54:30.442122Z
+63
+jezdez
+
+middleware
+dir
+
+forms.py
+file
+
+
+
+
+2008-11-07T00:07:00.000000Z
+b379b2a9877eadd3f5d8b104804e4673
+2008-10-13T13:58:26.729847Z
+71
+jezdez
+

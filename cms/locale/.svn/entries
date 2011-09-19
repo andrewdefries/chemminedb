@@ -1,0 +1,34 @@
+8
+
+dir
+99
+http://svn.django-cms.org/trunk/cms/locale
+http://svn.django-cms.org
+
+
+
+2008-10-15T15:35:13.322897Z
+76
+jezdez
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+92ec8317-e278-4cfe-9719-05471b91e6e2
+
+en
+dir
+
+de
+dir
+

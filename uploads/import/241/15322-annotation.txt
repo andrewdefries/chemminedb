@@ -1,0 +1,4 @@
+Method : Agrobacterium,
+To1 : 1231394,
+Date: Nov 19, 2006,
+Line ID: lewrwer

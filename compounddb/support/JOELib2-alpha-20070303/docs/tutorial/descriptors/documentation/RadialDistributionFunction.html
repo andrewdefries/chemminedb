@@ -1,0 +1,230 @@
+<HTML
+><HEAD
+><TITLE
+></TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="NEXT"
+TITLE="Bibliography"
+HREF="bibliography.html"></HEAD
+><BODY
+CLASS="ARTICLE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="ARTICLE"
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTOR"
+></A
+>Descriptor</H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.RADIALDISTRIBUTIONFUNCTION"
+></A
+>Radial distribution function (RDF)</H2
+><P
+>The radial distribution function (RDF) [<A
+HREF="bibliography.html#MSG99"
+>msg99</A
+>,<A
+HREF="bibliography.html#WFZ04B"
+>wfz04b</A
+>] can be interpreted as the probability distribution of finding an atom in a spherical volume of
+radius <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r</B
+></SPAN
+>.
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN14"
+></A
+><P
+><B
+>Equation 1. Radial distribution function</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/rdf.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+> is the geometrical distance between the atoms
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>, <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>i</SUB
+></B
+></SPAN
+>
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>j</SUB
+></B
+></SPAN
+> are the atom properties of the atoms <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>. <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B</B
+></SPAN
+> is the smoothing parameter
+(fuzziness of the distance <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+>) for the interatomic distance and
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>f</B
+></SPAN
+> the scaling factor.</P
+><P
+>If <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B</B
+></SPAN
+> aims to infinity the RDF code approximates to the autocorrelation function () and the fuzziness
+of the distance <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+> vanishes. So the RDF code can be treated as a generalized
+autocorrelation function.</P
+><P
+>The RDF user parameters can be defined in the <TT
+CLASS="FILENAME"
+>joelib.properties</TT
+>-file, otherwise the default parameters will be used:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>jcompchem.joelib.desc.types.RadialDistributionFunction.minSphericalVolume = 0.2
+joelib.desc.types.RadialDistributionFunction.maxSphericalVolume = 10.0
+joelib.desc.types.RadialDistributionFunction.sphericalVolumeResolution = 0.2
+joelib.desc.types.RadialDistributionFunction.smoothingFactor = 25</PRE
+><P
+>Optional the RDF can be calculated with protonated molecules, but you must be sure that all available atom
+properties are calculated with hydrogens also. Because this is not the standard, this option should be only used by developers.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bibliography.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bibliography</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

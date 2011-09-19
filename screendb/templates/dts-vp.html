@@ -1,0 +1,260 @@
+{% extends 'cms/base.html' %}
+{% block title %}
+<title>Virtual Plate Display</title>
+{% endblock %}
+{% block extrahead %}
+<script type="text/javascript" src="{{MEDIA_URL}}jquery.dimensions.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}jquery-ui.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}virtualplate/jquery.tooltip2.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}virtualplate/processing.js"></script>
+<link rel="stylesheet" href="{{MEDIA_URL}}virtualplate/jquery.tooltip.css"/>
+<link rel="stylesheet" href="{{MEDIA_URL}}virtualplate/virtualplate.css"/>
+<link rel="stylesheet" href="{{MEDIA_URL}}jquery-ui.css"/>
+<style type="text/css">
+.hidden{
+	display: none;
+}
+</style>
+{% endblock %}
+{% block content %}
+{% load paginator %}
+	
+<div id="plateview">
+	<div class="tabletop">
+		<form id="vp-form">
+		<input type="hidden" name="screen" value="{{screen_id}}"/>
+		<h2>Virtual Plate Display for <a href="{% url dts-data screen_id %}" title="tabular view of data">DTS Data</a></h2>
+		<div class="note">Normalization range: 
+		<input type="text" name="min_input" size="5" value=""/>
+		 ~ 
+		<input type="text" name="max_input" size="5" value=""/>
+		<input type="submit" name="user_range" value="Update" id="new_range"/>
+		<!---
+		<span id="min_span"></span> ~ <span id="max_span"></span>
+		-->
+	</div>
+		<div id="viewctrl">
+			<label>Show </label>
+			<select name="column" id="columnsel">
+				{% for column in columns %}
+				<option value="{{column}}">{{column}}</option>
+				{% endfor %}
+			</select>
+			<label> Normalize </label>
+			<select name="normmethod" id="normmethod">
+				<option value="plate" py:attrs="dict(selected=normmethod=='plate' and 'selected' or None)">within plate</option>
+				<option value="global" py:attrs="dict(selected=normmethod=='global' and 'selected' or None)">globally</option>
+			</select>
+			<label>Well Radius</label>
+			<select name="radius" id="radiussize">
+				<option value="20" py:attrs="dict(selected=radius==20 and 'selected' or None)">20 px</option>
+				<option value="30" py:attrs="dict(selected=radius==30 and 'selected' or None)">30 px</option>
+				<option value="40" py:attrs="dict(selected=radius==40 and 'selected' or None)">40 px</option>
+				<option value="50" py:attrs="dict(selected=radius==50 and 'selected' or None)">50 px</option>
+				<option value="60" py:attrs="dict(selected=radius==60 and 'selected' or None)">60 px</option>
+			</select>
+		</div>
+		</form>
+		
+	</div>
+	<div id="plate-sel">
+	<form id="plate-form" action="." method="GET">
+	<label>Jump to plate:</label>
+	<select name="plate">
+	{%for p in all_plates %}
+	<option value="{{p.0}}">{{p.0}}</option>
+	{%endfor%}
+	</select>
+	</form>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	$("select[name=plate]").change(function() {
+		$(this).parent().submit();
+	});
+	});
+	</script>
+	</div>
+	
+	<div style="margin-top:50px">{% paginator 1 %}</div>
+	<table border="1" cellspacing="0">
+		<thead>
+			<tr class="index">
+				<th></th>
+				{% for colname in colnames %}<th>{{colname}}</th>{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for rowdata in plate_data %}
+			<tr>
+				<th>{{rowdata.0}}</th>
+				{% for cell in rowdata.1 %}
+				<td>
+					<span><span class="well hidden">{{cell.0}}</span></span>
+					<div class="alldata hidden">
+						{{cell.1|linebreaksbr}}
+					</div>
+				</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
+<script type="text/javascript">
+	var lightness = 0.05;
+	var width, height;
+	var min, max;
+	var g_min_max = {{g_min_max|safe}};	/* global min and max */
+	var l_min, l_max;
+	var data = {{all_data|safe}};
+	var colsel = "{{columns.0}}";
+
+	function clear() {
+		$(this).parent().children("canvas").remove();
+	}
+
+	var user_min_max;
+
+	function minmax() {
+
+		if(user_min_max) {
+			user_min_max = false;
+			return;
+		}
+		
+		well = "{{anywell}}";
+		l_min = data[colsel][well];
+		l_max = l_min;
+
+		for (well in data[colsel]) {
+			var value = data[colsel][well];
+			l_min = Math.min(value, l_min);
+			l_max = Math.max(value, l_max);
+		}
+
+		if ($("form#vp-form").get(0).normmethod.value == 'global') {
+			min = g_min_max[colsel + "__min"];
+			max = g_min_max[colsel + "__max"];
+		} else {
+			min = l_min; max = l_max;
+		}
+		$("form#vp-form").get(0).min_input.value = min;
+		$("form#vp-form").get(0).max_input.value = max;
+		
+		//$("#max_span").text(max);
+	}
+
+	function draw() {
+		$(this).after($("#canvastemplate").html().replace(/@width/, width).replace(/@height/, height));
+
+		var well = $(this).find(".well").text();
+		if (well == '') return;
+		value = data[colsel][well];
+		var pos = (value - min)/(max - min);
+		var shft = 0.5*pos+ 1.7*(1-pos);
+		var period = 2*Math.PI;
+		var x = shft + pos * period;
+
+		var scale = 256;
+		var v1 = Math.floor((Math.cos(x) + 1) * scale);
+		var v2 = Math.floor((Math.cos(x+Math.PI/2) + 1) * scale);
+		var v3 = Math.floor((Math.cos(x+Math.PI) + 1) * scale) ;
+		var radius = Math.floor(width/2);
+
+		var r = normalize(v1);
+		var g = normalize(v2);
+		var b = normalize(v3);
+
+		Processing($(this).parent().children("canvas").get(0), $("#proc").text().replace(/@1/, r).replace(/@2/, g).replace(/@3/, b).replace(/@4/g,radius).replace(/@5/g,width));
+	}
+
+	function normalize(num){
+		var n = Math.floor(num + lightness * (256 - num));
+		return n;
+	}
+
+	$(document).ready(function(){
+		x = $("<h4>Generating Virtual Plate...</h4>").dialog({title: 'Drawing'});
+		width = $("form#vp-form").get(0).radius.value;
+		height = $("form#vp-form").get(0).radius.value;
+
+		$("td > span").hide();
+		$("td").tooltip({
+			delay: 1000,
+			showURL: false,
+			bodyHandler: function(){
+				var title = $(this).find(".alldata").html();
+				if(title!=null)
+					return title;
+				else
+					return "Empty well";
+			}
+			
+		});
+	
+		setTimeout(function() {minmax(); $("td > span").each(draw); x.dialog("close");}, 1000);
+
+		$("#radiussize").change(function() {
+			width = $(this).get(0).value;
+			height = $(this).get(0).value;
+			if (width == 20) {
+				$("th").css("font-size", "9px");
+			} else {
+				$("th").css("font-size", "1em");
+			}
+			x = $("<h4>Updating Virtual Plate...</h4>").dialog({title: 'Drawing'});
+			setTimeout(function() {$("td > span").each(clear);$("td > span").each(draw);x.dialog('close');}, 1000);
+		});
+
+		$("#normmethod").change(function() {
+			if ($("form#vp-form").get(0).normmethod.value == 'global') {
+				min = g_min_max[colsel + "__min"];
+				max = g_min_max[colsel + "__max"];
+			} else {
+				min = l_min;
+				max = l_max;
+			}
+			$("input[name=min_input]").val(min);
+			$("input[name=max_input]").val(max);
+			x = $("<h4>Updating Virtual Plate...</h4>").dialog({title: 'Drawing'});
+			setTimeout(function() {$("td > span").each(clear);$("td > span").each(draw);x.dialog('close');}, 1000);
+		});
+
+		$("#columnsel").change(function() {
+			x = $("<h4>Updating Virtual Plate...</h4>").dialog({title: 'Drawing'});
+			colsel = $(this).val();
+			setTimeout(function() {minmax();$("td > span").each(clear);$("td > span").each(draw);x.dialog('close');}, 1000);
+		});
+
+		$("#new_range").click(function() {
+			min = $("form#vp-form").get(0).min_input.value;
+			max = $("form#vp-form").get(0).max_input.value;
+
+			user_min_max = true;
+
+			x = $("<h4>Updating Virtual Plate...</h4>").dialog({title: 'Drawing'});
+			setTimeout(function() {$("td > span").each(clear);$("td > span").each(draw);x.dialog('close');}, 1000);
+
+			return false;
+		
+		});
+
+	});
+</script>
+<script id="proc" type="application/processingtemplate">
+		smooth();
+		background(255);
+		noStroke();
+		fill(@1,@2,@3);
+		ellipse(@4,@4,@5,@5);
+</script>
+<script id="canvastemplate" type="application/htmltemplate">
+	<canvas width="@width" height="@height"></canvas>
+</script>
+<script type="text/javascript">
+	$("div#breadcrumbs span.active").html('<a href="{%url screen-detail screen_id%}">Screen {{screen_id}}</a> &rarr; <a href="{%url dts-data screen_id%}">DTS Data</a> &rarr; Virtual Plate');
+</script>
+
+{% endblock %}

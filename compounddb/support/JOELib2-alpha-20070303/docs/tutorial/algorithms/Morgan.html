@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Morgan: Unique atom numbering</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Algorithms"
+HREF="../algorithms/algorithms.html"><LINK
+REL="PREVIOUS"
+TITLE="Geometrical distance matrix"
+HREF="../algorithms/GeomDistanceMatrix.html"><LINK
+REL="NEXT"
+TITLE="Interfaces to other libraries"
+HREF="../interfaces.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../algorithms/GeomDistanceMatrix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Algorithms</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../interfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN"
+>Morgan: Unique atom numbering</A
+></H1
+><P
+>Algorithm to get a unique numbering for molecules (graphs) [<A
+HREF="../bibliography.html#MOR65"
+>mor65</A
+>].
+<DIV
+CLASS="FIGURE"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN.LABELING.PSEUDOCODE"
+></A
+><P
+><B
+>Figure 6-3. Pseudocode for the Morgan labeling algorithm</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>label each atom with its degree;
+labels=count the number of different labels;
+hasNTchanged=5;
+for all time
+  label each atom with sum of label+all neighbor labels;
+  actLabels=count the number of different labels;
+  if actLabels equal labels then
+    decrement hasNTchanged;
+    if hasNTchanged is zero break loop;
+  fi
+rof</PRE
+></DIV
+>
+The sloppy breaking criteria is necessary, because it's possible that the number of different labels can be
+constant for only two iterations. But that's not so interesting, let's continue with the
+renumbering part of the Morgan algorithm. As you can see, it's possible, that 'symmetric' atoms in the
+molecule will have same labels. Is there now a possibility to solve these 'labeling/renumbering' ties ?
+Yes, additional informations, like bond order and element number can be used for resolving renumbering ties
+or the suggested Jochum-Gasteiger canonical renumbering [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>] informations can be used.
+<DIV
+CLASS="FIGURE"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN.RENUMBERING.PSEUDOCODE"
+></A
+><P
+><B
+>Figure 6-4. Pseudocode for the Morgan renumbering algorithm</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>calculate the morgan atom labels;
+start breadth first search from this atom;
+choose node with the highest label and set new atom index to 1;
+repeat
+  build deque i of atoms with same BFS traversing number i;
+  if deque i contains no equal labels
+    renumber atoms in order of decreasing atom labels.
+  fi
+  else
+    try to resolve renumbering tie for the equal labels:
+      1. prefer atom with higher bond order for renumbering
+      2. prefer atom with higher element number for renumbering
+      3. ...
+    if tie solved
+      renumber atoms in order of decreasing atom labels.
+    fi
+    else
+      show renumbering tie warning;
+    esle
+  esle
+  increment i;
+until all atoms are numbered</PRE
+></DIV
+>
+The uniquely renumbered molecule can be used to calculate molecule
+hashcodes and canonical/unique SMILES representations (see <A
+HREF="../functionalities/mol-io.html#JOELIB.MOLECULE.IO.FORMATS.SMILES"
+>the Section called <I
+>Simplified Molecular Input Line Entry System (SMILES)</I
+> in Chapter 3</A
+>).</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../algorithms/GeomDistanceMatrix.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../interfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Geometrical distance matrix</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../algorithms/algorithms.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Interfaces to other libraries</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

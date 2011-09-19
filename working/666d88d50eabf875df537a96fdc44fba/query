@@ -1,0 +1,297 @@
+(dp0
+S'libraries'
+p1
+(lp2
+ccompounddb.models
+LibraryHeader
+p3
+(tRp4
+(dp5
+S'count'
+p6
+L3649L
+sS'selected'
+p7
+I01
+sS'id'
+p8
+I11
+sS'name'
+p9
+VLatca
+p10
+sbag3
+(tRp11
+(dp12
+g6
+L29518L
+sg7
+I01
+sg8
+I13
+sg9
+VAurora
+p13
+sbag3
+(tRp14
+(dp15
+g6
+L2768L
+sg7
+I01
+sg8
+I16
+sg9
+VClickables
+p16
+sbag3
+(tRp17
+(dp18
+g6
+L28340L
+sg7
+I01
+sg8
+I18
+sg9
+VBindingDB
+p19
+sbag3
+(tRp20
+(dp21
+g6
+L222400L
+sg7
+I01
+sg8
+I19
+sg9
+VChemBank
+p22
+sbag3
+(tRp23
+(dp24
+g6
+L12000L
+sg7
+I01
+sg8
+I21
+sg9
+VLifeChem 12K
+p25
+sbag3
+(tRp26
+(dp27
+g6
+L20000L
+sg7
+I01
+sg8
+I22
+sg9
+VChemBridge Diverset 20K
+p28
+sbag3
+(tRp29
+(dp30
+g6
+L10000L
+sg7
+I01
+sg8
+I23
+sg9
+VChemBridge Microformat
+p31
+sbag3
+(tRp32
+(dp33
+g6
+L10000L
+sg7
+I01
+sg8
+I25
+sg9
+VChemBridge NovaCore
+p34
+sbag3
+(tRp35
+(dp36
+g6
+L15427L
+sg7
+I01
+sg8
+I26
+sg9
+VKEGG
+p37
+sbag3
+(tRp38
+(dp39
+g6
+L4886L
+sg7
+I01
+sg8
+I27
+sg9
+VDrugBank
+p40
+sbag3
+(tRp41
+(dp42
+g6
+L1998L
+sg7
+I01
+sg8
+I28
+sg9
+VMicrosource Spectrum
+p43
+sbag3
+(tRp44
+(dp45
+g6
+L250250L
+sg7
+I01
+sg8
+I29
+sg9
+VNCI
+p46
+sbag3
+(tRp47
+(dp48
+g6
+L2816L
+sg7
+I01
+sg8
+I30
+sg9
+VPeakdale
+p49
+sbag3
+(tRp50
+(dp51
+g6
+L10000L
+sg7
+I01
+sg8
+I31
+sg9
+VSigma-TimTec Myria Screen
+p52
+sbag3
+(tRp53
+(dp54
+g6
+L761998L
+sg7
+I01
+sg8
+I38
+sg9
+VPubChem Bioassay
+p55
+sbag3
+(tRp56
+(dp57
+g6
+L13471L
+sg7
+I01
+sg8
+I39
+sg9
+VGSK Anti-Malarial Data
+p58
+sbasS'input_mode'
+p59
+S'sdf-input'
+p60
+sS'selected_libs'
+p61
+(lp62
+VLatca
+p63
+aVAurora
+p64
+aVClickables
+p65
+aVBindingDB
+p66
+aVChemBank
+p67
+aVLifeChem 12K
+p68
+aVChemBridge Diverset 20K
+p69
+aVChemBridge Microformat
+p70
+aVChemBridge NovaCore
+p71
+aVKEGG
+p72
+aVDrugBank
+p73
+aVMicrosource Spectrum
+p74
+aVNCI
+p75
+aVPeakdale
+p76
+aVSigma-TimTec Myria Screen
+p77
+aVPubChem Bioassay
+p78
+aVGSK Anti-Malarial Data
+p79
+asS'post_data'
+p80
+ccopy_reg
+_reconstructor
+p81
+(cdjango.http
+QueryDict
+p82
+c__builtin__
+dict
+p83
+(dp84
+Vsdf
+p85
+(lp86
+V5100594\u000a  -ISIS-  08290615172D\u000a\u000a 19 22  0  0  0  0  0  0  0  0999 V2000\u000a   -3.6833    0.1000    0.0000 N   0  3  0  0  0  0  0  0  0  0  0  0\u000a   -0.9333    0.4125    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -2.0958    0.4125    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -2.0958    1.0708    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -0.9333    1.0708    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -3.2500    0.4125    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a    0.8167    0.1833    0.0000 C   0  0  3  0  0  0  0  0  0  0  0  0\u000a   -1.5125    0.0833    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a    1.4667    0.3333    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a    0.9042   -0.4042    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -2.6708    0.0833    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a    0.2292    0.4125    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -0.3500    0.0833    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -2.6708    1.4000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -0.3500    1.4000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -3.6833   -0.3875    0.0000 O   0  5  0  0  0  0  0  0  0  0  0  0\u000a   -4.3208    0.2958    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\u000a   -3.2500    1.0708    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a    0.2292    1.0708    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\u000a  2  8  1  0  0  0  0\u000a  3 11  2  0  0  0  0\u000a  4 14  2  0  0  0  0\u000a  5  4  1  0  0  0  0\u000a  6  1  1  0  0  0  0\u000a  7 12  1  0  0  0  0\u000a  8  3  1  0  0  0  0\u000a  9  7  1  0  0  0  0\u000a 10  7  1  0  0  0  0\u000a 11  6  1  0  0  0  0\u000a 12 13  2  0  0  0  0\u000a 13  2  1  0  0  0  0\u000a 14 18  1  0  0  0  0\u000a 15  5  1  0  0  0  0\u000a 16  1  1  0  0  0  0\u000a 17  1  2  0  0  0  0\u000a 18  6  2  0  0  0  0\u000a 19 15  2  0  0  0  0\u000a  4  3  1  0  0  0  0\u000a  2  5  2  0  0  0  0\u000a 12 19  1  0  0  0  0\u000a 10  9  1  0  0  0  0\u000aM  CHG  2   1   1  16  -1\u000aM  END\u000a>  <ID> (5100594)\u000a5100594\u000a\u000a>  <Supplier> (5100594)\u000aChemBridge\u000a\u000a>  <clogP> (5100594)\u000a4.760000000000000e+000\u000a\u000a>  <RB> (5100594)\u000a1\u000a\u000a>  <tPSA> (5100594)\u000a4.313999999999999e+001\u000a\u000a>  <Hacc> (5100594)\u000a2\u000a\u000a>  <Hdon> (5100594)\u000a0\u000a\u000a>  <LogSw> (5100594)\u000a-6.598000000000000e+000\u000a\u000a$$$$\u000a
+p87
+asVlibrary
+p88
+g62
+stp89
+Rp90
+(dp91
+S'_encoding'
+p92
+S'utf-8'
+p93
+sS'_data'
+p94
+(dp95
+g85
+g86
+sg88
+g62
+ssS'_mutable'
+p96
+I00
+sbsS'query_url'
+p97
+S'http://chemmine.ucr.edu/renderer/666d88d50eabf875df537a96fdc44fba'
+p98
+s.

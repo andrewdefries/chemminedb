@@ -1,0 +1,592 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Descriptors</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="JOELib examples and code snippets"
+HREF="../examples/examples.html"><LINK
+REL="PREVIOUS"
+TITLE="JOELib examples and code snippets"
+HREF="../examples/examples.html"><LINK
+REL="NEXT"
+TITLE="Processes and filters"
+HREF="../examples/processes.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. JOELib examples and code snippets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../examples/processes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS"
+>Descriptors</A
+></H1
+><P
+>The descriptor calculation and storing facility of JOELib will be explained in detail in this section.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2201"
+>Get and calculate descriptors</A
+></H2
+><P
+>There exists different descriptor types and the two main types are: native value descriptors,
+atom property descriptors. There exists still some methods for getting lists of descriptor names,
+which,for example, are required to calculate the descriptors.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.GET.ALL"
+></A
+><P
+><B
+>Example 9-10. Get a list of all available descriptors</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>Enumeration enum = DescriptorHelper.instance().descriptors();
+System.out.println("Descriptors:");
+String descName;
+for (; enum.hasMoreElements();)
+{
+  descName = (String) enum.nextElement();
+  System.out.println(descName);
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.GET.NATIVE"
+></A
+><P
+><B
+>Example 9-11. Get a list of all native value descriptors</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>Vector nativeDescs = DescriptorHelper.instance().getNativeDescs();
+System.out.println("Native value descriptors:");
+int size = nativeDescs.size();
+String descName;
+for (int i = 0; i &lt; size; i++)
+{
+  descName = nativeDescs.get(i);
+  System.out.println(descName);
+}</PRE
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.GET.ATOMPROPERTY"
+></A
+><P
+><B
+>Example 9-12. Get a list of all atom property descriptors</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>Vector atomPropDescs = DescriptorHelper.instance().getAtomPropDescs();
+System.out.println("Atom property descriptors:");
+int size = atomPropDescs.size();
+String descName;
+for (int i = 0; i &lt; size; i++)
+{
+  descName = atomPropDescs.get(i);
+  System.out.println(descName);
+}</PRE
+></DIV
+><P
+>Get descriptors creating a new descriptor instance, which is slow when used multiple times, because it's
+not cached internally.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.CALCULATE.SLOW"
+></A
+><P
+><B
+>Example 9-13. Get and calculate descriptors using always a new instance (slow)</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>DescResult result = null;
+// the molecule must ba already available in the mol object
+// descName contains the descriptor name which should be calculated
+try
+{
+  // calculate descriptor for the given molecule
+  result = DescriptorHelper.instance().descFromMol(mol, descName);
+}
+catch (DescriptorException ex)
+{
+  // TODO: descriptor calculation preconditions are not valid
+  // TODO: handle exception
+}
+if (result == null)
+{
+  // TODO: descriptor can not be calculated
+  // TODO: handle this case
+}
+else
+{
+  // add calculated descriptor result to this molecule
+  JOEPairData dp = new JOEPairData();
+  // use default descriptor name to store result
+  dp.setAttribute(descName);
+  dp.setValue(result);
+  // add descriptor result to molecule without
+  // overwriting old result with the same descriptor name
+  mol.addData(dp);
+}</PRE
+></DIV
+><P
+>Get descriptors creating in the first step an descriptor instance, which can then be used for
+descriptor calculation multiple times (fast).</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.CALCULATE.FAST"
+></A
+><P
+><B
+>Example 9-14. Get and calculate descriptors creating only one descriptor calculation instance (fast)</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>Descriptor descriptor=null;
+DescDescription descDescription=null;
+try
+{
+  descriptor = DescriptorFactory.getDescriptor(descNames);
+  if (descriptor == null)
+  {
+    // TODO: descriptor calculation method can not be loaded
+  }
+  else
+  {
+    descDescription = descriptor.getDescription();
+  }
+}
+catch (DescriptorException ex)
+{
+  // TODO: descriptor calculation preconditions are not valid
+  // TODO: handle exception
+}
+
+// calculate descriptors for a set of molecules
+...
+  // TODO: iterate over a set of molecules
+  // or load a set of molecules
+  // precondition for the following lines: mol contains a molecule
+  DescResult results=null;
+  try
+  {
+    // initialize descriptor calculation properties
+    // we will here use no properties, this can be e.g.
+    // an atom property when calculating the autocorrelation function
+    Hashtable calculationProperties = new Hashtable();
+    descriptor.clear();
+    results = descriptor.calculate(mol, calculationProperties);
+    if (result == null)
+    {
+      // TODO: descriptor can not be calculated
+      // TODO: handle this case
+    }
+    else
+    {
+      // add calculated descriptor result to this molecule
+      JOEPairData dp = new JOEPairData();
+      // use default descriptor name to store result
+      dp.setAttribute(descName);
+      dp.setValue(result);
+      // add descriptor result to molecule without
+      // overwriting old result with the same descriptor name
+      mol.addData(dp);
+    }
+  }
+  catch (DescriptorException ex)
+  {
+    // TODO: descriptor calculation preconditions are not valid
+    // TODO: handle exception
+  }
+...</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2221"
+>Create own descriptor classes</A
+></H2
+><P
+>There exists different abstraction levels to create own descriptor calculation methods. For native
+value descriptors there exists already some simple abstract class implementations, so we will begin with this really
+simple example.</P
+><P
+>The simple absract native descriptor classes exist for boolean, double and int value descriptors.
+The abstract simple classes are
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SimpleBooleanDesc.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SimpleBooleanDesc.java</TT
+></A
+>,
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SimpleDoubleDesc.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SimpleDoubleDesc.java</TT
+></A
+>,
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SimpleIntDesc.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SimpleIntDesc.java</TT
+></A
+>,
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/AtomsCounter.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/AtomsCounter.java</TT
+></A
+> and
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SMARTSCounter.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SMARTSCounter.java</TT
+></A
+>.
+The abstract methods which must be implemented are
+<VAR
+CLASS="LITERAL"
+>getBooleanValue(JOEMol)</VAR
+>,<VAR
+CLASS="LITERAL"
+>getDoubleValue(JOEMol)</VAR
+> and <VAR
+CLASS="LITERAL"
+>getIntValue(JOEMol)</VAR
+>.
+All other needed methods are already implemented and you can ignore these implementations for these simple descriptors.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.CREATE.NATIVE"
+></A
+><P
+><B
+>Example 9-15. Create own native descriptor calculation classes</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// use default descriptor calculation package
+package joelib.desc.types;
+
+// import base classes and the molecule class
+import joelib.desc.DescriptorHelper;
+import joelib.desc.DescriptorInfo;
+import joelib.desc.SimpleDoubleDesc;
+import joelib.molecule.JOEMol;
+
+// import logging tool
+import org.apache.log4j.Category;
+
+//
+public class MyMolecularWeight extends SimpleDoubleDesc
+{
+  // initialize logging tool for this class
+  private static Category logger=Category.getInstance("joelib.desc.types.MyMolecularWeight");
+
+  // initialize public DESC_KEY (descriptor name) by which this descriptor can be
+  // calculated
+  // IMPORTANT: This should be always be a 'public static final' variable
+  // IMPORTANT: to avoid misinterpretations during runtime
+  public static final String DESC_KEY = "My_molecular_weight";
+
+  public My_molecular_weight()
+  {
+    // show basic logging message if debugging is enabled
+    if (logger.isDebugEnabled())logger.debug("Initialize " + this.getClass().getName());
+
+    // IMPORTANT: initialize descriptor informations
+    // IMPORTANT: use DescriptorHelper to facilitate this task
+    // IMPORTANT: relevant parameters are the descriptor name, the
+    // IMPORTANT: calculation representation and the descriptor result
+
+    descInfo=DescriptorHelper.generateDescInfo(DESC_KEY,this.getClass(),
+				DescriptorInfo.TYPE_NO_COORDINATES,null,
+				"joelib.desc.result.DoubleResult");
+  }
+
+  // get double value for molecular weight
+  public double getDoubleValue(JOEMol mol)
+  {
+    double mw;
+    mw = mol.getMolWt();
+    return mw;
+  }
+}</PRE
+></DIV
+><P
+>JOELib must now be told that there is a new descriptor calculation method. You must add the following line
+<VAR
+CLASS="LITERAL"
+>joelib.descriptor.60.representation=joelib.desc.types.MyMolecularWeight</VAR
+>
+to the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file.
+If you've already implemented some other descriptors you must use another number, e.g. 61, or something else. It's important
+that these numbers increase monotonically by 1, because the descriptor factory class interrupts the loading process
+if no higher number (increased by 1) is available.</P
+><P
+>The abstract simple classes for atom properties are
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SimpleDoubleAtomProperty.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SimpleDoubleAtomProperty.java</TT
+></A
+>,
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/SimpleDynamicAtomProperty.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/SimpleDynamicAtomProperty.java</TT
+></A
+>.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.DESCRIPTORS.CREATE.ATOMPROPERTY"
+></A
+><P
+><B
+>Example 9-16. Create own atom property descriptor calculation classes</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// use default descriptor calculation package
+package joelib.desc.types;
+
+// import base classes and the molecule class
+import joelib.desc.DescriptorHelper;
+import joelib.desc.DescriptorInfo;
+import joelib.desc.SimpleDynamicAtomProperty;
+import joelib.desc.result.DynamicArrayResult;
+import joelib.molecule.JOEAtom;
+import joelib.molecule.JOEMol;
+import joelib.util.iterator.AtomIterator;
+
+// import logging tool
+import org.apache.log4j.Category;
+
+public class ElectronegativityAllredRochow extends SimpleDynamicAtomProperty
+{
+        // initialize logging tool for this class
+	private static Category logger =
+		Category.getInstance("joelib.desc.types.ElectronegativityAllredRochow");
+
+        // initialize public DESC_KEY (descriptor name) by which this descriptor can be
+        // calculated
+        // IMPORTANT: This should be always be a 'public static final' variable
+        // IMPORTANT: to avoid misinterpretations during runtime
+	public static final String DESC_KEY = "Electronegativity_allred_rochow";
+
+	public ElectronegativityAllredRochow()
+	{
+	        // show basic logging message if debugging is enabled
+		if (logger.isDebugEnabled())
+			logger.debug("Initialize " + this.getClass().getName());
+
+                // IMPORTANT: initialize descriptor informations
+                // IMPORTANT: use DescriptorHelper to facilitate this task
+                // IMPORTANT: relevant parameters are the descriptor name, the
+                // IMPORTANT: calculation representation and the descriptor result
+		descInfo =
+			DescriptorHelper.generateDescInfo(
+				DESC_KEY,
+				this.getClass(),
+				DescriptorInfo.TYPE_NO_COORDINATES,
+				null,
+				"joelib.desc.result.AtomDynamicResult");
+
+	}
+
+        // get array with atom properties
+        // typically we use already deprotonated
+        // molecules without hydrogens
+	public Object getAtomPropertiesArray(JOEMol mol)
+	{
+		// get partial charges for all atoms
+		JOEAtom atom;
+		AtomIterator ait = mol.atomIterator();
+		double enAllredRochow[] =
+			(double[]) DynamicArrayResult.getNewArray(
+				DynamicArrayResult.DOUBLE,
+				mol.numAtoms());
+		int i = 0;
+		while (ait.hasNext())
+		{
+			atom = ait.nextAtom();
+			enAllredRochow[i++] = atom.getENAllredRochow();
+		}
+		return enAllredRochow;
+	}
+}</PRE
+></DIV
+><P
+>For more complex descriptors, e.g. Moreau-Broto-Autocorrelation, the required interface methods for <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/desc/Descriptor.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/desc/Descriptor.java</TT
+></A
+>
+must be all implemented and
+there is no abstract helper class available. Because this is a complex task it is recommended to use an already implemented
+descriptor class, to copy and rename this file and modify these implementations for your requirements.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../examples/processes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>JOELib examples and code snippets</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Processes and filters</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

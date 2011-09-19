@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Import/Export</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="JOELib examples and code snippets"
+HREF="../examples/examples.html"><LINK
+REL="PREVIOUS"
+TITLE="Processes and filters"
+HREF="../examples/processes.html"><LINK
+REL="NEXT"
+TITLE="Interfaces"
+HREF="../examples/interfaces.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../examples/processes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. JOELib examples and code snippets</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../examples/interfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.EXAMPLES.IMPORTEXPORT"
+>Import/Export</A
+></H1
+><P
+>The import and export types can be defined dynamically and this is really usefull for slightly modified import and export
+funtionalities, e.g. assigning automatically identifiers, checking for duplicates, ...</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2281"
+>Import</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2283"
+>Get molecule import classes</A
+></H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.IMPORTEXPORT.IMPORT.GET"
+></A
+><P
+><B
+>Example 9-22. Get molecule import classes</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// open file input stream
+String inputFile="yourInputFile.sdf";
+FileInputStream input = null;
+try
+{
+  input = new FileInputStream(inputFile);
+}
+catch (Exception ex)
+{
+  ex.printStackTrace();
+  // TODO: handle exception
+}
+// create simple reader and
+// estimate file format by file extension
+SimpleReader reader = null;
+try
+{
+  // estimate input file type
+  IOType inType = IOTypeHolder.instance().filenameToType(inputFile);
+  if (inType == null)
+  {
+    // TODO: handle unkown input file type
+  }
+  // open simple reader
+  reader = new SimpleReader(input, inType);
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+  // TODO: handle exception
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2288"
+>Export</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2290"
+>Get molecule export classes</A
+></H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.IMPORTEXPORT.EXPORT.GET"
+></A
+><P
+><B
+>Example 9-23. Get molecule export classes</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// open file output stream
+String outputFile="yourOutputFile.sdf";
+FileOutputStream output = null;
+try
+{
+  output = new FileOutputStream(outputFile);
+}
+catch (Exception ex)
+{
+  ex.printStackTrace();
+  // TODO: handle exception
+}
+// create simple writer and
+// estimate file format by file extension
+SimpleWriter writer = null;
+try
+{
+  // estimate output file type
+  IOType outType = IOTypeHolder.instance().filenameToType(outputFile);
+  if (outType == null)
+  {
+    // TODO: handle unkown output file type
+  }
+  // open simple writer
+  writer = new SimpleWriter(output, outType);
+}
+catch (IOException e)
+{
+  e.printStackTrace();
+  // TODO: handle exception
+}</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2295"
+>Simple Import/Export pipeline</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2297"
+>Create molecule processing pipe</A
+></H3
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.EXAMPLES.IMPORTEXPORT.PIPE.CREATE"
+></A
+><P
+><B
+>Example 9-24. Create molecule processing pipe</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>package joelib.test;
+
+// import base classes and the molecule class
+import java.io.IOException;
+import joelib.data.JOEPairData;
+import joelib.io.IOTypeHolder;
+import joelib.io.MoleculeIOException;
+import joelib.io.SimpleReaderWriterPipe;
+import joelib.molecule.JOEMol;
+import org.apache.log4j.Category;
+
+public class AddMolID extends SimpleReaderWriterPipe
+{
+  // initialize logging tool for this class
+  private static Category logger = Category.getInstance("joelib.test.AddMolID");
+
+  public AddMolID(String args[]) throws IOException
+  {
+    // call super class for created pipe by
+    // using the command line parameters
+    super(args);
+  }
+
+  // you will be fored to implement these method by the
+  // SimpleReaderWriterPipe parent class
+  public void showUsage()
+  {
+    StringBuffer sb = new StringBuffer();
+    String programName = this.getClass().getName();
+    sb.append("Usage is :\n");
+    sb.append("java -cp . ");
+    sb.append(programName);
+    sb.append(" [options]");
+    sb.append(" &lt;input file&#62;");
+    sb.append(" &lt;output file&#62;");
+    sb.append("\n where options can be:");
+    sb.append(" -i&lt;inputFormat&#62;");
+    sb.append(" -o&lt;outputFormat&#62;");
+    sb.append("\nSupported molecule types:");
+    sb.append(IOTypeHolder.instance().toString());
+    System.out.println(sb.toString());
+    System.exit(0);
+  }
+
+  public void loadWriteAllMolecules()
+  {
+    logger.info("Start adding molecule identifiers ...");
+    for (;;)
+    {
+      try
+      {
+        // break, if all molecules were treated
+        if (!this.readWriteNext())break;
+      }
+      catch (IOException e)
+      {
+        logger.error("IO problems: "+e.getMessage()+" at molecule "+loadedMolecule().getTitle());
+      }
+      catch (MoleculeIOException e)
+      {
+        logger.error("Molecule parsing problems: "+e.getMessage()+
+                     " at molecule "+loadedMolecule().getTitle());
+      }
+    }
+  }
+
+  // you will be fored to implement these method by the
+  // SimpleReaderWriterPipe parent class
+  public void molecule2handle(JOEMol mol)
+  {
+    JOEPairData dp = new JOEPairData();
+    dp.setAttribute("ID");
+    dp.setValue(Integer.toString(moleculesLoaded()));
+    // overwrite previous identifiers
+    mol.addData(dp,true);
+  }
+
+  public static void main(String[] args)
+  {
+    AddMolID addMolID = null;
+    try
+    {
+      addMolID = new AddMolID(args);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    addMolID.loadWriteAllMolecules();
+  }
+}</PRE
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../examples/processes.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../examples/interfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Processes and filters</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../examples/examples.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Interfaces</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

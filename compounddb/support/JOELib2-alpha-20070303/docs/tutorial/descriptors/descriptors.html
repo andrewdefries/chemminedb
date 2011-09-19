@@ -1,0 +1,957 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Descriptors</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="PREVIOUS"
+TITLE="Maintenance"
+HREF="../utilities-maintenance.html"><LINK
+REL="NEXT"
+TITLE="Atom properties"
+HREF="../descriptors/atomProperties.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../utilities-maintenance.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../descriptors/atomProperties.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="JOELIB.DESCRIPTORS.NATIVE"
+></A
+>Chapter 5. Descriptors</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="../descriptors/descriptors.html#JOELIB.DESCRIPTORS.NATIVE.ONE"
+>Native values</A
+></DT
+><DT
+><A
+HREF="../descriptors/atomProperties.html"
+>Atom properties</A
+></DT
+><DT
+><A
+HREF="../descriptors/fingerprints.html"
+>Fingerprints</A
+></DT
+><DT
+><A
+HREF="../descriptors/transformations.html"
+>Transformations</A
+></DT
+></DL
+></DIV
+><A
+NAME="AEN1205"
+></A
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTORS.NATIVE.ONE"
+>Native values</A
+></H1
+><A
+NAME="AEN1209"
+></A
+><P
+>The native values like simple atom/group counts and complexity measures are suitable to build primitive QSAR prediction models for structure
+property relations, which has a good correlation to the molecular complexity. for more biological relevant models we recommend to use
+transformation based descriptors (<A
+HREF="../descriptors/transformations.html"
+>the Section called <I
+>Transformations</I
+></A
+>) based on atom properties
+(<A
+HREF="../descriptors/atomProperties.html"
+>the Section called <I
+>Atom properties</I
+></A
+>).</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ACIDICGROUPS"
+>Number of acidic groups</A
+></H2
+><P
+>Number of acidic groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ALIPHATICOHGROUPS"
+>Number of aliphatic hydroxy groups</A
+></H2
+><P
+>Number of aliphatic hydroxy groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.AROMATICBONDS"
+>Number of aromatic bonds</A
+></H2
+><P
+>Number of aromatic bonds.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.BASICGROUPS"
+>Number of basic groups</A
+></H2
+><P
+>Number of basic groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.FRACTIONROTATABLEBONDS"
+>Fraction of rotatable bonds</A
+></H2
+><P
+>Fraction of rotatable bonds.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GEOMETRICALDIAMETER"
+>Geometrical diameter</A
+></H2
+><P
+>Geometrical diameter.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GEOMETRICALRADIUS"
+>Geometrical radius</A
+></H2
+><P
+>Geometrical radius.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GEOMETRICALSHAPECOEFFICIENT"
+>Geometrical shape coefficient</A
+></H2
+><P
+>Geometrical shape coefficient.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GRAPHSHAPECOEFFICIENT"
+>Graph shape coefficient</A
+></H2
+><P
+>Graph shape coefficient.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HBA1"
+>Number of Hydrogen Bond Acceptors (HBA) 1</A
+></H2
+><P
+>Number of Hydrogen Bond Acceptors (HBA) 1.
+The default SMARTS pattern is: [$([!#6;+0]);!$([F,Cl,Br,I]);!$([o,s,nX3]);!$([Nv5,Pv5,Sv4,Sv6])].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HBA2"
+>Number of Hydrogen Bond Acceptors (HBA) 2</A
+></H2
+><P
+>Number of Hydrogen Bond Acceptors (HBA) 2.
+The default SMARTS pattern is: [$([$([#8,#16]);!$(*=N~O);!$(*~N=O);X1,X2]),$([#7;v3;!$([nH]);!$(*(-a)-a)])].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HBD1"
+>Number of Hydrogen Bond Donors (HBD) 1</A
+></H2
+><P
+>Number of Hydrogen Bond Donors (HBD) 1. The default SMARTS pattern is: [!#6;!H0].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HBD2"
+>Number of Hydrogen Bond Donors (HBD) 2</A
+></H2
+><P
+>Number of Hydrogen Bond Donors (HBD) 2.
+The default SMARTS pattern is: [$([O;H1,-&#38;!$(*-N=O)]),$([S;H1&amp;X2,-&amp;X1]),$([#7;H;!$(*(S(=O)=O)C(F)(F)F);!$(n1nnnc1);!$(n1nncn1)]),$([#7;-])].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HEAVYBONDS"
+>Number of heavy bonds</A
+></H2
+><P
+>Number of heavy bonds.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HETEROCYCLES"
+>Number of heterocycles</A
+></H2
+><P
+>Number of heterocycles.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.HYDROPHOBICGROUPS"
+>Number of hydrophobic groups</A
+></H2
+><P
+>Number of hydrophobic groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.KIERSHAPE1"
+>Kier Shape 1</A
+></H2
+><P
+>The Kier shape <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+><SUP
+>1</SUP
+>&kappa;</B
+></SPAN
+> descriptor [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>]
+can be defined as :</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1269"
+></A
+><P
+><B
+>Equation 5-1. Kier shape 1</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/kier1_1.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P<SUB
+>max</SUB
+></B
+></SPAN
+> is the maximum number of paths of length 1.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P<SUB
+>min</SUB
+></B
+></SPAN
+> is the minimum number of paths of length 1 in a molecule graph of same
+atom number.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P1</B
+></SPAN
+> is the number of paths in the given molecule of length 1.
+or:</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1280"
+></A
+><P
+><B
+>Equation 5-2. Kier shape 1 (alternative formulation)</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/kier1_2.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A</B
+></SPAN
+> means the number of nodes in the molecules graph.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P1</B
+></SPAN
+> is the number of paths of length 1 in the given molecule.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.KIERSHAPE2"
+>Kier shape 2</A
+></H2
+><P
+>The Kier shape <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+><SUP
+>2</SUP
+>&kappa;</B
+></SPAN
+>  descriptor [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>]
+can be defined as :</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1294"
+></A
+><P
+><B
+>Equation 5-3. Kier shape 2</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/kier2_1.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A</B
+></SPAN
+> means the number of nodes in the molecules graph.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P2</B
+></SPAN
+> is the number of paths of length 2 in the given molecule.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.KIERSHAPE3"
+>Kier shape 3</A
+></H2
+><P
+>The Kier shape <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+><SUP
+>3</SUP
+>&kappa;</B
+></SPAN
+> descriptor [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>]
+can be defined as :</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1308"
+></A
+><P
+><B
+>Equation 5-4. Kier shape 3</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/kier3_1.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A</B
+></SPAN
+> means the number of nodes in the molecules graph.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>P3</B
+></SPAN
+> is the number of paths of length 3 in the given molecule.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.LOGP"
+>Octanol/Water partition coefficient (logP)</A
+></H2
+><P
+>Octanol/Water partition coefficient (logP) or hydrophobicity [<A
+HREF="../bibliography.html#WC99"
+>wc99</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.MOLARREFRACTIVITY"
+>Molar refractivity (MR)</A
+></H2
+><P
+>Molar refractivity (MR) [<A
+HREF="../bibliography.html#WC99"
+>wc99</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.MOLECULARWEIGHT"
+>Molecular weight (MW)</A
+></H2
+><P
+>Molecular weight (MW).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFATOMS"
+>Number of atoms</A
+></H2
+><P
+>Number of atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFB"
+>Number of boron atoms</A
+></H2
+><P
+>Number of boron atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFBR"
+>Number of bromine atoms</A
+></H2
+><P
+>Number of bromine atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFBONDS"
+>Number of bonds</A
+></H2
+><P
+>Number of bonds.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFCL"
+>Number of chlorine atoms</A
+></H2
+><P
+>Number of chlorine atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFHAL"
+>Number of halogen atoms</A
+></H2
+><P
+>Number of halogen atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFI"
+>Number of iodine atoms</A
+></H2
+><P
+>Number of iodine atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFF"
+>Number of fluorine atoms</A
+></H2
+><P
+>Number of fluorine atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFN"
+>Number of nitrogen atoms</A
+></H2
+><P
+>Number of nitrogen atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFO"
+>Number of oxygen atoms</A
+></H2
+><P
+>Number of oxygen atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFP"
+>Number of phosphorus atoms</A
+></H2
+><P
+>Number of phosphorus atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NUMBEROFS"
+>Number of sulfur atoms</A
+></H2
+><P
+>Number of sulfur atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.NO2GROUPS"
+>Number of -NO<SUB
+>2</SUB
+> groups</A
+></H2
+><P
+>Number of -NO<SUB
+>2</SUB
+> groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.OSOGROUPS"
+>Number of -OSO atoms</A
+></H2
+><P
+>Number of -OSO atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.POLARSURFACEAREA"
+>Polar surface area (PSA)</A
+></H2
+><P
+>Polar surface area (PSA) [<A
+HREF="../bibliography.html#ERS00"
+>ers00</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ROTATABLEBONDS"
+>Number of rotatable bonds</A
+></H2
+><P
+>Number of rotatable bonds, where the atoms are heavy atoms with bond order one and a hybridization which is not one (no sp).
+Additionally the bond is a non-ring-bond.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.SOGROUPS"
+>Number of -SO groups</A
+></H2
+><P
+>Number of -SO groups.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.SO2GROUPS"
+>Number of -SO<SUB
+>2</SUB
+> atoms</A
+></H2
+><P
+>Number of -SO<SUB
+>2</SUB
+> atoms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.TOPOLOGICALDIAMETER"
+>Topological diameter</A
+></H2
+><P
+>Topological diameter.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.TOPOLOGICALRADIUS"
+>Topological radius</A
+></H2
+><P
+>Topological radius.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ZAGREBINDEX1"
+>Zagreb index 1</A
+></H2
+><P
+>Zagreb index 1 [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>].</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1396"
+></A
+><P
+><B
+>Equation 5-5. Zagreb index 1</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/zagreb1.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+>where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>a</B
+></SPAN
+> are all atoms of the hydrogen depleted graph and
+<IMG
+SRC="formulas/delta.gif"> is the vertex degree.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.ZAGREBINDEX2"
+>Zagreb index 2</A
+></H2
+><P
+>Zagreb index 2 [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>].</P
+><DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1409"
+></A
+><P
+><B
+>Equation 5-6. Zagreb index 2</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/zagreb2.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+><P
+>where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>b</B
+></SPAN
+> are all bonds of the hydrogen depleted graph and
+<IMG
+SRC="formulas/delta.gif"> is the vertex degree.
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+> are the atom indices
+of the atoms connected to the bond <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>b</B
+></SPAN
+>.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../utilities-maintenance.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../descriptors/atomProperties.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Maintenance</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Atom properties</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

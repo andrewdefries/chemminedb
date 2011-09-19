@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Molecule operation methods and classes"
+HREF="../functionalities/molecule.html"><LINK
+REL="PREVIOUS"
+TITLE="Molecule operation methods and classes"
+HREF="../functionalities/molecule.html"><LINK
+REL="NEXT"
+TITLE="Processes and filters"
+HREF="../functionalities/mol-process.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../functionalities/molecule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Molecule operation methods and classes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../functionalities/mol-process.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.MOLECULE.SMARTS"
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.SMARTS.BASICS"
+>SMARTS basics</A
+></H2
+><P
+>The SMiles ARbitrary Target Specification (SMARTS) [<A
+HREF="../bibliography.html#SMARTS"
+>smarts</A
+>]
+is based on the SMILES notation [<A
+HREF="../bibliography.html#WEI88"
+>wei88</A
+>,<A
+HREF="../bibliography.html#WEI89"
+>wei89</A
+>].</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.SMARTS.EXAMPLE.SUBSTRUCTURE-SEARCH"
+></A
+><P
+><B
+>Example 3-3. SMARTS substructure search</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>// benzene
+String smartsPattern = "c1ccccc1";
+JOESmartsPattern smarts = new JOESmartsPattern();
+
+// parse, initialize and generate SMARTS pattern
+// to allow fast pattern matching
+if(!smarts.init(smartsPattern())
+{
+  System.err.println("Invalid SMARTS pattern.");
+}
+
+// find substructures
+smarts.match(mol);
+Vector         matchList  = smarts.getUMapList();
+
+System.out.println("Pattern found "+matchList.size()+" times.");</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.SMARTS.DEFINITION"
+>SMARTS definition</A
+></H2
+><P
+>The standard SMARTS definition [<A
+HREF="../bibliography.html#SMARTS"
+>smarts</A
+>] can be
+obtained directly from the Daylight homepage. The extended SMARTS definitions which were
+not available in the Daylight tutorial are explained here. Some of this definitions are analogous
+the the definitions in MOE to provide as much standard as possible.</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN591"
+></A
+><P
+><B
+>Table 3-2. Substructure search expressions</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="smartsentry"><COL
+WIDTH="1*"
+TITLE="description"><THEAD
+><TR
+><TH
+>SMARTS entry</TH
+><TH
+>description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>G&lt;n&#62;</VAR
+></TD
+><TD
+>Atom of periodic group <VAR
+CLASS="LITERAL"
+>n</VAR
+></TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>Q&lt;n&#62;</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>n</VAR
+> explicite bonds to heavy atoms</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>D&lt;n&#62;</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>n</VAR
+> explicit bonds (including H atoms). That's the standard definition, only
+      the old OELib counts only heavy weight bonds.</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>X&lt;n&#62;</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>n</VAR
+> number of bonds (including implicit+explicit H atoms). That's the standard definition, only
+      the old OELib counts only implicit hydrogen bonds.</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>^&lt;n&#62;</VAR
+></TD
+><TD
+>Hybridisation: <VAR
+CLASS="LITERAL"
+>sp<SUP
+>n</SUP
+></VAR
+>. See
+      <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+> for more informations.</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>To understand the substructure search and the chirality search functionality, it could be usefull to have a look at the
+atom type assigning process in <A
+HREF="../atomtyper.html"
+>the Section called <I
+>Assigning atom types, aromatic flags, hybridization and hydrogens</I
+></A
+>.</P
+><P
+>For assigning atom types using a geometry-based algorithm have a look at the paper of Meng and Lewis [<A
+HREF="../bibliography.html#ML91"
+>ml91</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.SMARTS.PATTY"
+>Programmable Atom Typer (PATTY)</A
+></H2
+><P
+>Programmable Atom Typer (PATTY) [<A
+HREF="../bibliography.html#BS93"
+>bs93</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.SMARTS.STRUCTURE-MODIFICATION"
+>SMARTS based structure modification</A
+></H2
+><P
+>Transformation of chemical structures (<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/JOEChemTransformation.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.data.JOEChemTransformation</TT
+></A
+>) can be
+used for a PH value correction (<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/JOEPhModel.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.data.JOEPhModel</TT
+></A
+>).
+The TRANSFORMation patterns were defined in <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/phmodel.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/phmodel.txt</TT
+></A
+>.
+An important property of <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>SMARTS atoms</I
+></SPAN
+> is the vector binding number. A vector binding
+number is the SMARTS atom delimited by ':' and <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>a number</I
+></SPAN
+> which were enclosed by [] !
+Don't confound with the expression for aromatic bonds ':' which must be enclosed by
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>two SMARTS atom expressions</I
+></SPAN
+>.
+Here are some abstract examples to understand the transformation definitions:</P
+><P
+></P
+><UL
+><LI
+><P
+>Delete atoms:</P
+><P
+><VAR
+CLASS="LITERAL"
+>TRANSFORM O=CO[#1:1] &#62;&#62; O=CO</VAR
+></P
+><P
+>Delete all atoms which have an defined vector binding on the left side and no
+       equivalent vector binding number on the right side. If the right side would be of
+       type <VAR
+CLASS="LITERAL"
+>O=CO[#1:1]</VAR
+> the H atom would not be deleted. </P
+></LI
+><LI
+><P
+>Change atom type:</P
+><P
+>TRANSFORM O=C[O:1] &#62;&#62; O=C[N:1]</P
+><P
+>Replace all oxygen atoms from an carboxyl group with a nitrogen atom to an
+       amide. Change only the atoms which have the same vector binding number and
+       different atom types.</P
+></LI
+><LI
+><P
+>Change atom charge:</P
+><P
+>TRANSFORM O=C[O:1] &#62;&#62; O=C[O-:1]</P
+><P
+>Change all oxygen atoms from an carboxyl group to oxygen atoms with a
+       negative charge. Change only the atoms which have the same vector binding
+       number and atom charges.</P
+></LI
+><LI
+><P
+>Change bond type:</P
+><P
+>TRANSFORM [O:1]=[C:2]O &#62;&#62; [O:1]-[C:2]O</P
+><P
+>Change all double bonds of carboxyl group to single bonds. The bonds which
+       must be changed should be enclosed between two SMARTS atom expressions
+       with the equal vector binding numbers.</P
+></LI
+></UL
+><P
+>If you want use another PH-value model you can simple change
+the <VAR
+CLASS="LITERAL"
+>joelib.data.JOEPhModel.resourceFile=joelib/data/plain/phmodel.txt</VAR
+> entry in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../functionalities/molecule.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../functionalities/mol-process.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Molecule operation methods and classes</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../functionalities/molecule.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Processes and filters</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

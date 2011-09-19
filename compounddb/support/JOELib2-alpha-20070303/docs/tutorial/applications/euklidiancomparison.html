@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>EuklidianComparison</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="PREVIOUS"
+TITLE="Descriptor calculation"
+HREF="../applications/descriptorcalculation.html"><LINK
+REL="NEXT"
+TITLE="Statistic"
+HREF="../applications/statistic.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../applications/descriptorcalculation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Example applications</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../applications/statistic.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.APPLICATIONS.EUKLIDIANCOMPARISON"
+>EuklidianComparison</A
+></H1
+><P
+>Example application for comparing molecules. Molecules can be compared using descriptor values (euklidian distance).</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.EUKLIDIANCOMPARISON.OPTIONS"
+>Options</A
+></H2
+><P
+><B
+CLASS="COMMAND"
+>sh euklComparison.sh</B
+>   <VAR
+CLASS="REPLACEABLE"
+>typeTarget</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>targetFile</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>typeToCompare</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>toCompareFile</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>descriptorFile</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+>   <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+> </P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>typeTarget</VAR
+> </P
+>Input/Output type of the target file.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>targetFile</VAR
+> </P
+>Target file (size <VAR
+CLASS="LITERAL"
+>T</VAR
+>). This file will be loaded into the memory.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>typeToCompare</VAR
+> </P
+>Input/Output type of the file to which the target file will be compared. </P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>toCompareFile</VAR
+> </P
+>Comparison file (size <VAR
+CLASS="LITERAL"
+>C</VAR
+>). This file will be loaded from file and can be huge.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>descriptorFile</VAR
+> </P
+>These descriptors will be used for comparing molecules.This must be a list of native
+value descriptors.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+> </P
+>The output file for the euklidian distances. This will be a matrix of size
+<VAR
+CLASS="LITERAL"
+>T</VAR
+>*<VAR
+CLASS="LITERAL"
+>C</VAR
+>.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>identifier</VAR
+> </P
+>The molecule identifier of the molecules in the comparison file which will be
+the first entry in every line.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../applications/descriptorcalculation.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../applications/statistic.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Descriptor calculation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Statistic</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

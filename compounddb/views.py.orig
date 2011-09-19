@@ -1,0 +1,219 @@
+from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from django.core.paginator import Paginator
+from django.http import Http404, HttpResponse
+from django.views.generic.list_detail import object_detail
+from django.template import RequestContext
+from compounddb.models import Compound, Library, LibraryHeader, Annotation,\
+	SDFFile
+from compounddb.models import PropertyField, Property, Plate, Fingerprint
+from django.conf import settings
+structure_renderer_url = settings.RENDERER_URL
+if not structure_renderer_url.startswith('http://'):
+	structure_renderer_url = 'http://127.0.0.1' + structure_renderer_url
+from compounddb.search import search, SearchError
+
+from hashlib import md5
+from urllib2 import urlopen
+from urllib import urlencode
+from logging import root, basicConfig
+import re
+basicConfig()
+
+def get_library_by_name(library, flush=False, cache_life=3600):
+	cache_key = 'library:%s' % (library)
+	if not flush:
+		lib = cache.get(cache_key)
+	else:
+		lib = None
+	if lib is None:
+		lib = Library.objects.filter(
+			header__name__iexact=library).select_related('header').extra(
+			select={'count':
+				'''select count(*) from compounddb_compound_library where
+				library_id=compounddb_library.id'''}).latest()
+		cache.set(cache_key, lib, cache_life)
+	
+	return lib
+
+def fuzzy_get_library_by_name(library):
+	lib = Library.objects.filter(
+		header__name__icontains=library).select_related('header').extra(
+			select={'count':
+				'''select count(*) from compounddb_compound_library where
+				library_id=compounddb_library.id'''}).latest()
+	
+	return lib
+
+@cache_page(60 * 5)
+def compound_detail(request, library, cid, resource):
+	try:
+		lib = get_library_by_name(library)
+		library = lib.header.name
+		# previously select_related was used:
+		# .select_related(
+		#	'library', 'sdffile_set', 'fingerprint_set', 'property_set',
+		#	'annotation_set', 'plate_set'
+		#	)
+		# but that does not work since select_related only support
+		# one-direction ForeignKey and not reverse
+		compound = Compound.objects.get(cid__iexact=cid, library=lib)
+	except Compound.DoesNotExist, Library.DoesNotExist:
+		raise Http404
+
+	# --- inchi/smiles/sdf file
+	inchi = compound.inchi
+	smiles = compound.smiles
+
+	if resource:
+		if resource == 'smiles':
+			return HttpResponse(smiles, mimetype='text/plain')
+		elif resource == 'inchi':
+			return HttpResponse(inchi, mimetype='text/plain')
+
+	sdf = compound.sdffile_set.all()[0].sdffile
+	if resource and resource == 'sdf':
+		return HttpResponse(sdf, mimetype='text/plain')
+
+	# --- joelib
+	excluded_joelibs = ['MW', ]
+	joelib_properties = dict()
+	for j in compound.property_set.all():
+		if j.field.name == 'MW':
+			# joelib weight takes the priority
+			compound.weight = j.value
+		if j.field.name not in excluded_joelibs:
+			short_name = j.field.name
+			long_name = j.field.description
+			if j.value % 2 == 0:
+				joelib_properties[long_name] = (short_name, '%d' % j.value)
+			else:
+				joelib_properties[long_name] = (short_name, '%.3f' % j.value)
+
+	if resource and resource == 'property':
+			p = '\n'.join(['%-50s %s' % (_[0][:50], _[1]) for _ in joelib_properties.items()])
+			return HttpResponse(p, mimetype='text/plain')
+
+	if resource:
+		raise Http404
+
+	# --- annotation
+	excluded_annotations = ['name', 'formula', 'plate', 'row', 'col', 'smiles',
+		'inchi']
+	annotations = dict()
+	for a in compound.annotation_set.all():
+		if a.name.lower() not in excluded_annotations:
+			annotations[a.name] = a.value
+
+	# --- plate
+	plates = []
+	plate = compound.plate_set.all()
+	for p in plate:
+		plates.append(dict(format=p.format, plate=p.plate, well=p.well))
+
+	# --- get duplicates via fingerprint
+	try:
+		fpt = Fingerprint.objects.get(compound=compound)
+		dup_fpts = Fingerprint.objects.filter(fingerprint=fpt.fingerprint)
+		if len(dup_fpts) == 1:
+			dup_fpts = []
+	except:
+		root.warning("failed to get duplicates for %s" % compound)
+		dup_fpts = []
+
+	return render_to_response('compound.html', dict(
+		libname=library,
+		compound=compound,
+		annotations=annotations,
+		annotations_head=annotations.items()[:11],
+		annotations_tail=annotations.items()[11:],
+		joelib_properties=joelib_properties,
+		joelib_properties_head=joelib_properties.items()[:11],
+		joelib_properties_tail=joelib_properties.items()[11:],
+		plates=plates,
+		sdf=sdf,
+		smiles=smiles,
+		inchi=inchi,
+		),
+		context_instance=RequestContext(request))
+
+# the following function was about to be deprecated for speed concern, however
+# for support of personal library when SDF cannot be accessed from the 
+# renderer directly from HTTP, this can offer value
+def compound_image(request, library, cid):
+	cache_key = '%s/%s/png' % (library, cid)
+	if cache.get(cache_key) is not None:
+		return redirect(cache.get(cache_key))
+
+	# load the sdf to determine the url
+	try:
+		lib = get_library_by_name(library)
+		sdf = SDFFile.objects.get(compound__library=lib,
+			compound__cid__iexact=cid)
+	except SDFFile.DoesNotExist:
+		raise Http404
+	sdflines = []
+	ptn = re.compile(r'^M\s+END')
+	for i in sdf.sdffile.encode('utf-8').splitlines():
+		sdflines.append(i)
+		if ptn.match(i): break
+	sdf = '\n'.join(sdflines)
+	url = structure_renderer_url + md5(sdf).hexdigest()
+	root.info("trying to load from cache the structure of %s:%s" %
+		(library, cid))
+
+	# see whether renderer has the image in cache
+	try:
+		renderer = urlopen(url)
+		assert renderer.getcode() != 404
+		renderer.close()
+	except:
+		# not ready. so post the sdf to the renderer
+		renderer = urlopen(structure_renderer_url, urlencode(dict(sdf=sdf)))
+		url = renderer.geturl()
+	renderer.close()
+
+	cache.set(cache_key, url, 3600*24)
+	return redirect(url)
+
+@cache_page(3600*24)
+def library_content(request, library, page=1):
+	if page is None: page = 1
+	try:
+		page = int(page)
+	except ValueError:
+		raise Http404
+	try:
+		lib = get_library_by_name(library)
+		compounds = Compound.objects.filter(library=lib)
+	except Library.DoesNotExist:
+		raise Http404
+	compounds.count = lambda: lib.count
+	compounds_page = Paginator(compounds, 10).page(int(page))
+	return render_to_response('library.html', dict(
+		libname=library,
+		compounds_page=compounds_page),
+		context_instance=RequestContext(request))
+		
+@cache_page(60)
+def annotation_search(request):
+	pure_query = query = request.GET.get('query', '')
+	page = int(request.GET.get('p', '1'))
+	matches = []
+	if query:
+		try:
+			pure_query, matches = search(query, page, request)
+		except SearchError, e:
+			return render_to_response('search.html', dict(
+				error=e, 
+				query=query),
+				context_instance=RequestContext(request))
+	
+	return render_to_response('search.html', dict(
+		p=page,
+		query=query,
+		pure_query=pure_query,
+		matches=matches,
+		),
+		context_instance=RequestContext(request))

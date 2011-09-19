@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Transformations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Descriptors"
+HREF="../descriptors/descriptors.html"><LINK
+REL="PREVIOUS"
+TITLE="Fingerprints"
+HREF="../descriptors/fingerprints.html"><LINK
+REL="NEXT"
+TITLE="Algorithms"
+HREF="../algorithms/algorithms.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../descriptors/fingerprints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Descriptors</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../algorithms/algorithms.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTORS.TRANSFORMATIONS.ONE"
+>Transformations</A
+></H1
+><A
+NAME="AEN1833"
+></A
+><P
+>The descriptors obtained for the autocorrelation, BCUT and GTCI should be used carefully for QSAR models, because they are limited
+to the smallest molecule or more exactly the smallest topological distance in the molecule. Although in these specail cases missing values
+can be filled with zero values, because there is no probability for large distances in 'small' lead molecules. Nonetheless this is not a
+good strategy, because you will not get really good models, if you have a lot of zero values, which is obviously if you have a closer look
+at the data sets. Or in other words, you will get a potential 'degeneracy problem' for such molecules.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.AUTOCORRELATION"
+>Moreau-Broto topological autocorrelation</A
+></H2
+><P
+>Moreau-Broto topological autocorrelation [<A
+HREF="../bibliography.html#BMV84"
+>bmv84</A
+>].
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1841"
+></A
+><P
+><B
+>Equation 5-14. Moreau-Broto autocorrelation</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/autocorrelation.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>d<SUB
+>ij</SUB
+></B
+></SPAN
+> is the topological distance between the atoms
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>, <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>i</SUB
+></B
+></SPAN
+>
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>j</SUB
+></B
+></SPAN
+> are the atom properties of the atoms <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>.</P
+><P
+>It must be mentioned that the autocorrelation is only a special case of the radial distribution function (<A
+HREF="../descriptors/transformations.html#JOELIB.DESCRIPTORS.RADIALDISTRIBUTIONFUNCTION"
+>the Section called <I
+>Radial distribution function (RDF)</I
+></A
+>).</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.BURDENMODIFIEDEIGENVALUES"
+>Burden modified eigenvalues</A
+></H2
+><P
+>Burden modified eigenvalues [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.GLOBALTOPOLOGICALCHARGEINDEX"
+>Global topological charge</A
+></H2
+><P
+>Global topological charge [<A
+HREF="../bibliography.html#TC00"
+>tc00</A
+>].</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.RADIALDISTRIBUTIONFUNCTION"
+>Radial distribution function (RDF)</A
+></H2
+><A
+NAME="AEN1868"
+></A
+><P
+>The radial distribution function (RDF) [<A
+HREF="../bibliography.html#MSG99"
+>msg99</A
+>,<A
+HREF="../bibliography.html#WFZ04B"
+>wfz04b</A
+>] can be interpreted as the probability distribution of finding an atom in a spherical volume of
+radius <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r</B
+></SPAN
+>.
+<DIV
+CLASS="EQUATION"
+><A
+NAME="AEN1876"
+></A
+><P
+><B
+>Equation 5-15. Radial distribution function</B
+></P
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="formulas/rdf.gif"
+ALIGN="CENTER"></P
+></DIV
+></DIV
+>
+where <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+> is the geometrical distance between the atoms
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and atom <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>, <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>i</SUB
+></B
+></SPAN
+>
+and <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>w<SUB
+>j</SUB
+></B
+></SPAN
+> are the atom properties of the atoms <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>i</B
+></SPAN
+> and
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>j</B
+></SPAN
+>. <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B</B
+></SPAN
+> is the smoothing parameter
+(fuzziness of the distance <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+>) for the interatomic distance and
+<SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>f</B
+></SPAN
+> the scaling factor.</P
+><P
+>If <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B</B
+></SPAN
+> aims to infinity the RDF code approximates to the autocorrelation function (<A
+HREF="../descriptors/transformations.html#JOELIB.DESCRIPTORS.AUTOCORRELATION"
+>the Section called <I
+>Moreau-Broto topological autocorrelation</I
+></A
+>) and the fuzziness
+of the distance <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>r<SUB
+>ij</SUB
+></B
+></SPAN
+> vanishes. So the RDF code can be treated as a generalized
+autocorrelation function.</P
+><P
+>The RDF user parameters can be defined in the <TT
+CLASS="FILENAME"
+>joelib.properties</TT
+>-file, otherwise the default parameters will be used:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>jcompchem.joelib.desc.types.RadialDistributionFunction.minSphericalVolume = 0.2
+joelib.desc.types.RadialDistributionFunction.maxSphericalVolume = 10.0
+joelib.desc.types.RadialDistributionFunction.sphericalVolumeResolution = 0.2
+joelib.desc.types.RadialDistributionFunction.smoothingFactor = 25</PRE
+><P
+>Optional the RDF can be calculated with protonated molecules, but you must be sure that all available atom
+properties are calculated with hydrogens also. Because this is not the standard, this option should be only used by developers.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../descriptors/fingerprints.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../algorithms/algorithms.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Fingerprints</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../descriptors/descriptors.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Algorithms</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

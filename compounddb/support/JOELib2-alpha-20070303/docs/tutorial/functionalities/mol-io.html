@@ -1,0 +1,1138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Input and output</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Molecule operation methods and classes"
+HREF="../functionalities/molecule.html"><LINK
+REL="PREVIOUS"
+TITLE="Processes and filters"
+HREF="../functionalities/mol-process.html"><LINK
+REL="NEXT"
+TITLE="Assigning atom types, aromatic flags, hybridization and hydrogens"
+HREF="../atomtyper.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../functionalities/mol-process.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Molecule operation methods and classes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../atomtyper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.MOLECULE.IO"
+>Input and output</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.IO.FORMATS"
+>Supported input and output formats</A
+></H2
+><P
+>Supported file types can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file in the <TT
+CLASS="FILENAME"
+>joelib/src</TT
+> directory
+if you have a source distribution or in the <TT
+CLASS="FILENAME"
+>joelib/lib/joelib.jar:joelib.properties</TT
+>-file if you have a binary
+distribution.
+If no represenation for an input/output-type is defined JOELib will try to load a
+default interpreting class which is defined in
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/io/IOTypeHolder.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.io.IOTypeHolder</TT
+></A
+>.
+Here is an example definition: </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.MOLECULE.IO.FORMATS.EXAMPLE"
+></A
+><P
+><B
+>Example 3-4. Definition of IO types</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>joelib.filetypes.1.name           = SDF
+joelib.filetypes.1.representation = joelib.io.types.MDLSD
+joelib.filetypes.2.name           = SMILES
+joelib.filetypes.2.representation = joelib.io.types.Smiles
+joelib.filetypes.3.name           = CTX
+joelib.filetypes.4.name           = CML
+joelib.filetypes.5.name           = POV</PRE
+></DIV
+><P
+>The defined input/output definitions can be easily accessed with two helper classes
+joelib.io.SimplerReader and joelib.io.SimplerWriter which should help you to understand
+the mechanism to get an suitable reader and writer object for your needs.
+Here is a list of supported input/output types:</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN722"
+></A
+><P
+><B
+>Table 3-3. Supported file formats</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="name"><COL
+WIDTH="1*"
+TITLE="readable"><COL
+WIDTH="1*"
+TITLE="writeable"><COL
+WIDTH="1*"
+TITLE="description"><THEAD
+><TR
+><TH
+>Name</TH
+><TH
+>is readable</TH
+><TH
+>is writeable</TH
+><TH
+>Description</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>UNDEFINED</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+>Undefined</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>BMP</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Windows Bitmap (BMP) image</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>CML</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Chemical Markup Language (CML)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>CTX</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>CACTVS clear text format (CTX)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>POV</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Persistence Of Vision (POV) Ray Tracer</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>FLAT</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Flat file format</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>Gaussian</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Gaussian</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>GIF</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>CompuServe Graphics Interchange (GIF) image</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JPEG</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>JPEG image</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>JCAMP</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false (but in progress)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false (but in progress)</VAR
+></TD
+><TD
+>Joint Commitee on Atomic and Molecular Physical Data</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>MOL2</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Sybyl Mol2</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>MOLCONNZ</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+>MolConnZ</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>MOPACOUT</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+>MOPAC Output</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PDB</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false (but in progress)</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Protein Data Bank</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PDF</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Portable Adobe Document Format (PDF)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PNG</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Portable Network Graphics (PNG) image</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PPM</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Portable Pixelmap (PPM) image</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>PREP</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+>Amber PREP</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>SDF</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>MDL SD file</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>SMILES</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Simplified Molecular Input Line Entry System (SMILES)</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>TINKER</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>false</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Tinker XYZ</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>XYZ</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>XYZ</TD
+></TR
+><TR
+><TD
+><VAR
+CLASS="LITERAL"
+>ZIP</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+><VAR
+CLASS="LITERAL"
+>true</VAR
+></TD
+><TD
+>Compressed ZIP file format</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN920"
+>XML respective Chemical Markup Language (CML)</A
+></H3
+><P
+>XML respective Chemical Markup Language (CML)
+[<A
+HREF="../bibliography.html#MR99"
+>mr99</A
+>, <A
+HREF="../bibliography.html#MR01A"
+>mr01a</A
+>, <A
+HREF="../bibliography.html#MR01B"
+>mr01b</A
+>, <A
+HREF="../bibliography.html#WIL01"
+>wil01</A
+>] (in progress)</P
+><P
+>For more informations have a look at <A
+HREF="http://www.xml-cml.org/"
+TARGET="_top"
+>http://www.xml-cml.org/</A
+>. The CML
+output type can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>###########
+# CML
+# version:            1.0 and 2.0
+# ouput:              attributearray, array, large, huge
+# delimiter:          if you comment this line, standard white space will be used
+# force.formalCharge: formal charges will be always written, even when they are zero
+# partialCharge:      write partial atom charge
+# hydrogenCount:      write number of implicite+explicite hydrogens
+###########
+## use slower memory saving preparser for avoiding to load the complete data set into memory
+## This flag will be automatically switched 'ON' for CML files in compressed ZIP files !
+## The basic convert does not need it, because it uses already another sequential
+## SAX reader (forced by a callback)
+joelib.io.types.ChemicalMarkupLanguage.useSlowerMemorySavingPreparser=false
+###########
+joelib.io.types.ChemicalMarkupLanguage.output.defaultVersion=2.0
+joelib.io.types.ChemicalMarkupLanguage.defaultDelimiter=\u0020
+#joelib.io.types.ChemicalMarkupLanguage.defaultDelimiter=|
+joelib.io.types.ChemicalMarkupLanguage.output=huge
+joelib.io.types.ChemicalMarkupLanguage.output.force.formalCharge=false
+joelib.io.types.ChemicalMarkupLanguage.output.partialCharge=true
+joelib.io.types.ChemicalMarkupLanguage.output.hydrogenCount=true
+joelib.io.types.ChemicalMarkupLanguage.output.useNamespace=true
+joelib.io.types.ChemicalMarkupLanguage.output.namespace=cml
+joelib.io.types.ChemicalMarkupLanguage.output.xmlDeclaration=http://www.xml-cml.org/schema/cml2/core
+joelib.io.types.ChemicalMarkupLanguage.DTD.resourceDir=joelib/io/types/cml/data/
+###########
+## a first step to 'reproducable' descriptor calculation algorithms
+joelib.io.types.ChemicalMarkupLanguage.output.storeChemistryKernelInfo=true
+## these informations are not really a CML standard
+###########
+joelib.io.types.ChemicalMarkupLanguage.output.symmetryInformations=false
+###########</PRE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN932"
+>CACTVS's clear text format (CTX)</A
+></H3
+><P
+>CACTVS's clear text format (CTX) [<A
+HREF="../bibliography.html#GAS95"
+>gas95</A
+>]
+<A
+HREF="http://www2.chemie.uni-erlangen.de/software/cactvs/index.html"
+TARGET="_top"
+>http://www2.chemie.uni-erlangen.de/software/cactvs/index.html</A
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="JOELIB.MOLECULE.IO.FORMATS.IMAGE"
+>Image writers (BMP, GIF, JPEG, PPM)</A
+></H3
+><P
+>The image output properties can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file:</P
+><PRE
+CLASS="PROGRAMLISTING"
+># General image writer
+joelib.gui.render.Mol2Image.defaultWidth=300
+joelib.gui.render.Mol2Image.defaultHeight=200
+
+# General 2D rendering options
+joelib.gui.render.Renderer2DModel.bond.length=30.0
+joelib.gui.render.Renderer2DModel.bond.distance=6.0
+joelib.gui.render.Renderer2DModel.bond.width=2.0
+joelib.gui.render.Renderer2DModel.drawNumbers=false
+joelib.gui.render.Renderer2DModel.useKekuleStructure=false
+joelib.gui.render.Renderer2DModel.showEndCarbons=true
+joelib.gui.render.Renderer2DModel.atomColoring=false
+joelib.gui.render.Renderer2DModel.orthoLineOffset=20
+joelib.gui.render.Renderer2DModel.arrowOffset=10
+joelib.gui.render.Renderer2DModel.arrowSize=5
+
+joelib.gui.render.Renderer2DModel.background.color.r=255
+joelib.gui.render.Renderer2DModel.background.color.g=255
+joelib.gui.render.Renderer2DModel.background.color.b=255
+
+joelib.gui.render.Renderer2DModel.foreground.color.r=0
+joelib.gui.render.Renderer2DModel.foreground.color.g=0
+joelib.gui.render.Renderer2DModel.foreground.color.b=0
+
+joelib.gui.render.Renderer2DModel.highlight.color.r=255
+joelib.gui.render.Renderer2DModel.highlight.color.g=0
+joelib.gui.render.Renderer2DModel.highlight.color.b=0
+
+joelib.gui.render.Renderer2DModel.number.color.r=0
+joelib.gui.render.Renderer2DModel.number.color.g=0
+joelib.gui.render.Renderer2DModel.number.color.b=255
+
+joelib.gui.render.Renderer2DModel.conjugatedRing.color.r=0
+joelib.gui.render.Renderer2DModel.conjugatedRing.color.g=0
+joelib.gui.render.Renderer2DModel.conjugatedRing.color.b=0
+
+joelib.gui.render.Renderer2DModel.arrow.color.r=0
+joelib.gui.render.Renderer2DModel.arrow.color.g=255
+joelib.gui.render.Renderer2DModel.arrow.color.b=0
+
+joelib.gui.render.Renderer2DModel.orthogonalLine.color.r=0
+joelib.gui.render.Renderer2DModel.orthogonalLine.color.g=0
+joelib.gui.render.Renderer2DModel.orthogonalLine.color.b=255</PRE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN943"
+>Joint Commitee on Atomic and Molecular Physical Data (JCAMP)</A
+></H3
+><P
+>Joint Commitee on Atomic and Molecular Physical Data (JCAMP) format
+[<A
+HREF="../bibliography.html#DL93"
+>dl93</A
+>, <A
+HREF="../bibliography.html#DW88"
+>dw88</A
+>, <A
+HREF="../bibliography.html#GHHJS91"
+>ghhjs91</A
+>, <A
+HREF="../bibliography.html#LHDL94"
+>lhdl94</A
+>]
+(in progress)</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN950"
+>Protein Data Base (PDB)</A
+></H3
+><P
+><A
+HREF="http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html"
+TARGET="_top"
+>Protein Data Base</A
+></P
+><P
+>The Protein Data Bank (PDB) is an archive of experimentally determined three-dimensional structures of biological macromolecules,
+serving a global community of researchers, educators, and students. The archives contain atomic coordinates, bibliographic citations,
+primary and secondary structure information, as well as crystallographic structure factors and NMR experimental data.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="JOELIB.MOLECULE.IO.FORMATS.PDF"
+>Portable Adobe Document Format (PDF)</A
+></H3
+><P
+>The PDF output properties can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file:</P
+><PRE
+CLASS="PROGRAMLISTING"
+># PDF writer
+joelib.io.types.PDF.fontSize=10
+joelib.io.types.PDF.fontOffset=2
+joelib.io.types.PDF.pageBorder=20</PRE
+><P
+>Additional the normal image writer properties must be set described in detail in <A
+HREF="../functionalities/mol-io.html#JOELIB.MOLECULE.IO.FORMATS.IMAGE"
+>the Section called <I
+>Image writers (BMP, GIF, JPEG, PPM)</I
+></A
+>.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN963"
+>Persistence Of Vision (POV) Ray Tracer</A
+></H3
+><P
+>Persistence Of Vision (POV) Ray Tracer: <A
+HREF="http://www.povray.org/"
+TARGET="_top"
+>http://www.povray.org/</A
+></P
+><P
+>Here some features:</P
+><P
+></P
+><UL
+><LI
+><P
+>Three supported visualisation types: Spheres, Balls &#38; Sticks, Sticks.</P
+></LI
+><LI
+><P
+>Aromatic rings are visualized as torus elements. p orbitals can be also be
+       visualized as simple lines. Please let me know if you have a good p orbital
+       element under POVRay.</P
+></LI
+><LI
+><P
+>You can use atom properties for atom coloring.</P
+></LI
+></UL
+><P
+>The PovRay
+output type can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file:</P
+><PRE
+CLASS="PROGRAMLISTING"
+># PovRay
+# ouput type can be: stick, sphere, ball_and_stick
+joelib.io.types.POVRay.output=ball_and_stick
+joelib.io.types.POVRay.atomPropertyColoring=false
+joelib.io.types.POVRay.atomProperty=Gasteiger_Marsili</PRE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN979"
+>Structured Data File (SDF)</A
+></H3
+><P
+>Structured Data File (SDF) format or MDL molfile format [<A
+HREF="../bibliography.html#SDF"
+>sdf</A
+>]
+This is the mostly used molecule format in JOELib. Please let me know if you have
+further improving proposals. Golden rule: Empty lines are not allowed
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>in the data block</I
+></SPAN
+>
+of MDL SD files, because an empty line is the signal for the end of an actual data entry.
+Because the internal data representation has this as precondition all empty lines in file
+format loaders which are contained in data entries must be converted to ?, 0.0 or
+whatever you want, except an empty line.</P
+><P
+>You can force JOELib to write kekulized molecular structures instead of molecular structures with assigned aromaticity, by using:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>#SD Files
+joelib.io.types.MDLSD.writeAromaticityAsConjugatedSystem=false</PRE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="JOELIB.MOLECULE.IO.FORMATS.SMILES"
+>Simplified Molecular Input Line Entry System (SMILES)</A
+></H3
+><P
+>Simplified Molecular Input Line Entry System (SMILES)
+[<A
+HREF="../bibliography.html#SMILES"
+>smiles</A
+>, <A
+HREF="../bibliography.html#WEI88"
+>wei88</A
+>, <A
+HREF="../bibliography.html#WEI89"
+>wei89</A
+>].</P
+><P
+>The SMILES input/output-line-definition
+can be defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib.properties?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.properties</TT
+></A
+>-file:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>#SMILES
+joelib.io.types.Smiles.canonical=false
+joelib.io.types.Smiles.lineStructure=SMILES|TITLE
+joelib.io.types.Smiles.lineStructure.delimiter=|
+joelib.io.types.Smiles.lineStructure.input.delimiter=\u0020\t\n\r
+joelib.io.types.Smiles.lineStructure.output.delimiter=\u0020</PRE
+><P
+>The canonical/unique SMILES representation of a molecule can be calculated, if the <VAR
+CLASS="LITERAL"
+>canonical</VAR
+>-property entry
+is set to <VAR
+CLASS="LITERAL"
+>true</VAR
+> (see <A
+HREF="../algorithms/Morgan.html"
+>the Section called <I
+>Morgan: Unique atom numbering</I
+> in Chapter 6</A
+>).</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1000"
+>Sybyl (MOL2)</A
+></H3
+><P
+><A
+HREF="http://www.tripos.com/services/mol2/"
+TARGET="_top"
+>Tripos Mol2 File Format</A
+></P
+><P
+>A mol2 file (.mol2) is a complete, portable representation of a SYBYL molecule. It is
+an ASCII file which contains all the information needed to reconstruct a SYBYL
+molecule.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1005"
+>Tinker (TINKER)</A
+></H3
+><P
+><A
+HREF="http://dasher.wustl.edu/tinker/"
+TARGET="_top"
+>Tinker</A
+></P
+><P
+>Some fortran programs like Tinker are very sensitive to Unix or Windows files, because
+the new line characters. Remember this if you have problems under Unix systems with
+files generated under Windows.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1010"
+>Writing your own import/export filter</A
+></H2
+><P
+>You are missing file formats ?
+Write your own import and export filter!
+Use the MoleculeFileType class as abstract parent and fill the methods with functionality.
+The formatting of the input or output is pretty easy with the ScanfFormat and PrintfFormat
+classes from John E. Lloyd at:</P
+><P
+><A
+HREF="http://www.cs.ubc.ca/~lloyd/java/doc/cformat.html"
+TARGET="_top"
+>http://www.cs.ubc.ca/~lloyd/java/doc/cformat.html</A
+></P
+><P
+>Internally atoms have special atom types, which were defined as SMARTS pattern in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+>joelib/data/plain/atomtype.txt</A
+>-file.
+These types can be used for exporting easily to other
+file formats, especially force filed or ab inito programs. For the last task there is the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/JOETypeTable.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+>joelib.data.JOETypeTable</A
+>
+helper class available which uses the default converting types
+in <A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/types.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+>joelib/data/plain/types.txt</A
+>.</P
+><P
+>Golden rule: Empty lines are not allowed in the data block of MDL SD files, because an
+empty line is the signal for the end of an actual data entry. Because the internal data
+representation has this as precondition all empty lines in file format loaders which are
+contained in data entries must be converted to ?, 0.0 or whatever you want, except an
+empty line.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../functionalities/mol-process.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../atomtyper.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Processes and filters</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../functionalities/molecule.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Assigning atom types, aromatic flags, hybridization and hydrogens</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

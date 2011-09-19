@@ -1,0 +1,88 @@
+{% load cms_base %}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		{% block title %}
+		<title>{{ site_title }} - {{ title }}</title>
+		{% endblock %}
+   		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
+		<link rel="stylesheet" href="{{MEDIA_URL}}bluetrip/screen.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="{{MEDIA_URL}}bluetrip/print.css" type="text/css" media="print"/>
+		<link rel="stylesheet" href="{{MEDIA_URL}}jquery-ui.css" type="text/css" media="screen"/>
+		<!--[if IE]>
+		  <link rel="stylesheet" href="{{MEDIA_URL}}/bluetrip/ie.css" type="text/css" media="screen, projection">
+		<![endif]-->
+		<link rel="stylesheet" href="{{MEDIA_URL}}main.css" type="text/css" />
+		<!--[if IE]>
+		<link rel="stylesheet" href="{{MEDIA_URL}}main-ie.css" type="text/css" media="screen"/>
+		<![endif]-->
+   		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz">
+		<script type="text/javascript" src="{{MEDIA_URL}}jquery.js"></script>
+		<script type="text/javascript" src="{{MEDIA_URL}}jquery-ui.js"></script>
+		<script type="text/javascript" src="{{MEDIA_URL}}jquery.cookie.js"></script>
+		{% block extrahead %}{% endblock %}
+	</head>
+	<body>
+		<div id="pageheader">
+			<div id="loginlogout">
+				Howdy, {% if user_is_anonymous %}our guest | <a href="{% url login %}?l={{url}}">Log In</a>{% else %}{{user.first_name}} | <a href="{% url logout %}?l={{url}}">Log out</a>{% endif %}
+			</div>
+			<div id="searchbox">
+				<form action="{% url cms_search %}" method="get" accept-charset="utf-8">
+					<input type="text" name="query" size="15" value="{{ query }}" /><input type="submit" value="search" />
+				</form>
+			{% cms_navigation_level 1 as nav %}
+			</div>
+			<ul id="main_menu">
+				{% for mainpage in nav %}
+				<li><a class="{% if_cms_is_subpage page mainpage %}menu_active{% end_if_cms_is_subpage %}"  href="{% cms_link mainpage %}">{{ mainpage.title|escape }}</a></li>
+				{% endfor %}
+			</ul>
+			<ul id="secondary_menu">
+				{% cms_navigation_level 2 as nav2 %}
+				{% for mainpage in nav2 %}
+				<li><a class="{% if_cms_is_subpage page mainpage %}menu_active{% end_if_cms_is_subpage %}"  href="{% cms_link mainpage %}">{{ mainpage.title|escape }}</a></li>
+				{% endfor %}
+			</ul>
+		</div> <!--pageheader -->
+		<div style="clear:both"></div>
+		{% block body %}
+		{% if page %}<div id="breadcrumbs">{% cms_breadcrumbs %}</div><div style="clear:both"></div>{% endif %}
+		<div id="content" class="container">
+			{% for m in messages %}
+				<p class="notice">{{m}}</p>
+			{% endfor %}
+			{% for m in session_msg %}
+				<p class="notice">{{m}}</p>
+			{% endfor %}
+			{% block content %}
+			{{ content }}
+			{% endblock %}
+		</div>
+		{% endblock body %}
+
+		{% block footer %}
+		<div class="container">
+			<ul id="footer_menu">
+				<li><a class="noicon" href="http://faculty.ucr.edu/~tgirke/Links.htm">Links</a></li>
+				<li><span class="current">ChemMine</span></li>
+				<li><a class="noicon" href="http://bioweb.ucr.edu/bapdb">BAP DB</a></li>
+				<li><a class="noicon" href="http://bioweb.ucr.edu/Cellwall/index.pl">CWN</a></li>
+				<li><a class="noicon" href="http://bioweb.ucr.edu/databaseWeb/unknownsBasicSearch.jsp">POND</a></li>
+				<li><a class="noicon" href="http://bioinfo.ucr.edu/projects/Unknowns/external/express.html">Expression</a></li>
+				<li><a class="noicon" href="http://bioweb.ucr.edu/databaseWeb/index.jsp">GCD</a></li>
+				<li><a class="noicon" href="http://faculty.ucr.edu/~tgirke/Databases.htm">Systomics Network</a></li>
+			</ul>
+			<p class="footnote">Brought to you by <a class="noicon" href="http://www.ucr.edu">UCR</a>::<a class="noicon" href="http://www.genomics.ucr.edu/">IIGB</a>::<a class="noicon" href="http://www.cepceb.ucr.edu/">CEPCEB</a></p>
+		</div>
+		{% endblock %}
+		<script type='text/javascript'> var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://'); document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E')); </script> <script type='text/javascript'> try {  var mpmetrics = new MixpanelLib('808051e085ec142d9323cb883cbf5fb4'); } catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; } </script>
+		<script type="text/javascript">
+		var sc_project=6107532; 
+		var sc_invisible=1; 
+		var sc_security="aed17311"; 
+		var sc_text=2; 
+		</script>
+		<script type="text/javascript"
+		src="http://www.statcounter.com/counter/counter.js"></script><noscript></noscript>
+	</body>
+</html>

@@ -1,0 +1,1741 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>JOELib Tutorial</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="NEXT"
+TITLE="Preface"
+HREF="preface.html"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="JOELIB-TUTORIAL"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>JOELib Tutorial</A
+></H1
+><H2
+CLASS="SUBTITLE"
+>A Java based cheminformatics/computational chemistry package</H2
+><DIV
+CLASS="MEDIAOBJECT"
+><P
+><IMG
+SRC="images/joelib_smaller.gif"
+ALIGN="CENTER"></P
+></DIV
+><H3
+CLASS="AUTHOR"
+><A
+NAME="AEN6"
+></A
+>Dipl. Chem. Jörg K. Wegner</H3
+><P
+CLASS="COPYRIGHT"
+>Copyright &copy; 2002, 2003, 2004 Dept. Computer Architecture, University of T&uuml;bingen, Germany, J&ouml;rg K. Wegner</P
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN23"
+></A
+><P
+><B
+>Updated</B
+></P
+><P
+>$Date: 2004/12/06 15:30:57 $</P
+></DIV
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN26"
+></A
+><P
+><B
+>License</B
+></P
+><P
+>This program is free software; you can redistribute it and/or modify
+         it under the terms of the GNU General Public License as published by
+         the Free Software Foundation version 2 of the License.
+     </P
+><P
+>This program is distributed in the hope that it will be useful,
+         but WITHOUT ANY WARRANTY; without even the implied warranty of
+         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+         GNU General Public License for more details.
+     </P
+></DIV
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN33"
+></A
+><P
+><B
+>Documents</B
+></P
+><P
+><A
+HREF="JOELibTutorial.ps"
+TARGET="_top"
+>PS</A
+>,
+        <A
+HREF="JOELibTutorial.pdf"
+TARGET="_top"
+>PDF</A
+>,
+        <A
+HREF="JOELibTutorial.rtf"
+TARGET="_top"
+>RTF</A
+>
+        versions of this tutorial are available.</P
+><P
+><A
+HREF="http://www.plkr.org"
+TARGET="_top"
+>Plucker E-Book</A
+> versions:
+        <A
+HREF="JOELib-HiRes-color.pdb"
+TARGET="_top"
+>HiRes-color</A
+>,
+        <A
+HREF="JOELib-HiRes-grayscale.pdb"
+TARGET="_top"
+>HiRes-grayscale</A
+> (recommended),
+        <A
+HREF="JOELib-HiRes-bw.pdb"
+TARGET="_top"
+>HiRes-black/white</A
+>,
+        <A
+HREF="JOELib-color.pdb"
+TARGET="_top"
+>color</A
+>,
+        <A
+HREF="JOELib-grayscale.pdb"
+TARGET="_top"
+>grayscale</A
+>,
+        <A
+HREF="JOELib-bw.pdb"
+TARGET="_top"
+>black/white</A
+></P
+></DIV
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="preface.html"
+>Preface</A
+></DT
+><DT
+>1. <A
+HREF="install/install.html"
+>Installing JOELib</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="install/install.html#JOELIB.INSTALLING.JAVA"
+>Java Development Kit (JDK)</A
+></DT
+><DT
+><A
+HREF="install/inst-ant.html"
+>Ant - XML based makefile mechanism</A
+></DT
+><DT
+><A
+HREF="install/inst-joelib.html"
+>Installing and starting JOELib</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="install/inst-joelib.html#JOELIB.INSTALLING.JOELIB.LINUX"
+>Linux/Unix</A
+></DT
+><DT
+><A
+HREF="install/inst-joelib.html#JOELIB.INSTALLING.JOELIB.WINDOWS"
+>Windows 2000/NT</A
+></DT
+><DT
+><A
+HREF="install/inst-joelib.html#JOELIB.INSTALLING.JOELIB.WIN98"
+>Windows 95/98/XP</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="install/matlab.html"
+>Matlab toolbox</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="install/matlab.html#JOELIB.INSTALLING.MATLAB.OTHERJDK"
+>Using another JDK</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>2. <A
+HREF="basics/basics.html"
+>JOELib basics</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="basics/basics.html#AEN201"
+>Atoms</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="basics/basics.html#AEN203"
+>Accessing atoms</A
+></DT
+><DT
+><A
+HREF="basics/basics.html#AEN217"
+>Chemical properties</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="basics/struct-bonds.html"
+>Bonds</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="basics/struct-bonds.html#AEN330"
+>Accessing bonds</A
+></DT
+><DT
+><A
+HREF="basics/struct-bonds.html#AEN340"
+>Chemical properties</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="basics/struct-molecule.html"
+>Molecule</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="basics/struct-molecule.html#AEN426"
+>Basics</A
+></DT
+><DT
+><A
+HREF="basics/struct-molecule.html#AEN433"
+>Chemical properties</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>3. <A
+HREF="functionalities/molecule.html"
+>Molecule operation methods and classes</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="functionalities/molecule.html#JOELIB.MOLECULE.DATA"
+>Molecule</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="functionalities/molecule.html#AEN444"
+>Molecule data entries</A
+></DT
+><DT
+><A
+HREF="functionalities/molecule.html#AEN499"
+>Molecule descriptors</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="functionalities/mol-smarts.html"
+>SMiles ARbitrary Target Specification (SMARTS)-substructure search</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.BASICS"
+>SMARTS basics</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.DEFINITION"
+>SMARTS definition</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.PATTY"
+>Programmable Atom Typer (PATTY)</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.STRUCTURE-MODIFICATION"
+>SMARTS based structure modification</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="functionalities/mol-process.html"
+>Processes and filters</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="functionalities/mol-process.html#JOELIB.MOLECULE.PROCESS.INTERNAL"
+>Processes (internal, Java)</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-process.html#JOELIB.MOLECULE.PROCESS.FILTER"
+>Process filters</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-process.html#JOELIB.MOLECULE.PROCESS.EXTERNAL"
+>External processes</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="functionalities/mol-io.html"
+>Input and output</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="functionalities/mol-io.html#JOELIB.MOLECULE.IO.FORMATS"
+>Supported input and output formats</A
+></DT
+><DT
+><A
+HREF="functionalities/mol-io.html#AEN1010"
+>Writing your own import/export filter</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="atomtyper.html"
+>Assigning atom types, aromatic flags, hybridization and hydrogens</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="atomtyper.html#JOELIB.MOLECULE.AROMATICITY"
+>Assigning aromaticity flags</A
+></DT
+><DT
+><A
+HREF="atomtyper.html#JOELIB.MOLECULE.HYBRIDIZATION"
+>Assigning atom hybridizations</A
+></DT
+><DT
+><A
+HREF="atomtyper.html#JOELIB.MOLECULE.ATOMTYPES"
+>Assigning atom types</A
+></DT
+><DT
+><A
+HREF="atomtyper.html#JOELIB.MOLECULE.IMPLICITEHYDROGENS"
+>Assigning implicite hydrogens</A
+></DT
+><DT
+><A
+HREF="atomtyper.html#JOELIB.MOLECULE.ATOMTYPES.SPECIAL"
+>Calculate descriptors and/or assign special atomtypes</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>4. <A
+HREF="utilities.html"
+>Used utilities</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="utilities.html#JOELIB.UTILITIES.DEVELOPMENT"
+>Development</A
+></DT
+><DT
+><A
+HREF="utilities-maintenance.html"
+>Maintenance</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="descriptors/descriptors.html"
+>Descriptors</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NATIVE.ONE"
+>Native values</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.ACIDICGROUPS"
+>Number of acidic groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.ALIPHATICOHGROUPS"
+>Number of aliphatic hydroxy groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.AROMATICBONDS"
+>Number of aromatic bonds</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.BASICGROUPS"
+>Number of basic groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.FRACTIONROTATABLEBONDS"
+>Fraction of rotatable bonds</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.GEOMETRICALDIAMETER"
+>Geometrical diameter</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.GEOMETRICALRADIUS"
+>Geometrical radius</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.GEOMETRICALSHAPECOEFFICIENT"
+>Geometrical shape coefficient</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.GRAPHSHAPECOEFFICIENT"
+>Graph shape coefficient</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HBA1"
+>Number of Hydrogen Bond Acceptors (HBA) 1</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HBA2"
+>Number of Hydrogen Bond Acceptors (HBA) 2</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HBD1"
+>Number of Hydrogen Bond Donors (HBD) 1</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HBD2"
+>Number of Hydrogen Bond Donors (HBD) 2</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HEAVYBONDS"
+>Number of heavy bonds</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HETEROCYCLES"
+>Number of heterocycles</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.HYDROPHOBICGROUPS"
+>Number of hydrophobic groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.KIERSHAPE1"
+>Kier Shape 1</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.KIERSHAPE2"
+>Kier shape 2</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.KIERSHAPE3"
+>Kier shape 3</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.LOGP"
+>Octanol/Water partition coefficient (logP)</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.MOLARREFRACTIVITY"
+>Molar refractivity (MR)</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.MOLECULARWEIGHT"
+>Molecular weight (MW)</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFATOMS"
+>Number of atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFB"
+>Number of boron atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFBR"
+>Number of bromine atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFBONDS"
+>Number of bonds</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFCL"
+>Number of chlorine atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFHAL"
+>Number of halogen atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFI"
+>Number of iodine atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFF"
+>Number of fluorine atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFN"
+>Number of nitrogen atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFO"
+>Number of oxygen atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFP"
+>Number of phosphorus atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NUMBEROFS"
+>Number of sulfur atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.NO2GROUPS"
+>Number of -NO<SUB
+>2</SUB
+> groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.OSOGROUPS"
+>Number of -OSO atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.POLARSURFACEAREA"
+>Polar surface area (PSA)</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.ROTATABLEBONDS"
+>Number of rotatable bonds</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.SOGROUPS"
+>Number of -SO groups</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.SO2GROUPS"
+>Number of -SO<SUB
+>2</SUB
+> atoms</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.TOPOLOGICALDIAMETER"
+>Topological diameter</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.TOPOLOGICALRADIUS"
+>Topological radius</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.ZAGREBINDEX1"
+>Zagreb index 1</A
+></DT
+><DT
+><A
+HREF="descriptors/descriptors.html#JOELIB.DESCRIPTORS.ZAGREBINDEX2"
+>Zagreb index 2</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="descriptors/atomProperties.html"
+>Atom properties</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINACCEPTOR"
+>Atom in acceptor</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINCONJENVIRONMENT"
+>Atom in conjugated environment</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINDONACC"
+>Atom in donor or acceptor</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINDONOR"
+>Atom in donor</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINRING"
+>Atom in ring</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMINTERMINALCARBON"
+>Atom is terminal carbon</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMISNEGATIVE"
+>Atom is negative</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMISPOSITIVE"
+>Atom is positive</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMMASS"
+>Atom masss</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMVALENCE"
+>Valence</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ATOMVANDERWAALSVOLUME"
+>Van der Waals volume</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.CONJELECTROTOPOLSTATE"
+>Conjugated electrotopological state</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ELECTROGEOMETRICALSTATE"
+>Electrogeometrical state</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ELECTRONAFFINITY"
+>Electron affinity</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ELECTRONEGATIVITYPAULING"
+>Electronegativity after Pauling</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.ELECTROTOPOLOGICALSTATE"
+>Electrotopological state</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.GASTEIGERMARSILI"
+>Gasteiger-Marsili</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.GRAPHPOTENTIALS"
+>Graph potentials</A
+></DT
+><DT
+><A
+HREF="descriptors/atomProperties.html#JOELIB.DESCRIPTORS.INTRINSICSTATE"
+>Intrinsic topological state</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="descriptors/fingerprints.html"
+>Fingerprints</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="descriptors/fingerprints.html#JOELIB.DESCRIPTORS.SSKEY3DS"
+>Pharmacophore fingerprint</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="descriptors/transformations.html"
+>Transformations</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="descriptors/transformations.html#JOELIB.DESCRIPTORS.AUTOCORRELATION"
+>Moreau-Broto topological autocorrelation</A
+></DT
+><DT
+><A
+HREF="descriptors/transformations.html#JOELIB.DESCRIPTORS.BURDENMODIFIEDEIGENVALUES"
+>Burden modified eigenvalues</A
+></DT
+><DT
+><A
+HREF="descriptors/transformations.html#JOELIB.DESCRIPTORS.GLOBALTOPOLOGICALCHARGEINDEX"
+>Global topological charge</A
+></DT
+><DT
+><A
+HREF="descriptors/transformations.html#JOELIB.DESCRIPTORS.RADIALDISTRIBUTIONFUNCTION"
+>Radial distribution function (RDF)</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>6. <A
+HREF="algorithms/algorithms.html"
+>Algorithms</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="algorithms/algorithms.html#JOELIB.ALGORITHMS.BREADTHFIRSTSEARCH"
+>Breadth First Search (BFS)</A
+></DT
+><DT
+><A
+HREF="algorithms/DepthFirstSearch.html"
+>Depth First Search (DFS)</A
+></DT
+><DT
+><A
+HREF="algorithms/DistanceMatrix.html"
+>Topological distance matrix</A
+></DT
+><DT
+><A
+HREF="algorithms/GeomDistanceMatrix.html"
+>Geometrical distance matrix</A
+></DT
+><DT
+><A
+HREF="algorithms/Morgan.html"
+>Morgan: Unique atom numbering</A
+></DT
+></DL
+></DD
+><DT
+>7. <A
+HREF="interfaces.html"
+>Interfaces to other libraries</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="interfaces.html#AEN1951"
+>Interfaces to Java libraries</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="interfaces.html#AEN1953"
+>Chemical Development Kit (CDK)</A
+></DT
+><DT
+><A
+HREF="interfaces.html#AEN1959"
+>Weka data mining library</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="jniinterfaces.html"
+>Interfaces to C/C++ libraries using the Java native interface (JNI)</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="jniinterfaces.html#AEN1967"
+>LibGhemical</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="matlabinterface.html"
+>Matlab interface</A
+></DT
+></DL
+></DD
+><DT
+>8. <A
+HREF="documentation/documentation.html"
+>Documentation</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="documentation/documentation.html#DOCUMENTATION.DOCBOOK"
+>DocBook</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="documentation/documentation.html#DOCUMENTATION.DOCBOOK.EQUATIONS"
+>DocBook and mathematical equations</A
+></DT
+><DT
+><A
+HREF="documentation/documentation.html#DOCUMENTATION.DOCBOOK.MOLECULEARSTRUTURES"
+>DocBook and molecular structures</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="documentation/docu-api.html"
+>API documentation</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="examples/examples.html"
+>JOELib examples and code snippets</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE"
+>Molecule</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/examples.html#AEN2124"
+>Molecules</A
+></DT
+><DT
+><A
+HREF="examples/examples.html#AEN2184"
+>Special atom methods</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/descriptors.html"
+>Descriptors</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/descriptors.html#AEN2201"
+>Get and calculate descriptors</A
+></DT
+><DT
+><A
+HREF="examples/descriptors.html#AEN2221"
+>Create own descriptor classes</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/processes.html"
+>Processes and filters</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/processes.html#AEN2258"
+>Applying processes and filters</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/importexport.html"
+>Import/Export</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/importexport.html#AEN2281"
+>Import</A
+></DT
+><DT
+><A
+HREF="examples/importexport.html#AEN2288"
+>Export</A
+></DT
+><DT
+><A
+HREF="examples/importexport.html#AEN2295"
+>Simple Import/Export pipeline</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/interfaces.html"
+>Interfaces</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/interfaces.html#AEN2305"
+>Java interfaces</A
+></DT
+><DT
+><A
+HREF="examples/interfaces.html#AEN2323"
+>C/C++ interfaces using JNI</A
+></DT
+><DT
+><A
+HREF="examples/interfaces.html#AEN2335"
+>Matlab interface</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/database.html"
+>Database</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/database.html#AEN2352"
+>Database access using the Java Database Connection (JDBC)</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="examples/miscellaneous.html"
+>Miscellaneous</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="examples/miscellaneous.html#AEN2422"
+>Point group symmetry calculation</A
+></DT
+><DT
+><A
+HREF="examples/miscellaneous.html#AEN2428"
+>Hash code calculation</A
+></DT
+><DT
+><A
+HREF="examples/miscellaneous.html#AEN2434"
+>Reading JCAMP-DX spectras</A
+></DT
+><DT
+><A
+HREF="examples/miscellaneous.html#AEN2440"
+>Create fragmented molecules</A
+></DT
+><DT
+><A
+HREF="examples/miscellaneous.html#AEN2446"
+>Combinatorial synthesis for generating virtual combinatorial libraries</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>10. <A
+HREF="applications/applications.html"
+>Example applications</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/applications.html#JOELIB.APPLICATIONS.CONVERT"
+>Convert</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/applications.html#JOELIB.APPLICATIONS.CONVERT.OPTIONS"
+>Options</A
+></DT
+><DT
+><A
+HREF="applications/applications.html#JOELIB.APPLICATIONS.CONVERT.EXAMPLES"
+>Examples</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/convertskip.html"
+>ConvertSkip</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.OPTIONS"
+>Options</A
+></DT
+><DT
+><A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.EXAMPLES"
+>Examples</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/comparison.html"
+>Comparison</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/comparison.html#JOELIB.APPLICATIONS.COMPARISON.OPTIONS"
+>Options</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/descriptorcalculation.html"
+>Descriptor calculation</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/descriptorcalculation.html#JOELIB.APPLICATIONS.DESCRIPTORCALCULATION.OPTIONS"
+>Options</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/euklidiancomparison.html"
+>EuklidianComparison</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/euklidiancomparison.html#JOELIB.APPLICATIONS.EUKLIDIANCOMPARISON.OPTIONS"
+>Options</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/statistic.html"
+>Statistic</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/statistic.html#JOELIB.APPLICATIONS.STATISTIC.OPTIONS"
+>Options</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="applications/symmetry.html"
+>Point Group Symmetry</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="applications/symmetry.html#JOELIB.APPLICATIONS.SYMMETRY.OPTIONS"
+>Options</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>11. <A
+HREF="support.html"
+>Support</A
+></DT
+><DT
+>A. <A
+HREF="molStructSummary.html"
+>Summary of molecular structures</A
+></DT
+><DT
+><A
+HREF="bibliography.html"
+>Bibliography</A
+></DT
+><DT
+><A
+HREF="glossary.html"
+>Glossary</A
+></DT
+><DT
+><A
+HREF="index.html"
+>Index</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Tables</B
+></DT
+><DT
+>3-1. <A
+HREF="functionalities/molecule.html#AEN447"
+>Predefined data types/names</A
+></DT
+><DT
+>3-2. <A
+HREF="functionalities/mol-smarts.html#AEN591"
+>Substructure search expressions</A
+></DT
+><DT
+>3-3. <A
+HREF="functionalities/mol-io.html#AEN722"
+>Supported file formats</A
+></DT
+><DT
+>3-4. <A
+HREF="atomtyper.html#AEN1029"
+>Process of assigning atom types</A
+></DT
+><DT
+>3-5. <A
+HREF="atomtyper.html#AEN1115"
+>Possible special atom type assignments (not implemented)</A
+></DT
+><DT
+>5-1. <A
+HREF="descriptors/atomProperties.html#AEN1444"
+>SMARTS definitions for assigning the conjugated atom property flag</A
+></DT
+><DT
+>5-2. <A
+HREF="descriptors/fingerprints.html#AEN1657"
+>Pharmacophore fingerprint definition</A
+></DT
+><DT
+>8-1. <A
+HREF="documentation/documentation.html#AEN2012"
+>Molecular structures with atom numbers and special atom labels</A
+></DT
+><DT
+>8-2. <A
+HREF="documentation/documentation.html#AEN2035"
+>Molecular structures with a delocalised ring</A
+></DT
+><DT
+>8-3. <A
+HREF="documentation/documentation.html#AEN2058"
+>Molecular structures with retrosynthetic bond splittings</A
+></DT
+><DT
+>8-4. <A
+HREF="documentation/documentation.html#AEN2075"
+>Molecular structures with electron transfer arrows</A
+></DT
+><DT
+>9-1. <A
+HREF="examples/database.html#AEN2362"
+>Simple database definition</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Figures</B
+></DT
+><DT
+>6-1. <A
+HREF="algorithms/algorithms.html#JOELIB.ALGORITHMS.BREADTHFIRSTSEARCH.PSEUDOCODE"
+>Pseudocode for the BFS algorithm</A
+></DT
+><DT
+>6-2. <A
+HREF="algorithms/DepthFirstSearch.html#JOELIB.ALGORITHMS.DEPTHFIRSTSEARCH.PSEUDOCODE"
+>Pseudocode for the DFS algorithm</A
+></DT
+><DT
+>6-3. <A
+HREF="algorithms/Morgan.html#JOELIB.ALGORITHMS.MORGAN.LABELING.PSEUDOCODE"
+>Pseudocode for the Morgan labeling algorithm</A
+></DT
+><DT
+>6-4. <A
+HREF="algorithms/Morgan.html#JOELIB.ALGORITHMS.MORGAN.RENUMBERING.PSEUDOCODE"
+>Pseudocode for the Morgan renumbering algorithm</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Examples</B
+></DT
+><DT
+>2-1. <A
+HREF="basics/basics.html#JOELIB.BASICS.EXAMPLE.ATOMS.ITERATOR"
+>Using an iterator for accessing atoms</A
+></DT
+><DT
+>2-2. <A
+HREF="basics/basics.html#JOELIB.BASICS.EXAMPLE.ATOMS.INDEX"
+>Using the atom index for accessing atoms</A
+></DT
+><DT
+>2-3. <A
+HREF="basics/struct-bonds.html#JOELIB.BASICS.EXAMPLE.BONDS"
+>Bond iterator</A
+></DT
+><DT
+>3-1. <A
+HREF="functionalities/molecule.html#JOELIB.BASICS.EXAMPLE.DATA.GET"
+>Getting descriptor data entries</A
+></DT
+><DT
+>3-2. <A
+HREF="functionalities/molecule.html#JOELIB.BASICS.EXAMPLE.DATA.SET"
+>Setting descriptor data entries</A
+></DT
+><DT
+>3-3. <A
+HREF="functionalities/mol-smarts.html#JOELIB.SMARTS.EXAMPLE.SUBSTRUCTURE-SEARCH"
+>SMARTS substructure search</A
+></DT
+><DT
+>3-4. <A
+HREF="functionalities/mol-io.html#JOELIB.MOLECULE.IO.FORMATS.EXAMPLE"
+>Definition of IO types</A
+></DT
+><DT
+>9-1. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.LOAD.LARGE"
+>Load molecules from large files sequentially</A
+></DT
+><DT
+>9-2. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.LOAD.MEMORY"
+>Load molecules from smaller files into memory</A
+></DT
+><DT
+>9-3. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ADD.ATOMS"
+>Add atoms to a molecule</A
+></DT
+><DT
+>9-4. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMS.FOR"
+>Access atoms using a <VAR
+CLASS="LITERAL"
+>for</VAR
+> statement</A
+></DT
+><DT
+>9-5. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMS.ITERATOR"
+>Access atoms using an <VAR
+CLASS="LITERAL"
+>AtomIterator</VAR
+></A
+></DT
+><DT
+>9-6. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.BONDS.FOR"
+>Access bonds using a <VAR
+CLASS="LITERAL"
+>for</VAR
+> statement</A
+></DT
+><DT
+>9-7. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.BONDS.ITERATOR"
+>Access bonds using an <VAR
+CLASS="LITERAL"
+>BondIterator</VAR
+></A
+></DT
+><DT
+>9-8. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.NEIGHBOURATOM.ITERATOR"
+>Access neighbour atoms using a <VAR
+CLASS="LITERAL"
+>NbrAtomIterator</VAR
+></A
+></DT
+><DT
+>9-9. <A
+HREF="examples/examples.html#JOELIB.EXAMPLES.MOLECULE.ACCESS.ATOMBONDS.ITERATOR"
+>Access bonds of an atom using a <VAR
+CLASS="LITERAL"
+>BondIterator</VAR
+></A
+></DT
+><DT
+>9-10. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.GET.ALL"
+>Get a list of all available descriptors</A
+></DT
+><DT
+>9-11. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.GET.NATIVE"
+>Get a list of all native value descriptors</A
+></DT
+><DT
+>9-12. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.GET.ATOMPROPERTY"
+>Get a list of all atom property descriptors</A
+></DT
+><DT
+>9-13. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.CALCULATE.SLOW"
+>Get and calculate descriptors using always a new instance (slow)</A
+></DT
+><DT
+>9-14. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.CALCULATE.FAST"
+>Get and calculate descriptors creating only one descriptor calculation instance (fast)</A
+></DT
+><DT
+>9-15. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.CREATE.NATIVE"
+>Create own native descriptor calculation classes</A
+></DT
+><DT
+>9-16. <A
+HREF="examples/descriptors.html#JOELIB.EXAMPLES.DESCRIPTORS.CREATE.ATOMPROPERTY"
+>Create own atom property descriptor calculation classes</A
+></DT
+><DT
+>9-17. <A
+HREF="examples/processes.html#JOELIB.EXAMPLES.PROCESSES.GET.INSTANCE"
+>Get a molecule process by creating an instance</A
+></DT
+><DT
+>9-18. <A
+HREF="examples/processes.html#JOELIB.EXAMPLES.PROCESSES.GET.FACTORY"
+>Get a molecule process by using the process factory</A
+></DT
+><DT
+>9-19. <A
+HREF="examples/processes.html#JOELIB.EXAMPLES.PROCESSES.GET.INIT"
+>Use initialization method for a process (depends on the process!)</A
+></DT
+><DT
+>9-20. <A
+HREF="examples/processes.html#JOELIB.EXAMPLES.PROCESSES.GET.FILTERPIPE"
+>Get a molecule process pipe with filter functionalities</A
+></DT
+><DT
+>9-21. <A
+HREF="examples/processes.html#JOELIB.EXAMPLES.PROCESSES.APPLY"
+>Apply a process to a molecule</A
+></DT
+><DT
+>9-22. <A
+HREF="examples/importexport.html#JOELIB.EXAMPLES.IMPORTEXPORT.IMPORT.GET"
+>Get molecule import classes</A
+></DT
+><DT
+>9-23. <A
+HREF="examples/importexport.html#JOELIB.EXAMPLES.IMPORTEXPORT.EXPORT.GET"
+>Get molecule export classes</A
+></DT
+><DT
+>9-24. <A
+HREF="examples/importexport.html#JOELIB.EXAMPLES.IMPORTEXPORT.PIPE.CREATE"
+>Create molecule processing pipe</A
+></DT
+><DT
+>9-25. <A
+HREF="examples/interfaces.html#JOELIB.EXAMPLES.INTERFACES.CDK"
+>Chemical Development Kit (CDK) interface</A
+></DT
+><DT
+>9-26. <A
+HREF="examples/interfaces.html#JOELIB.EXAMPLES.INTERFACES.WEKA"
+>Weka data mining interface</A
+></DT
+><DT
+>9-27. <A
+HREF="examples/interfaces.html#JOELIB.EXAMPLES.INTERFACES.GHEMICAL.TEST"
+>Create 3D coordinates using the Ghemical force field (molecular mechanics)</A
+></DT
+><DT
+>9-28. <A
+HREF="examples/interfaces.html#JOELIB.EXAMPLES.INTERFACES.MATLAB"
+>Load native descriptors under Matlab</A
+></DT
+><DT
+>9-29. <A
+HREF="examples/database.html#JOELIB.EXAMPLES.DATABASE.EXAMPLE"
+>Database access</A
+></DT
+><DT
+>9-30. <A
+HREF="examples/miscellaneous.html#JOELIB.EXAMPLES.MISCELLANEOUS.SYMMETRY"
+>Calculate point group symmetries</A
+></DT
+><DT
+>9-31. <A
+HREF="examples/miscellaneous.html#JOELIB.EXAMPLES.MISCELLANEOUS.HASHCODE"
+>Calculate a molecule hashcode</A
+></DT
+><DT
+>9-32. <A
+HREF="examples/miscellaneous.html#JOELIB.EXAMPLES.MISCELLANEOUS.JCAMP"
+>Load JCAMP-DX spectras</A
+></DT
+><DT
+>9-33. <A
+HREF="examples/miscellaneous.html#JOELIB.EXAMPLES.MISCELLANEOUS.FRAGMENTATION"
+>Fragment molecules if they are disconnected (non-contiguous)</A
+></DT
+><DT
+>9-34. <A
+HREF="examples/miscellaneous.html#JOELIB.EXAMPLES.MISCELLANEOUS.GENERATION"
+>Generate molecules using R-Groups</A
+></DT
+><DT
+>10-1. <A
+HREF="applications/applications.html#JOELIB.APPLICATIONS.CONVERT.HELP"
+>Show help screen for Convert</A
+></DT
+><DT
+>10-2. <A
+HREF="applications/applications.html#JOELIB.APPLICATIONS.CONVERT.PRINT"
+>Print molecules to standard output</A
+></DT
+><DT
+>10-3. <A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.HELP"
+>Show help screen for ConvertSkip</A
+></DT
+><DT
+>10-4. <A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.PRINT"
+>Print molecules to standard output</A
+></DT
+><DT
+>10-5. <A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.FLAT"
+>Write flat file</A
+></DT
+><DT
+>10-6. <A
+HREF="applications/convertskip.html#JOELIB.APPLICATIONS.CONVERTSKIP.RULE"
+>Using conversion rule</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Equations</B
+></DT
+><DT
+>5-1. <A
+HREF="descriptors/descriptors.html#AEN1269"
+>Kier shape 1</A
+></DT
+><DT
+>5-2. <A
+HREF="descriptors/descriptors.html#AEN1280"
+>Kier shape 1 (alternative formulation)</A
+></DT
+><DT
+>5-3. <A
+HREF="descriptors/descriptors.html#AEN1294"
+>Kier shape 2</A
+></DT
+><DT
+>5-4. <A
+HREF="descriptors/descriptors.html#AEN1308"
+>Kier shape 3</A
+></DT
+><DT
+>5-5. <A
+HREF="descriptors/descriptors.html#AEN1396"
+>Zagreb index 1</A
+></DT
+><DT
+>5-6. <A
+HREF="descriptors/descriptors.html#AEN1409"
+>Zagreb index 2</A
+></DT
+><DT
+>5-7. <A
+HREF="descriptors/atomProperties.html#AEN1521"
+>Conjugated electrotopological state</A
+></DT
+><DT
+>5-8. <A
+HREF="descriptors/atomProperties.html#AEN1531"
+>Conjugated topological distance</A
+></DT
+><DT
+>5-9. <A
+HREF="descriptors/atomProperties.html#AEN1548"
+>Electrogeometrical state</A
+></DT
+><DT
+>5-10. <A
+HREF="descriptors/atomProperties.html#AEN1572"
+>Electrotopological state</A
+></DT
+><DT
+>5-11. <A
+HREF="descriptors/atomProperties.html#AEN1593"
+>Orbital electronegativity based on atom charge</A
+></DT
+><DT
+>5-12. <A
+HREF="descriptors/atomProperties.html#AEN1617"
+>Graph potentials</A
+></DT
+><DT
+>5-13. <A
+HREF="descriptors/atomProperties.html#AEN1633"
+>Intrinsic topological state</A
+></DT
+><DT
+>5-14. <A
+HREF="descriptors/transformations.html#AEN1841"
+>Moreau-Broto autocorrelation</A
+></DT
+><DT
+>5-15. <A
+HREF="descriptors/transformations.html#AEN1876"
+>Radial distribution function</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="preface.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Preface</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

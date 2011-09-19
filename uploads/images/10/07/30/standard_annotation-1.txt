@@ -1,0 +1,10 @@
+_standard compound annotations_ : ,
+{
+	assay 1 : ,
+	{
+		name : visual phenotype,
+		description : None,
+		score : 3,
+		concentration : 50-100 uM (25 ug/ml) in 0.5% DMSO,
+	}
+}

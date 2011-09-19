@@ -1,0 +1,90 @@
+{% load annotationformat %}
+{% if screen_level_files %}
+	{% if hideheader %} {% else %}<h2>Screen-level Files</h2>{% endif %}
+	{% for f in screen_level_files %}
+	<div class="file {%if f.can_download%}{%else%}nodownload{%endif%}">
+	<p class="file-title">{% if f.title %}{{f.title}}{% else %}Untitled File{% endif %}</p>
+	<div class="file-details">
+		{% if f.description %}
+		{% if f.publication.web_url %}
+		<p class="file-description"><a href="{{f.publication.web_url}}">{{f.description|safe}}</a></p>
+		{% else %}
+		<p class="file-description">{{f.description|safe}}</p>
+		{% endif %}
+		{% else %}
+		{% if f.publication.web_url %}
+		<p><a href="{{f.publication.web_url}}">Relevant external website</a></p>
+		{% endif %}
+		{% endif %}
+		<div class="file-id">#{{f.id}}</div>
+		{% if f.publication %}
+			<div class="publication">
+				{% if f.publication.pubmed_id %}<div class="pubmed"><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{f.publication.pubmed_id}}">PubMed link</a></div> {% endif %}
+				{% if f.publication.journal %}<div class="journal">{{f.publication.author}}, {% if f.publication.publication_url %}<a href="{{f.publication.publication_url}}">{%endif%}{{f.publication.pub_title}}{% if f.publication.publication_url %}</a>{%endif%}, appeared in {{f.publication.journal}}, <span class="volume">{{f.publication.volume}}</span>, pp {{f.publication.pages}}.</div> {% endif %}
+			</div>
+		{% endif %}
+		
+		{% if f.textfile %}
+			{% if f.textfile.extra_annotation %}
+			<ul class="annotation extra-annotation">{{f.textfile.extra_annotation|annotation_as_li}}</ul>
+			{% endif %}
+			<div class="textfile">
+				<object standby="loading..." width="90%" type="text/plain" class="codeblock" data="{% url serve-file f.id %}"/>
+			</div>
+		{% endif %}
+		{% if f.imagefile %}
+			{% if f.imagefile.extra_annotation %}
+			<ul class="annotation extra-annotation">{{f.imagefile.extra_annotation|annotation_as_li}}</ul>
+			{% endif %}
+			{% if f.imagefile.reference %}
+			<div class="imagefile" style="margin-left:0; width:90%">
+				<div class="label"><div>Main image</div><div>Reference</div></div>
+				<img style="max-width:49%" src="{% url serve-file f.id %}"/>
+				<img style="max-width:49%" src="{% url serve-file f.id 'locref' %}"/>
+			</div>
+			{% else %}
+			<div class="imagefile">
+				<img style="max-width:90%" src="{% url serve-file f.id %}"/>
+			</div>
+			{% endif %}
+		{% endif %}
+		{% if f.annotationfile %}
+			{% if f.annotationfile.extra_annotation %}
+			<ul class="annotation extra-annotation">{{f.annotationfile.extra_annotation|annotation_as_li}}</ul>
+			{% endif %}
+			<ul class="annotationfile annotation">
+				{{f.content|annotation_as_li}}
+			</ul>
+		{% endif %}
+		{% if f.otherfile %}
+		<div class="otherfile">
+			Preview not available for file of type {{f.mime}}
+		</div>
+		{% endif %}
+	</div>
+	{% if canadd %}
+		<a class="button no-float edit-file" style="display:none" href="#{{f.id}}">Edit</a>
+	{% endif %}
+	{% if candelete %}
+		<form method="POST" action="{% url serve-file f.id %}"><input type="hidden" name="delete"/><button class="no-float" type="submit">Delete</button></form>
+	{% endif %}
+	{% if f.can_download %}
+	<a class="button no-float download-file" href="{%url serve-file f.id%}?download">Download</a>
+	{% endif %}
+	</div>
+	{% endfor %}
+	{% if candelete %}
+	{% if global_reference %}
+	<div class="file">
+	<p class="file-title">Global Reference Image</p>
+	<div class="file-details">
+		<div class="file-id">REF #{{global_reference.id}}</div>
+			<div class="imagefile">
+				<img style="max-width:90%" src="{% url serve-file global_reference.id 'ref' %}"/>
+			</div>
+		<form method="POST" action="{% url serve-file global_reference.id 'ref' %}"><input type="hidden" name="delete"/><button class="no-float" type="submit">Delete</button></form>
+	</div>
+	</div>
+	{% endif %}
+	{% endif %}
+{% endif %}

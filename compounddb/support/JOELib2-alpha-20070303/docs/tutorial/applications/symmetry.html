@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Point Group Symmetry</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="PREVIOUS"
+TITLE="Statistic"
+HREF="../applications/statistic.html"><LINK
+REL="NEXT"
+TITLE="Support"
+HREF="../support.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../applications/statistic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Example applications</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.APPLICATIONS.SYMMETRY"
+>Point Group Symmetry</A
+></H1
+><P
+>Example application for calculating the symmetry in a molecule file.
+All specific structures should have corresponding elements in the same position generic structure does.
+
+Planes are characterized by the surface normal direction (taken in the direction from the coordinate origin)
+and distance from the coordinate origin to the plane in the direction of the surface normal.
+
+Inversion is characterized by location of the inversion center.
+
+Rotation is characterized by a vector (distance+direction) from the origin
+to the rotation axis, axis direction and rotation order. Rotations
+are in the clockwise direction looking opposite to the direction
+of the axis. Note that this definition of the rotation axis
+is not unique, since an arbitrary multiple of the axis direction
+can be added to the position vector without changing actual operation.
+
+Mirror rotation is defined by the same parameters as normal rotation,
+but the origin is now unambiguous since it defines the position of the
+plane associated with the axis.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.SYMMETRY.OPTIONS"
+>Options</A
+></H2
+><P
+><B
+CLASS="COMMAND"
+>sh symmetry.sh</B
+>  [maxaxisorder <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [maxoptcycles <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [same <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [primary <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [final <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [minoptstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [maxoptstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [gradstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [minchange <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>] [minchgcycles <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]  <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+> </P
+><P
+><P
+>[maxaxisorder <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Maximum order of rotation axis to look for. Default value: 20</P
+><P
+><P
+>[maxoptcycles <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Maximum allowed number of cycles in symmetry element optimization. Default value: 200</P
+><P
+><P
+>[same <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Atoms are colliding if distance falls below this value. Default value: 0.0010</P
+><P
+><P
+>[primary <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Initial loose criterion for atom equivalence. Default value: 0.05</P
+><P
+><P
+>[final <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Final criterion for atom equivalence. Default value: 0.05</P
+><P
+><P
+>[minoptstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Termination criterion in symmetry element optimization. Default value: 1.0E-7</P
+><P
+><P
+>[maxoptstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Largest step allowed in symmetry element optimization. Default value: 0.5</P
+><P
+><P
+>[gradstep <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Finite step used in numeric gradient evaluation. Default value: 1.0E-7</P
+><P
+><P
+>[minchange <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Minimum allowed change in target methodName. Default value: 1.0E-10</P
+><P
+><P
+>[minchgcycles <VAR
+CLASS="REPLACEABLE"
+>value</VAR
+>]</P
+>Number of minchange cycles before optimization stops. Default value: 5</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+> </P
+>Molecul input file.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../applications/statistic.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../support.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Statistic</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Support</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,276 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% load annotationformat %}
+{% block title %}
+<title>{{ site_title }} - Screen #{{screen.id}}</title>
+{% endblock %}
+{% block extrahead %}
+<script type="text/javascript" src="{{MEDIA_URL}}jquery.scrollTo.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}tooltip.js"></script>
+<link href="{{MEDIA_URL}}tooltip.css" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+
+<h1 id="screen-name">
+	<div id="screenid-box">#{{screen.id}}</div> {{ screen.name}}
+</h1>
+<h2 id="screen-authors">
+<p id="screen-contributors">{{ screen.owner.first_name}} {{ screen.owner.last_name}} {% if screen.pi %} (P.I.: {{ screen.pi }}){% endif %}</p>
+{% if screen.co_author %}<p id="screen-coauthor">{{ screen.co_author}}</p> {% endif %}
+</h2>
+<div class="metadata">
+<p id="screen-description">{{ screen.description|safe }}</p>
+<p id="screen-funding">{{ screen.funding|safe }}</p>
+<p id="screen-permission">{{ screen.type}}</p>
+<div id="screen-strategy">
+	{% if screen.strategy %}<ul class="annotation">{{ screen.strategy|annotation_as_li }}</ul>
+	{% else %}<p>No strategy information for this screen</p>
+	{% endif %}
+</div>
+{% if screen.extra_annotation %}
+<div id="screen-extra-annotation">
+	<ul class="annotation">{{screen.extra_annotation|annotation_as_li}}</ul>
+</div>
+{% endif %}
+<p id="screen-statistics">In total, {% if screen.number_of_cmp_screened %} {{ screen.number_of_cmp_screened }} compound{{screen.number_of_cmp_screened|pluralize}} {{screen.number_of_cmp_screened|pluralize:"is,are"}} screened. {% endif %} {{stats.n_annotated}} compound{{stats.n_annotated|pluralize}} from {{stats.n_library}} librar{{stats.n_library|pluralize:"y,ies"}} {{stats.n_annotated|pluralize:"is,are"}} annotated. Out of these, {{ stats.n_active }} {{ stats.n_active|pluralize:"has,have" }} a score of 1 or higher, and {{ stats.n_inactive }} {{ stats.n_inactive|pluralize:"is,are" }} are annotated as inactive. </p>
+{% if screen.extra_inactive %}
+<div id="screen-extra-inactives"><p>{{screen.extra_inactive}} extra compounds{{screen.extra_inactive|pluralize}} {{screen.extra_inactive|pluralize:"is,are"}} marked as inactive without data file associated uploaded. <a href="?download=inactives" class="button no-float" style="display:inline-block">Download the List</a></p>{% if canadd %}
+<form enctype="multipart/form-data" action="." method="POST" class="upload-inactives">
+<button class="no-float" type="submit">Clear the List</button>
+<input type="hidden" name="func" value="inactives"/>
+</form>
+<form enctype="multipart/form-data" action="." method="POST" class="upload-inactives">
+<input type="file" name="inactives"/>
+<button class="no-float" type="submit">Update the List</button>
+<input type="hidden" name="func" value="inactives"/>
+</form>
+</div>
+{% endif %}
+{% else %}
+{% if canadd %}
+<div id="screen-extra-inactives">
+<p>Upload a list of compounds to mark them as inactive compounds without the need to upload a Standard Compound Annotation for each of them.</p>
+<form enctype="multipart/form-data" action="." method="POST" class="upload-inactives">
+<input type="file" name="inactives"/>
+<button class="no-float" type="submit">Upload the List</button>
+<input type="hidden" name="func" value="inactives"/>
+</form>
+</div>
+{% endif %}
+{% endif %}
+<div>
+<hr/>
+<a id="download-screen" class="button no-float" style="display:inline-block">Download</a>
+<a href="?download=ids" class="button no-float" style="display:inline-block">Download Compound IDs</a>
+{% if canadd %}<a href="#" id="show-add-files" class="button">Add more files</a> {% endif %}
+{% if candelete %}<a href="#" id="show-edit-screen" style="display:none" class="button">Edit this screen</a> <form id="delete-screen" method="POST" action="delete_screen/"><input type="hidden" name="screenid" value="{{screen.id}}"/><button class="no-float" type="submit">Delete this screen</button></form> {% endif %}
+</div>
+</div>
+<div id="files">
+<div id="screen-file-block">
+{% include "screen_level_files.html" %}
+</div>
+<hr id="screen-level-to-compound-level"/>
+
+{% if screen.is_dts %}
+<h2 style="text-align:center">DTS Data</h2>
+<p class="info">This screen contains DTS (Defined Target Screen) Data. Click the table to view the full data table.</p>
+<div id="dts_view" style="height:230px; overflow:hidden"><p style="font-size:3em; color:#ccc; text-align:center; margin-top:30px">Loading...</p></div>
+<script type="text/javascript">
+$(document).ready(function() {$("#dts_view").load("{% url dts-data screen.id %}{% if compounds_limited%}?c={{compounds_limited}}{%endif%} #dts_view").css('cursor', 'pointer').click(function() {
+	x = document.location;
+	document.location = x.protocol + '//' + x.host + "{% url dts-data screen.id %}{% if compounds_limited%}?find={{compounds_limited}}{%endif%}";
+}).tooltip({
+	track: true, delay: 0.5, bodyHandler:function(){return 'Click for full view';}
+});
+});
+</script>
+{% endif %}
+
+<div id="file-block">
+{% include "compound_files.html" %}
+</div>
+
+</div>
+
+{% if canadd %}
+	<div id="add-files">
+	<h2>Add Files to This Screen</h2>
+	<select id="file-type">
+	<option>Select the type of file to upload...</option>
+	{% for form in forms %}
+	<option value="{{form.0|slugify}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.0}}</option>
+	{%endfor%}
+	</select>
+	{% for form in forms %}
+	<div class="file-upload-box" id="{{form.0|slugify}}" style="display:none">
+	<h3>Add {{form.0}}</h3>
+	<form method="POST" action="add/" enctype="multipart/form-data">
+		<input type="hidden" name="type" value="{{form.0}}"/>
+		<table>
+		{{ form.1.as_table }}
+		</table>
+		<input type="submit" value="Submit"/>
+	</form>
+	</div>
+	{% endfor %}
+	</div>
+{% endif %}
+
+<script type="text/javascript">
+function check_download() {
+	$.getJSON('.', {ajax:1, download:'screen_check'},
+		function(data) {
+			if (data.wait) {
+				setTimeout("check_download()", 1000);
+			} else {
+				$("#download-wait").remove();
+				x = document.location;
+				document.location = x.protocol + '//' + x.host + x.pathname + '?download=screen';
+			}
+		}
+	);
+}
+$(document).ready(function() {
+	$(".breadcrumbs .active").text("Screen {{screen.id}}");
+//	$("#files").tabs();
+	$("#file-type").change(function() {
+		if ($(this).get(0).value) {
+			$(this).siblings("div.file-upload-box").slideUp();
+			$("#" + $(this).get(0).value).fadeIn();
+		}
+	});
+	$("a#show-add-files").click(function() {
+		$.scrollTo("#add-files", 'slow');
+		$("#add-files").animate({opacity:0.5}, 500).animate({opacity:1}, 500).animate({opacity:0.5}, 500).animate({opacity:1}, 500).animate({opacity:0.5}, 500).animate({opacity:1}, 500);
+		return false;
+	});
+	// download screen
+	$("#download-screen").click(function() {
+		$('<div id="download-wait" style="text-align:center"><p>Preparing...</p><img width="200" src="{{MEDIA_URL}}icons/ajax-loader.gif"/></div>').dialog({modal:true, title:"download screen data"});
+		setTimeout("check_download()", 1000);
+		return false;
+	});
+	{% if canadd %}
+	// edit screen (enabled only if the user has "add" permission to the screen)
+	$("a#show-edit-screen").show().click(function() {
+		$.getJSON('.', {ajax:1, func:'edit'}, 
+			function(data){
+				if (data.form) {
+					jQuery('<div class="container" id="screen-edit-form"><form action="." method="POST"><table>' + data.form + '</table><input type="submit" value="Save"/></form></div>').dialog({width:500, title:'edit screen'}).find("form").ajaxForm({
+						data:{ajax:1, func:'edit'},
+						dataType: 'json',
+						success:function(data){
+							if (data.status == 'ok') {
+								window.location.reload();
+							} else {
+								$("#screen-edit-form table").html(data.form);
+							}
+						}
+					});
+				}
+		});
+		return false;
+	});
+	// edit individual file (enabled only if the user has "add" permission to the screen)
+	$("a.edit-file").show().click(function() {
+		var fileid = $(this).attr('href').substring(1);
+		$.getJSON('.', {ajax:1, func:'edit-file', fileid:fileid},
+			function(data) {
+				if (data.form) {
+					jQuery('<div class="container" id="file-edit-form"><form enctype="multipart/form-data" action="." method="POST"><table>' + data.form + '</table><input type="submit" value="Save"/></form></div>').dialog({width:500, title:'edit screen file'}).find("form").ajaxForm({
+						data:{ajax:1, func:'edit-file', fileid:fileid},
+						dataType: 'json',
+						success:function(data){
+							if (data.status == 'ok') {
+								window.location.reload();
+							} else {
+								$("#file-edit-form table").html(data.form);
+								ui();
+							}
+						}
+					});
+					ui();
+				}
+			}
+		);
+		return false; 
+	});
+	// reorder files (enabled only if the user has "add" permission to the screen)
+	$( "#screen-file-block, .compound-block" ).sortable().bind("sortupdate", function(event, ui) {
+		var fs = $(event.target).find(".file-id");
+		var req = '';
+		for (var i = 0; i < fs.length; i ++) req += (fs[i].textContent.substring(1) + ',');
+		$.post('.', {ajax:1, func:'order', files:req}, 
+			function(data){
+				if (data.status == 'ok') 
+					jQuery('<div style="position:fixed; left:35%; top:35%; font-size:5em; background:#abd; color:white; padding:10%">Saved</div>').appendTo($("body")).delay(1000).queue(function() {$(this).remove();});
+			}, 'json');
+		});
+	{% endif %}
+	// compound control UI
+	{% if score_filter_on %}
+	$("#compound-list-control").tabs({selected:$("#compound-list-control ul li").length - 2}).show();
+	{% else %}
+	$("#compound-list-control").tabs({collapsible:true, selected:-1}).show();
+	{% endif %}
+	$("#view-ctrl input[type=checkbox]").change(function () {
+		if ($(this).attr('checked')) $("#compound-" + $(this).attr('name')).fadeIn(500);
+		else $("#compound-" + $(this).attr('name')).fadeOut(500);
+	});
+	$("#view-ctrl a.check-all").click(function (){
+		$("#view-ctrl input[type=checkbox]").attr('checked', 'checked').change();
+		return false;
+	});
+	$("#view-ctrl a.uncheck-all").click(function (){
+		$("#view-ctrl input[type=checkbox]").removeAttr('checked').change();
+		return false;
+	});
+	$("#loader form").ajaxForm({
+		data: {ajax:1},
+		dataType: 'json',
+		success:function(data) {
+			if (data.n == 0) alert("No compound has been loaded. Please check your input.");
+			else if (data.n == 1) alert("One compound has been loaded.");
+			else alert(data.n + ' compounds have been loaded');
+			if (data.compounds.length) {
+				$(data.html).insertBefore($($(".compound-block")[0])).css('opacity', 0.2).fadeTo(500, 1).fadeTo(500,0.2).fadeTo(500,1).fadeTo(500,0.2).fadeTo(500,1);
+				for (var i = 0; i < data.compounds.length; i ++) 
+					$('<div class="compound-checkbox"><input type="checkbox" name="' + data.compounds[i][0] + '" checked="checked"/><label>' + data.compounds[i][1] + '</label></div>').insertBefore($($("form#view-ctrl div")[1]));
+			}
+		}
+	});
+	// list of inactives (without associated screenfile)
+	$(".upload-inactives").ajaxForm({
+		data: {ajax:1},
+		dataType: 'json',
+		success:function(data) {
+			if (data.status == 'ok') 
+				window.location.reload();
+			else
+				alert(data.extended_status);
+		}
+	});
+	// pager optimization: when user clicked the pager to come here, scroll to the pager
+	{% if click_pager %}
+		$.scrollTo("#file-block", "slow");
+	{% else %}
+		{% if score_filter_on %}
+			$.scrollTo("#file-block", "slow");
+		{% endif %}
+	{% endif %}
+	// add score filter statistics
+	var score_filter_stats = {{score_filter_stats}};
+	if ($("#score-filter").length) {
+		for (var i = 0; i < 3; i ++)
+			for (var j = 0; j < score_filter_stats[0].length; j ++) {
+				var e = $($($("#score-filter form select")[i]).find('option')[j]);
+				e.html(e.html() + ' (' + score_filter_stats[i][j] + ')');
+			}
+	}
+});
+</script>
+<script type="text/javascript" src="{{MEDIA_URL}}/jquery.form.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}/screenform.js"></script>
+{% endblock %}

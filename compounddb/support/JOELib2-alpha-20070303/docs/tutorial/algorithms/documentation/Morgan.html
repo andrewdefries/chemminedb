@@ -1,0 +1,166 @@
+<HTML
+><HEAD
+><TITLE
+></TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="NEXT"
+TITLE="Bibliography"
+HREF="bibliography.html"></HEAD
+><BODY
+CLASS="ARTICLE"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="ARTICLE"
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTOR"
+></A
+>Descriptor</H1
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN"
+></A
+>Morgan: Unique atom numbering</H1
+><P
+>Algorithm to get a unique numbering for molecules (graphs) [<A
+HREF="bibliography.html#MOR65"
+>mor65</A
+>].
+<DIV
+CLASS="FIGURE"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN.LABELING.PSEUDOCODE"
+></A
+><P
+><B
+>Figure 1. Pseudocode for the Morgan labeling algorithm</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>label each atom with its degree;
+labels=count the number of different labels;
+hasNTchanged=5;
+for all time
+  label each atom with sum of label+all neighbor labels;
+  actLabels=count the number of different labels;
+  if actLabels equal labels then
+    decrement hasNTchanged;
+    if hasNTchanged is zero break loop;
+  fi
+rof</PRE
+></DIV
+>
+The sloppy breaking criteria is necessary, because it's possible that the number of different labels can be
+constant for only two iterations. But that's not so interesting, let's continue with the
+renumbering part of the Morgan algorithm. As you can see, it's possible, that 'symmetric' atoms in the
+molecule will have same labels. Is there now a possibility to solve these 'labeling/renumbering' ties ?
+Yes, additional informations, like bond order and element number can be used for resolving renumbering ties
+or the suggested Jochum-Gasteiger canonical renumbering [<A
+HREF="bibliography.html#TC00"
+>tc00</A
+>] informations can be used.
+<DIV
+CLASS="FIGURE"
+><A
+NAME="JOELIB.ALGORITHMS.MORGAN.RENUMBERING.PSEUDOCODE"
+></A
+><P
+><B
+>Figure 2. Pseudocode for the Morgan renumbering algorithm</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>calculate the morgan atom labels;
+start breadth first search from this atom;
+choose node with the highest label and set new atom index to 1;
+repeat
+  build deque i of atoms with same BFS traversing number i;
+  if deque i contains no equal labels
+    renumber atoms in order of decreasing atom labels.
+  fi
+  else
+    try to resolve renumbering tie for the equal labels:
+      1. prefer atom with higher bond order for renumbering
+      2. prefer atom with higher element number for renumbering
+      3. ...
+    if tie solved
+      renumber atoms in order of decreasing atom labels.
+    fi
+    else
+      show renumbering tie warning;
+    esle
+  esle
+  increment i;
+until all atoms are numbered</PRE
+></DIV
+>
+The uniquely renumbered molecule can be used to calculate molecule
+hashcodes and canonical/unique SMILES representations (see ).</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="bibliography.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Bibliography</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

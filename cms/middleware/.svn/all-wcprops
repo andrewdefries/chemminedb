@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/!svn/ver/64/trunk/cms/middleware
+END
+util.py
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/!svn/ver/64/trunk/cms/middleware/util.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/37/trunk/cms/middleware/__init__.py
+END
+locale.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/37/trunk/cms/middleware/locale.py
+END

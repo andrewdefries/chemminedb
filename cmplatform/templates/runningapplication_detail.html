@@ -1,0 +1,133 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block extrahead %}
+{% if redirect %}
+<script type="text/javascript">
+if (confirm("We will redirect you to a third-party viewer hosted outside of ChemMine. Do you want to proceed?"))
+	location.replace("{{redirect}}");
+</script>
+{% endif %}
+<style>
+a.full-view {
+	display: inline-block; background: rgb(245,233,136); color: rgb(194,166,78) !important; -moz-border-radius: 5px; -webkit-border-radius: 5px; text-decoration: none !important; padding:0 5px;  line-height:15px; position:relative; left:10px; -webkit-box-shadow: 1px 1px 1px rgb(194,166,78)}
+pre select {
+	position: relative; left: 15px; 
+}
+li b {
+	color: rgba(0,0,0,0.5); position: relative; left: -5px;
+}
+img#running {
+	position: relative; top: 3px; margin-right: 10px;
+}
+table th {
+	text-align: right;
+}
+form {
+	font-size: 1em;
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1 id="appname">
+	{{object.application.name}}
+	<span class="shortintro">started {{object.start_time|timesince}} ago</span>
+</h1>
+<ul id="application-status">
+	<li><b>status</b>: {%if running%}<img id="running" src="{{MEDIA_URL}}/icons/icon_loading.gif"/>{%endif%}{{object.get_status_display}} {% if error %}<span class="error">with error</span>{% endif %}</li>
+	<li><b>input</b>:
+		{% if object.stdin_truncated %}
+		<pre>{{object.stdin_truncated}}<a class="full-view" href="#">&#183;&#183;&#183;</a></pre>
+		{% endif %}
+		<pre style="{%if object.stdin_truncated %}display:none{%endif%}">{{object.stdin}}</pre>
+	</li>	
+	{% if running %}
+	{% else %}
+	<li><b>output</b>:
+		<form method="post" action=""><input type="hidden" name="raid" value="{{object.id}}"/>
+		<pre>{% if object.stdout_truncated %}{{object.stdout_truncated}}<a class="full-view" href="#">&#183;&#183;&#183;</a>{%else%}{{object.stdout}}{% endif %}{% if can_process %}<select name="processor">
+			<option value="">Pipe to...</option>
+			{% for app in processors %}
+			<option value="{{app.id}}">{{app}}</option>
+			{% endfor %}
+			{% for app in viewers %}
+			<option value="{{app.id}}">{{app}} (viewer)</option>
+			{% endfor %}
+		</select>{%endif%}
+		</pre>
+		</form>
+		{% if object.stdout_truncated %}
+		<pre style="display:none">{{object.stdout}}</pre>
+		{% endif %}
+	</li>
+	{% endif %}
+</ul>
+{% if running %}
+{% else %}
+<div>
+	{%if error%}{%else%}<h2>What's next</h2>{%endif%}
+	<form method="post" action="">
+	<input type="hidden" name="raid" value="{{object.id}}"/>
+	<table>
+	{% if viewers %}
+	<tr>
+		<th><label>View output with</label></th>
+		<td><select name="processor" style="left:0; margin:0">
+			<option value="">select one...</option>
+			{% for app in viewers %}
+			<option value="{{app.id}}">{{app}}</option>
+			{% endfor %}
+			</select>
+		</td>
+	</tr>
+	{% endif %}
+	{% if processors %}
+	<tr>
+		<th><label>Continue processing with</label></th>
+		<td><select name="processor" style="left:0; margin:0">
+			<option value="">select one...</option>
+			{% for app in processors %}
+			<option value="{{app.id}}">{{app}}</option>
+			{% endfor %}
+			</select>
+		</td>
+	</tr>
+	{% endif %}
+	{% if saved %}
+	{% else %}
+	{% if error %}
+	{% else %}
+	<tr>
+		<th><label>Save output under name</label></th>
+		<td><input type="text" name="name" value="output-{{object.id}}"/><input type="submit" name="save" value="save"/></td>
+	</tr>
+	{% endif %}
+	{% endif %}
+	</table>
+	</form>
+	{% if saved %}
+	Output of this application has been saved under name <i>{{saved}}</i>. You may start <a href="{% url all_apps %}">another tool</a> or <a href="{% url all_running_apps %}">track history of tool uses</a>.
+	{% endif %}
+</div>
+{% endif %}
+<script type="text/javascript">
+function check_status(){
+	$.get('?ajax=status', function(data) {
+		if(data.status=="Finished") window.location.reload();
+		else setTimeout("check_status()", 2000);
+	});	
+}
+$(document).ready(function() {
+	$(".full-view").click(function() {
+		$(this).parents("pre, form").next("pre, div").slideDown();
+		$(this).parent().hide();
+		return false;
+	});
+	$("select").change(function() {
+		$(this).parents("form").get(0).submit();
+	});
+	{% if running %}
+	setTimeout("check_status()", 2000);
+	{% endif %}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Filename: $RCSfile: check.xml,v $
+   Purpose:  Ant build file for JOELib.
+
+             Ant-Download: http://jakarta.apache.org/ant
+             Ant-Manual:   http://jakarta.apache.org/ant/manual/index.html
+
+   Precondition: 1. Ant should be installed.
+                 2. JAVA_HOME environment variable contains the path to JDK1.4 or higher
+                 3. ANT_HOME environment variable contains the path to ant's home directory
+
+   Language: XML
+   Compiler: Ant
+   Authors:  Joerg K. Wegner
+   Version:  $Revision: 1.1.1.1 $
+             $Date: 2004/12/06 15:30:42 $
+             $Author: wegner $
+   Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<project name="JOELib" default="check" basedir=".">
+
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Library check
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+  <target name="binary.libraries.check" >
+<!--    <condition property="library.available.WSI">
+      <and>
+        <available file="${library.WSI}" type="file" />
+      </and>
+    </condition>
+-->
+    <condition property="library.available.LOG4J">
+      <and>
+        <available file="${library.LOG4J}" type="file" />
+      </and>
+    </condition>
+  </target>
+
+<!--    <target name="binary.libraries.test.WSI" depends="binary.libraries.check" unless="library.available.WSI">
+      <echo message="WARNING: wsi package not available at ${library.WSI}."/>
+    </target>
+-->
+    <target name="binary.libraries.test.LOG4J" depends="binary.libraries.check" unless="library.available.LOG4J">
+      <echo message="WARNING: log4j package not available at ${library.LOG4J}."/>
+    </target>
+   
+  <target name="binary.libraries.test"    depends="binary.libraries.test.LOG4J
+                                                  ">
+  </target>
+
+<!--
+  <target name="source.libraries.check" >
+    <condition property="library.available.SOLVES">
+      <and>
+        <available file="${solves.source.directory}/solves" type="dir" />
+      </and>
+    </condition>
+  </target>
+
+    <target name="source.libraries.test.SOLVES" depends="source.libraries.check" unless="library.available.SOLVES">
+      <fail message="solves sources are not available at${solves.source.directory}."/>
+   
+    </target>
+
+  <target name="source.libraries.test"    depends="source.libraries.test.SOLVES
+                                                  ">
+  </target>
+-->
+</project>
+
+<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   END OF FILE
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->

@@ -1,0 +1,75 @@
+{% extends 'cms/base.html' %}
+{% load i18n %}
+{% block title %}
+<title>{{ site_title }} - Screen Database</title>
+{% endblock %}
+{% block content %}
+<h1>
+Screen and Bioactivity Database
+</h1>
+
+{% if screens %}
+	<h3>
+	All screens viewable to you, {% if user_is_anonymous %} Guest. {% else %} {{user.first_name}} {{ user.last_name }}.{% endif %}
+	</h3>
+	<div id="screen-list">
+		<div>
+			<div>ID</div>
+			<div>Name</div>
+			<div>Owner</div>
+			<div>P.I.</div>
+			<div>Funding</div>
+		</div>
+	{% for screen in screens %}
+		<a class="screen-link" href='{% url screen-detail screen.id %}'>
+			<div>{{ screen.id }}</div>
+			<div>{{ screen.name }}</div>
+			<div>{{ screen.owner.first_name }} {{ screen.owner.last_name}}</div>
+			<div>{{ screen.pi }}</div>
+			<div>{{ screen.funding }}</div>
+		</a>
+	{% endfor %}
+	</div>
+{% endif %}
+
+{% if perms.screendb %}
+	{% if screens %}
+	<div><a class="button" id="show-upload">Upload a new screen</a></div>
+	<div id="screen-upload-form" style="display:none">
+		<div class="title">Add a new screen</div>
+		<form method="POST" action=".">
+			<table>
+			{{upload_form.as_table}}
+			</table>
+		<input type="submit" value="Add this screen"/>
+		</form>
+	</div>
+	{% else %}
+	<div id="screen-upload-form">
+		<div class="title">Add a new screen</div>
+		<form method="POST" action=".">
+			<table>
+			{{upload_form.as_table}}
+			</table>
+		<input type="submit" value="Add this screen"/>
+		</form>
+	</div>
+	{% endif %}
+{% else %}
+{% if user_is_anonymous %}
+You have not logged in, and therefore do not have permission to upload new screens.
+{% else %}
+You have a registered account. However, our records show that you are not given the permission to upload screens. Please email us to enable this function for you.
+{% endif %}
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("a#show-upload").click(function() {
+		$(this).hide();
+		$("#screen-upload-form").fadeIn();
+		return false;
+	});
+});
+</script>
+{% endblock %}

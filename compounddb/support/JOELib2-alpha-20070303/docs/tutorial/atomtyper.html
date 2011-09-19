@@ -1,0 +1,509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Assigning atom types, aromatic flags, hybridization and hydrogens</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Molecule operation methods and classes"
+HREF="functionalities/molecule.html"><LINK
+REL="PREVIOUS"
+TITLE="Input and output"
+HREF="functionalities/mol-io.html"><LINK
+REL="NEXT"
+TITLE="Used utilities"
+HREF="utilities.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="functionalities/mol-io.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Molecule operation methods and classes</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="utilities.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.MOLECULE.ATOMTYPER"
+>Assigning atom types, aromatic flags, hybridization and hydrogens</A
+></H1
+><P
+>Atom types can be assigned to atoms of a molecule using only topological informations and SMARTS substructure search.
+For more specialized atom types, like special chirality- and Z/E-isomerism-descriptors it would be a good choice to use
+atom property descriptors (see <A
+HREF="descriptors/atomProperties.html"
+>the Section called <I
+>Atom properties</I
+> in Chapter 5</A
+>).</P
+><P
+>As already discussed in our three feature selection model building papers [<A
+HREF="bibliography.html#WFZ04A"
+>wfz04a</A
+>,<A
+HREF="bibliography.html#WFZ04B"
+>wfz04b</A
+>,<A
+HREF="bibliography.html#FWZ04"
+>fwz04</A
+>] the
+descriptor calculation is the last step after calling four different expert systems, so you should be carefully check your
+descriptor results when predicting values with models not calculated on your own.</P
+><P
+>In our opinion for every expert system a 'standard' (e.g., JOELib/OpenBabel, atomTyperVersion=1.0), formulated as classification
+problem should exist, to be able to say simply: calculate descriptors for the already mentioned standard. The formulation as classification in a
+PUBLIC database is required to test your/our implemented atom typer against this standard. Let's see if we can ever find time and men-/women-power to
+formulate and test such a standard ...</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN1029"
+></A
+><P
+><B
+>Table 3-4. Process of assigning atom types</B
+></P
+><TABLE
+BORDER="0"
+FRAME="void"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="molecule"><COL
+WIDTH="1*"
+TITLE="aromaticity"><COL
+WIDTH="1*"
+TITLE="hybridization"><COL
+WIDTH="1*"
+TITLE="impliciteValence"><COL
+WIDTH="1*"
+TITLE="atomType"><COL
+WIDTH="1*"
+TITLE="descriptor"><TBODY
+><TR
+><TD
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Molecule</B
+></SPAN
+></TD
+><TD
+><P
+><IMG
+SRC="images/arrow_right.gif"></P
+></TD
+><TD
+><P
+><IMG
+SRC="images/arrow_right.gif"></P
+></TD
+><TD
+><P
+><IMG
+SRC="images/arrow_right.gif"></P
+></TD
+><TD
+><P
+><IMG
+SRC="images/arrow_right.gif"></P
+></TD
+><TD
+><P
+><IMG
+SRC="images/arrow_right.gif"></P
+></TD
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+>aromaticity</TD
+><TD
+>hybridization</TD
+><TD
+>implicite valence</TD
+><TD
+>atom types</TD
+><TD
+>descriptor</TD
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+>SMARTS without</TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>calculation</TD
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>D&lt;n&#62;</VAR
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>algorithm</TD
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+><VAR
+CLASS="LITERAL"
+>^&lt;n&#62;</VAR
+></TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+><TD
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.AROMATICITY"
+>Assigning aromaticity flags</A
+></H2
+><P
+>Aromatic flags can be assigned to atoms using SMARTS (see <A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.DEFINITION"
+>the Section called <I
+>SMARTS definition</I
+></A
+>) substructure patterns defined in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/aromatic.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/aromatic.txt</TT
+></A
+>-file.
+All SMARTS patterns except <VAR
+CLASS="LITERAL"
+>D&lt;n&#62;</VAR
+> (explicite bonds) and
+<VAR
+CLASS="LITERAL"
+>^&lt;n&#62;</VAR
+> (hybridization) are allowed. Chiral atoms are allowed, which use the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/math/XYZVector.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><VAR
+CLASS="LITERAL"
+>XYZVector.calcTorsionAngle(...)</VAR
+></A
+>-method.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.HYBRIDIZATION"
+>Assigning atom hybridizations</A
+></H2
+><P
+>To assign atom hybridizations it is necessary to have already assigned aromaticity flags.
+All <VAR
+CLASS="LITERAL"
+>INTHYB</VAR
+>-definitions in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+>-file
+are used get the atom hybridizations.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.ATOMTYPES"
+>Assigning atom types</A
+></H2
+><P
+>To assign atom types it is necessary to have already assigned aromaticity flags and atom hybridizations.
+All <VAR
+CLASS="LITERAL"
+>EXTTYP</VAR
+>-definitions in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+>-file
+are used get the atom types. These are mainly used for the file conversion process and for descriptor calculation algorithms.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.IMPLICITEHYDROGENS"
+>Assigning implicite hydrogens</A
+></H2
+><P
+>To assign the implicite valence to atoms it is necessary to have already assigned aromaticity flags, atom hybridizations and atom types.
+All <VAR
+CLASS="LITERAL"
+>IMPVAL</VAR
+>-definitions in the
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/data/plain/atomtype.txt?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib/data/plain/atomtype.txt</TT
+></A
+>-file
+are used to calculate the number of implicite hydrogens for each atom.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.MOLECULE.ATOMTYPES.SPECIAL"
+>Calculate descriptors and/or assign special atomtypes</A
+></H2
+><P
+>Descriptors can be simple topology descriptors without requiring any chemical informations or descriptors
+with requiring atom types and  implicite hydrogens (see e.g. <A
+HREF="descriptors/fingerprints.html"
+>the Section called <I
+>Fingerprints</I
+> in Chapter 5</A
+>).
+PATTY rules (see <A
+HREF="functionalities/mol-smarts.html#JOELIB.MOLECULE.SMARTS.PATTY"
+>the Section called <I
+>Programmable Atom Typer (PATTY)</I
+></A
+>) can be used for simple atom type descriptors.
+And all kinds of other models or expert rules can be used for chirality or Z/E-isomerism descriptors.</P
+><DIV
+CLASS="TABLE"
+><A
+NAME="AEN1115"
+></A
+><P
+><B
+>Table 3-5. Possible special atom type assignments (not implemented)</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="assignment"><COL
+WIDTH="1*"
+TITLE="reference"><THEAD
+><TR
+><TH
+>Assignment</TH
+><TH
+>Reference</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>chirality descriptor</TD
+><TD
+>[<A
+HREF="bibliography.html#GT03"
+>gt03</A
+>]</TD
+></TR
+><TR
+><TD
+>E/Z descriptor</TD
+><TD
+>[<A
+HREF="bibliography.html#GBT02"
+>gbt02</A
+>]</TD
+></TR
+><TR
+><TD
+>planar three-coordinate nitrogen</TD
+><TD
+>calculate vector product of the three neighbors</TD
+></TR
+><TR
+><TD
+>nitrogen with aromatic ligand</TD
+><TD
+>PATTY SMARTS rule: <VAR
+CLASS="LITERAL"
+>[#7a]</VAR
+></TD
+></TR
+></TBODY
+></TABLE
+></DIV
+><P
+>For all atom property descriptors there must always exist a descriptor documentation-file
+(see <A
+HREF="functionalities/molecule.html#JOELIB.MOLECULE.DESCRIPTOR"
+>the Section called <I
+>Writing your own descriptor and result classes</I
+></A
+>). Otherwise a HTML-documentation (generated by using <A
+HREF="http://www.docbook.org/"
+TARGET="_top"
+>DocBook</A
+>)
+error will occur
+every time JOELib starts. The XML- and RTF-description files are optional.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="functionalities/mol-io.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="utilities.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Input and output</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="functionalities/molecule.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Used utilities</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

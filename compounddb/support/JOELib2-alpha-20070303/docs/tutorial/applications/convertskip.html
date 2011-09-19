@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>ConvertSkip</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="PREVIOUS"
+TITLE="Example applications"
+HREF="../applications/applications.html"><LINK
+REL="NEXT"
+TITLE="Comparison"
+HREF="../applications/comparison.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Example applications</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../applications/comparison.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP"
+>ConvertSkip</A
+></H1
+><P
+>Example application for file conversion, descriptor calculation and process filters. Additionally this example can be used
+to check a molecule file for correctness and store invalid or empty molecules
+(if [-e] option is activated) in a skip file. Because this example uses another loading
+mechanism, not all input formats are supported until now. Supported input file formats are SDF, SMILES, Flat and XYZ.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.OPTIONS"
+>Options</A
+></H2
+><P
+><B
+CLASS="COMMAND"
+>sh convertSkip.sh</B
+>  [-? | --help] [-h] [+h] [+p] [-e] [-d] [+d] [+v] [+snd] [+sad] [+sall] [-salt] [-i<VAR
+CLASS="REPLACEABLE"
+>inputFormat</VAR
+>] [-o<VAR
+CLASS="REPLACEABLE"
+>outputFormat</VAR
+>] [+x<VAR
+CLASS="REPLACEABLE"
+>descriptorName</VAR
+>] [-r<VAR
+CLASS="REPLACEABLE"
+>skipDescRule</VAR
+>] [+r<VAR
+CLASS="REPLACEABLE"
+>descRule</VAR
+>] [+f<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>] [+s<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>]  <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+>  [<VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+>] [<VAR
+CLASS="REPLACEABLE"
+>skipFile</VAR
+>]</P
+><P
+><P
+>[-? | --help]</P
+>Shows the help screen including all available input/output formats and all native value descriptors.</P
+><P
+><P
+>[-h]</P
+>Removes all hydrogens from the molecule.</P
+><P
+><P
+>[+h]</P
+>Adds hydrogens to molecule.</P
+><P
+><P
+>[+p]</P
+>Adds only polar hydrogens to molecule.</P
+><P
+><P
+>[-e]</P
+>Converts only non-empty molecules.</P
+><P
+><P
+>[-d]</P
+>Removes all descriptors from molecule.</P
+><P
+><P
+>[+d]</P
+>Adds all available descriptors to molecule, which can be calculated by using JOELib.</P
+><P
+><P
+>[+v]</P
+>Switches verbosity mode ON.</P
+><P
+><P
+>[+sall]</P
+>Shows all available descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[-salt]</P
+>Strip salts and gets only largest contigous fragment.</P
+><P
+><P
+>[+snd]</P
+>Shows all available native value descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[+sad]</P
+>Shows all available atom property descriptors, which can be calculated by using JOELib.</P
+><P
+><P
+>[-i<VAR
+CLASS="REPLACEABLE"
+>inputFormat</VAR
+>]</P
+>Format of the input file.</P
+><P
+><P
+>[-o<VAR
+CLASS="REPLACEABLE"
+>outputFormat</VAR
+>]</P
+>Format of the output file.</P
+><P
+><P
+>[+x<VAR
+CLASS="REPLACEABLE"
+>descriptorName</VAR
+>]</P
+>Converts only molecules, where this descriptor exist. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[-r<VAR
+CLASS="REPLACEABLE"
+>skipDescRule</VAR
+>]</P
+>Skips all molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[+r<VAR
+CLASS="REPLACEABLE"
+>descRule</VAR
+>]</P
+>Converts only molecules, where this descriptor rule fits. This command line parameter
+can occur multiple times.</P
+><P
+><P
+>[+f<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>]</P
+>Required if you use FLAT output format which other input format.</P
+><P
+><P
+>[+s<VAR
+CLASS="REPLACEABLE"
+>lineStructure</VAR
+>]</P
+>Can be used for an alternate SMILES entry line structure.</P
+><P
+><P
+> <VAR
+CLASS="REPLACEABLE"
+>inputFile</VAR
+> </P
+>The input file. The input format will be estimated by using the file extension.</P
+><P
+><P
+>[<VAR
+CLASS="REPLACEABLE"
+>outputFile</VAR
+>]</P
+>The output file. The output format will be estimated by using the file extension.</P
+><P
+><P
+>[<VAR
+CLASS="REPLACEABLE"
+>skipFile</VAR
+>]</P
+>The skip file. The output format will be the same of the input format.
+All skipped molecules will be stored in this file.</P
+><P
+>If no output file is defined, all molecules will be written to stdout.
+The skip file must have the same format as the input file. All skipped
+entries and empty entries (if -e was selected) were stored in the skip
+file.</P
+><P
+>Filter rules have the form:
+&lt;native value descriptor&#62;&lt;relation&#62;&lt;value&#62;
+where &lt;relation&#62; is &lt;, &lt;=, ==, &#62;, &#62;= or !=
+Example:
+"+rNumber_of_halogen_atoms==2"</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.EXAMPLES"
+>Examples</A
+></H2
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.HELP"
+></A
+><P
+><B
+>Example 10-3. Show help screen for ConvertSkip</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.ConvertSkip --help</PRE
+> shows the help screen</P
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.PRINT"
+></A
+><P
+><B
+>Example 10-4. Print molecules to standard output</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.ConvertSkip joelib/test/test.mol</PRE
+> Prints the molecule file to
+the screen.</P
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.FLAT"
+></A
+><P
+><B
+>Example 10-5. Write flat file</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.ConvertSkip resources/multiple.mol test.flat "-fID|TITLE|d1|d2|d3"</PRE
+>
+Writes a flat file with line structure ID TITLE d1 d2 d3 to file test.flat.</P
+></DIV
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.APPLICATIONS.CONVERTSKIP.RULE"
+></A
+><P
+><B
+>Example 10-6. Using conversion rule</B
+></P
+><P
+><PRE
+CLASS="SCREEN"
+>java -cp joelib.jar joelib.test.ConvertSkip resources/multiple.mol +h -e +xID\
+         test.sdf "+rNumber_of_halogen_atoms&#60;=2"</PRE
+>
+Converts all non-empty molecules where the number of halogen atoms is smaller or equal to two and the identifier ID exists.
+The accepted and protonated molecules will be written to test.sdf in MDL SDF file format.</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../applications/comparison.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Example applications</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../applications/applications.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Comparison</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

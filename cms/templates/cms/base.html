@@ -1,0 +1,47 @@
+{% load i18n cms_base %}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+<title>{{ site_title }} | {{ title }}</title>
+{% block extrahead %}{% endblock %}
+</head>
+<body>
+{% block body %}
+
+<!-- Example template -->
+<div class="breadcrumbs">
+    {% cms_breadcrumbs %}
+</div>
+<hr />
+
+<h3>{% trans "Search" %}</h3>
+
+<form action="{% url cms_search %}" method="get" accept-charset="utf-8">
+    <p><input type="type" name="query" value="{{ query }}" /></p>
+    <p><input type="submit" value="{% trans "search" %}" /></p>
+</form>
+
+<h3>{% trans "main menu" %}</h3>
+{% cms_navigation_level 1 as nav %}
+<ul id="main_menu">
+    {% for mainpage in nav %}<li><a class="{% if_cms_is_subpage page mainpage %}menu_active{% end_if_cms_is_subpage %}"  href="{% cms_link mainpage %}">{{ mainpage.title|escape }}</a></li>{% endfor %}
+</ul>
+
+{% cms_subpages page as subpages %}
+{% if subpages %}
+    <h3>{% trans "sub pages" %}</h3>
+    <ul id="subpages_menu">
+        {% for subpage in subpages %}<li><a href="{% cms_link subpage %}">{{ subpage.title|escape }}</a></li>{% endfor %}
+    </ul>
+{% endif %}
+
+<div id="content">
+{% block content %}
+{{ content }}
+{% endblock %}
+</div>
+
+<hr />
+<small>{% cms_language_links %}</small>
+{% endblock %}
+</body>
+</html>

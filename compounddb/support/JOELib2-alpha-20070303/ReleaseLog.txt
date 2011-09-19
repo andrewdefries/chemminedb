@@ -1,0 +1,122 @@
+########################################################################
+# Version:  $Revision: 1.1 $
+#           $Date: 2005/01/09 13:50:34 $
+########################################################################
+# Copyright OELIB:          OpenEye Scientific Software, Santa Fe,
+#                           U.S.A., 1999,2000,2001
+# Copyright JOELIB/JOELib2: Dept. Computer Architecture, University of
+#                           Tuebingen, Germany, 2001,2002,2003,2004,2005
+# Copyright JOELIB/JOELib2: ALTANA PHARMA AG, Konstanz, Germany,
+#                           2003,2004,2005
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+########################################################################
+
+========================================================================
+JOELib 2 Release Log :
+========================================================================
+General:
+------------------------------------------------------------------------
+We recommend ALWAYS the source code release, because you can simply
+build your own binary release with:
+
+joelib2/ant> ant dist
+or
+joelib2> sh build.sh dist
+
+Furthermore you can have a look at the source code and improve/change
+things.
+We mention this to remind you to share your experience. Additionally we
+want to initialize the open-source mind for your special requirements
+without loosing generalization ability for other users!
+
+------------------------------------------------------------------------
+Features:
+------------------------------------------------------------------------
+- chemical expert systems:
+-- ring detection and ring set finder using the Smallest Set of Smallest
+   Ring (SSSR) algorithm with the Figueras extension
+-- kekule bond order detection algorithm
+-- hybridisation detection
+-- implicit valence detection algorithm
+-- aromaticity detection algorithm
+-- implicit hydrogen calculation
+-- automatic detection of chemical atom types
+-- over 50 different chemical atom labels
+-- over 5 differet chemical bond labels
+
+- query search algorithm, based on SMARTS
+-- Programmable Atom Typer based on SMARTS
+
+- A huge number of chemical export/import formats
+-- automatic detection of atom types and atom type conversion
+-- Structuread Data Files (SDF) + feature import/export
+-- Chemical Markup Language (CML1 and CML2) + feature import/export
+-- CACTVS + feature import
+-- Flat file + feature import/export
+-- Molecular mechanics formats: Tinker, Ghemical, ...
+-- SMILES line notation export (no 2D layout generation for import, use CDK interface)
+-- ZIP import/export which can contain multiple files (no need to waste space :-)
+
+- Image, Document and Rendering export
+-- Image file formats:  BMP, GIF, JPEG, PDF, PPM, PBM
+-- PovRay export with three different rendering modes
+-- Portable Document File (PDF) export
+
+- JCAMP Spectra import/export
+-- Uncompressed JCAMP-DX import/export
+
+- Protonation/Deprotonation
+-- Protonation model for protonating molecular structures
+-- Deprotonation of molecular structures
+
+- Feature calculation
+-- Radial Distribution Function (RDF), e.g. (100 values) * (50 atom labels)=5000 features
+-- Burden Modified Eigenvalues (BCUT, if one uses several atom labels)
+-- Complexity features, like kier and zagreb index
+-- Atom and group count features
+-- Pharmacophore fingerprint SSKey3D
+-- Group Contribution (GC) prediction of LogP, molar refractivity (MR) and
+   polar surface area (PSA)
+-- Some more ...
+
+- Process and Filter functionality
+-- Each available feature can be used to build filter and processing pipes
+-- Internal (only Java) processing pipes
+-- External (external libray, e.g. JNI, shared library, executable, ...) processing pipes
+
+- Algorithms
+-- Query substructure search with SMARTS
+-- Morgan molecule canonization with tie resolvers
+   - Hashcode calculation for molecules
+   - Unique/Canonical SMILES
+   - Unique renumbering of atoms
+-- Symmetry detection facility of rotation axes, mirror planes and resulting point groups.
+-- Molecule fragmentation and RGroup based generation algorithm
+
+- Interfaces
+-- Default database interface (e.g. MySQL) with automatic identifier (ID) calculation
+-- DataMining: Interface to Weka, Yale, and Matlab
+   - http://www.cs.waikato.ac.nz/ml/weka/
+-- Cheminformatics: Interface to the Chemical Development Kit (CDK), e.g. for 2D layout
+-- Interface to the computationl library Ghemical (molecular mechanics and more)
+   - http://bioinformatics.org/project/?group_id=41
+
+- Visualization
+-- 2D rendering (no 2D layout), but interface to the Chemical Development Kit (CDK)
+-- 3D rendering (no 3D generation), but interface to Ghemical
+-- Primitive GUI for file conversion and feature calculation (use command line)
+
+- Examples
+-- A huge number of practical examples for calculating features, selecting features, ...
+
+- Documentation
+-- Programming interface:  API documentation
+-- Tutorial: XML based DocBook tutorial

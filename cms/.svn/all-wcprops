@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 22
+/!svn/ver/99/trunk/cms
+END
+admin.py
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/59/trunk/cms/admin.py
+END
+dynamicforms.py
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/!svn/ver/39/trunk/cms/dynamicforms.py
+END
+views.py
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/96/trunk/cms/views.py
+END
+util.py
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/64/trunk/cms/util.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/!svn/ver/12/trunk/cms/__init__.py
+END
+INSTALL
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/75/trunk/cms/INSTALL
+END
+COPYRIGHT
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/12/trunk/cms/COPYRIGHT
+END
+cms_global_settings.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/!svn/ver/65/trunk/cms/cms_global_settings.py
+END
+models.py
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/!svn/ver/72/trunk/cms/models.py
+END
+cms_settings.py.dist
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/!svn/ver/98/trunk/cms/cms_settings.py.dist
+END
+urls.py
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/!svn/ver/63/trunk/cms/urls.py
+END
+forms.py
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/!svn/ver/71/trunk/cms/forms.py
+END

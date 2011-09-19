@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Bonds</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="JOELib basics"
+HREF="../basics/basics.html"><LINK
+REL="PREVIOUS"
+TITLE="JOELib basics"
+HREF="../basics/basics.html"><LINK
+REL="NEXT"
+TITLE="Molecule"
+HREF="../basics/struct-molecule.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../basics/basics.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. JOELib basics</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../basics/struct-molecule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN328"
+>Bonds</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN330"
+>Accessing bonds</A
+></H2
+><P
+>Bonds in
+<A
+HREF="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/joelib/joelib/src/joelib/molecule/JOEBond.java?rev=HEAD&#38;content-type=text/vnd.viewcvs-markup"
+TARGET="_top"
+><TT
+CLASS="FILENAME"
+>joelib.molecule.JOEBond</TT
+></A
+>
+are represented as edges of a graph.
+The bond properties can be changed with standard set and get methods.</P
+><P
+>If you use <VAR
+CLASS="LITERAL"
+>molecule.getBond(int bondIdx)</VAR
+> you must take into account that bonds
+begin with the index number 0. That's one
+of the biggest differences between atoms and bonds, because
+atoms begin with the index number 1. </P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="JOELIB.BASICS.EXAMPLE.BONDS"
+></A
+><P
+><B
+>Example 2-3. Bond iterator</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>JBondIterator bit = molecule.bondIterator();
+JOEBond bond;
+while(bit.hasNext())
+{
+  bond = bit.nextBond();
+}</PRE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN340"
+>Chemical properties</A
+></H2
+><P
+>Bonds <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>E=&sube;V&times;V</B
+></SPAN
+> are in fact unlabeled edges of a molecular graph <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>G</B
+></SPAN
+>.
+The chemical bond properties are assigned with a set <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B={&beta;<SUB
+>1</SUB
+>,&beta;<SUB
+>1</SUB
+>,...,&beta;<SUB
+>|B|</SUB
+>}</B
+></SPAN
+> of
+labelling functions <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>i</SUB
+>:G,V,A,B<SUB
+>j&ne;i</SUB
+>&rarr;W<SUB
+>E,i</SUB
+></B
+></SPAN
+>.
+We can distinguish between a set of critical labelling functions <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>E<SUB
+>chem</SUB
+></B
+></SPAN
+> (chemical kernel) and all other optional chemical properties.</P
+><P
+></P
+><UL
+><LI
+><P
+>The chemical kernel or chemical base knowledge uses the following functions for which the dependencies are also shown:</P
+><P
+></P
+><UL
+><LI
+><P
+>Bond type <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>type</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+>.
+          These bond properties can be accessed by <VAR
+CLASS="LITERAL"
+>bond.isSingle()</VAR
+>,<VAR
+CLASS="LITERAL"
+>bond.isDouble()</VAR
+>,<VAR
+CLASS="LITERAL"
+>bond.isTriple()</VAR
+>.</P
+></LI
+><LI
+><P
+>Binary ring bond flag <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>ring</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+> which is based on a ring search algorithm, e.g. the <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Smallest Set of Smallest Ring</I
+></SPAN
+> (SSSR) [<A
+HREF="../bibliography.html#FIG96"
+>fig96</A
+>].
+           This bond property can be accessed by <VAR
+CLASS="LITERAL"
+>bond.isInRing()</VAR
+>.</P
+></LI
+><LI
+><P
+>Kekul&eacute; bond type <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>kekule</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+>.
+          These bond properties can be accessed by <VAR
+CLASS="LITERAL"
+>bond.isKSingle()</VAR
+>,<VAR
+CLASS="LITERAL"
+>bond.isKDouble()</VAR
+>,<VAR
+CLASS="LITERAL"
+>bond.isKTriple()</VAR
+>.
+          You can, e.g. for visualization purpose, force the 'normal' bond type with the 'kekulized' bond type by using <VAR
+CLASS="LITERAL"
+>molecule.kekulize()</VAR
+>.</P
+></LI
+><LI
+><P
+>Binary aromaticity flag <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>arom</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+>.
+          This bond property can be accessed by <VAR
+CLASS="LITERAL"
+>bond.isAromatic()</VAR
+>.</P
+></LI
+><LI
+><P
+>E/Z isomerism <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>E/Z</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+>.
+          This bond property can be accessed by <VAR
+CLASS="LITERAL"
+>joelib.util.IsomerismDetection.isCisTransBond(bond)</VAR
+>.</P
+></LI
+><LI
+><P
+>E/Z isomerism for SMARTS substructure search and visulalization <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>&beta;<SUB
+>up/down</SUB
+>(G,V,A<SUB
+>chem</SUB
+>,B<SUB
+>chem</SUB
+>)</B
+></SPAN
+>.
+          This bond property can be accessed by <VAR
+CLASS="LITERAL"
+>joelib.util.IsomerismDetection.isCisTransBond(bond, true)</VAR
+>.</P
+></LI
+></UL
+><P
+>So we obtain as chemical base knowledge (chemical kernel) <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>B<SUB
+>chem</SUB
+>(lib=JOELib,kernelID)={&beta;<SUB
+>type</SUB
+>,&beta;<SUB
+>ring</SUB
+>,&beta;<SUB
+>kekule</SUB
+>,&beta;<SUB
+>arom</SUB
+>,&beta;<SUB
+>E/Z</SUB
+>,&beta;<SUB
+>up/down</SUB
+>}</B
+></SPAN
+></P
+></LI
+><LI
+><P
+>Other bond properties are for example asymmetric bond dissociation energies (directed bond properties) which can be calculated by the
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Parameter Estimation for the Treatment of Reactivity Application</I
+></SPAN
+> (PETRA) library [<A
+HREF="../bibliography.html#GAS88"
+>gas88</A
+>] and then imported into JOELib
+    using the CTX file format (<A
+HREF="../functionalities/mol-io.html#JOELIB.MOLECULE.IO.FORMATS"
+>the Section called <I
+>Supported input and output formats</I
+> in Chapter 3</A
+>).</P
+></LI
+></UL
+><P
+>All bond properties are automatically assigned by the expert systems (<A
+HREF="../atomtyper.html"
+>the Section called <I
+>Assigning atom types, aromatic flags, hybridization and hydrogens</I
+> in Chapter 3</A
+>).</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../basics/basics.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../basics/struct-molecule.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>JOELib basics</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../basics/basics.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Molecule</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

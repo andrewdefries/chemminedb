@@ -1,0 +1,519 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Fingerprints</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="JOELib Tutorial"
+HREF="../JOELibPrimer.html"><LINK
+REL="UP"
+TITLE="Descriptors"
+HREF="../descriptors/descriptors.html"><LINK
+REL="PREVIOUS"
+TITLE="Atom properties"
+HREF="../descriptors/atomProperties.html"><LINK
+REL="NEXT"
+TITLE="Transformations"
+HREF="../descriptors/transformations.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>JOELib Tutorial: A Java based cheminformatics/computational chemistry package</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="../descriptors/atomProperties.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Descriptors</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="../descriptors/transformations.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JOELIB.DESCRIPTORS.FINGERPRINTS.ONE"
+>Fingerprints</A
+></H1
+><A
+NAME="AEN1650"
+></A
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JOELIB.DESCRIPTORS.SSKEY3DS"
+>Pharmacophore fingerprint</A
+></H2
+><P
+>Pharmacophore fingerprint [<A
+HREF="../bibliography.html#GXSB00"
+>gxsb00</A
+>].
+<DIV
+CLASS="TABLE"
+><A
+NAME="AEN1657"
+></A
+><P
+><B
+>Table 5-2. Pharmacophore fingerprint definition</B
+></P
+><TABLE
+BORDER="1"
+FRAME="border"
+CLASS="CALSTABLE"
+><COL
+WIDTH="1*"
+TITLE="bitposition"><COL
+WIDTH="1*"
+TITLE="setwhen"><THEAD
+><TR
+><TH
+>Bit position</TH
+><TH
+>Set when</TH
+></TR
+></THEAD
+><TBODY
+><TR
+><TD
+>1</TD
+><TD
+>Fraction of rotatable bonds &#62; 0.0</TD
+></TR
+><TR
+><TD
+>2</TD
+><TD
+>Fraction of rotatable bonds &#62; 0.1</TD
+></TR
+><TR
+><TD
+>3</TD
+><TD
+>Fraction of rotatable bonds &#62; 0.2</TD
+></TR
+><TR
+><TD
+>4</TD
+><TD
+>Fraction of rotatable bonds &#62; 0.3</TD
+></TR
+><TR
+><TD
+>5</TD
+><TD
+>Fraction of rotatable bonds &#62; 0.4</TD
+></TR
+><TR
+><TD
+>6</TD
+><TD
+>Aromatic bonds in molecule &#62; 2</TD
+></TR
+><TR
+><TD
+>7</TD
+><TD
+>Aromatic bonds in molecule &#62; 8</TD
+></TR
+><TR
+><TD
+>8</TD
+><TD
+>Aromatic bonds in molecule &#62; 16</TD
+></TR
+><TR
+><TD
+>9</TD
+><TD
+>Aromatic bonds in molecule &#62; 20</TD
+></TR
+><TR
+><TD
+>10</TD
+><TD
+>Aromatic bonds in molecule &#62; 26</TD
+></TR
+><TR
+><TD
+>11</TD
+><TD
+>Aromatic bonds in molecule &#62; 32</TD
+></TR
+><TR
+><TD
+>12</TD
+><TD
+>Aromatic bonds in molecule &#62; 38</TD
+></TR
+><TR
+><TD
+>13</TD
+><TD
+>Molecule contains a heterocycle</TD
+></TR
+><TR
+><TD
+>14</TD
+><TD
+>Molecule contains an aromatic hydroxy group</TD
+></TR
+><TR
+><TD
+>15</TD
+><TD
+>Molecule contains an aliphatic hydroxy group</TD
+></TR
+><TR
+><TD
+>16</TD
+><TD
+>Molecule contains an aliphatic secondary amine</TD
+></TR
+><TR
+><TD
+>17</TD
+><TD
+>Molecule contains an aliphatic tertiary amine</TD
+></TR
+><TR
+><TD
+>18</TD
+><TD
+>Molecule contains a phenyl ring</TD
+></TR
+><TR
+><TD
+>19</TD
+><TD
+>Molecule contains a ring containing nitrogen</TD
+></TR
+><TR
+><TD
+>20</TD
+><TD
+>Molecule contains a -SO<SUB
+>2</SUB
+> group</TD
+></TR
+><TR
+><TD
+>21</TD
+><TD
+>Molecule contains a -SO</TD
+></TR
+><TR
+><TD
+>22</TD
+><TD
+>Molecule contains an ester </TD
+></TR
+><TR
+><TD
+>23</TD
+><TD
+>Molecule contains an amide </TD
+></TR
+><TR
+><TD
+>24</TD
+><TD
+>Molecule contains a 5-membered non-aromatic ring</TD
+></TR
+><TR
+><TD
+>25</TD
+><TD
+>Molecule contains a 5-membered aromatic ring</TD
+></TR
+><TR
+><TD
+>26</TD
+><TD
+>Molecule contains a 9-membered or larger (fused) ring</TD
+></TR
+><TR
+><TD
+>27</TD
+><TD
+>Molecule contains a fused ring system</TD
+></TR
+><TR
+><TD
+>28</TD
+><TD
+>Molecule contains a fused aromatic ring system</TD
+></TR
+><TR
+><TD
+>29</TD
+><TD
+>Molecule contains a -OSO group</TD
+></TR
+><TR
+><TD
+>30</TD
+><TD
+>Molecule contains a halogen atom</TD
+></TR
+><TR
+><TD
+>31</TD
+><TD
+>Molecule contains a nitrogen atom attached to alpha-carbon of aromatic system</TD
+></TR
+><TR
+><TD
+>32</TD
+><TD
+>Molecule contains a -NO<SUB
+>2</SUB
+> group</TD
+></TR
+><TR
+><TD
+>33</TD
+><TD
+>Molecule contains rings separated by 2-3 non-ring atoms</TD
+></TR
+><TR
+><TD
+>34</TD
+><TD
+>Molecule contains rings separated by 4-5 non-ring atoms</TD
+></TR
+><TR
+><TD
+>35</TD
+><TD
+>Molecule contains a NN group</TD
+></TR
+><TR
+><TD
+>36</TD
+><TD
+>Molecule contains a carbon atom attached to 3 carbons and a hetero atom</TD
+></TR
+><TR
+><TD
+>37</TD
+><TD
+>Molecule contains an oxygen atom separated by 2 atoms</TD
+></TR
+><TR
+><TD
+>38</TD
+><TD
+>Molecule contains a methyl group attached to hetero atom</TD
+></TR
+><TR
+><TD
+>39</TD
+><TD
+>Molecule contains a double bond</TD
+></TR
+><TR
+><TD
+>40</TD
+><TD
+>Molecule contains a non-H atom linked to 3 heteroatoms</TD
+></TR
+><TR
+><TD
+>41</TD
+><TD
+>Molecule contains a quaternary atom</TD
+></TR
+><TR
+><TD
+>42</TD
+><TD
+>Molecule contains 2 methylenes separated by 2 atoms</TD
+></TR
+><TR
+><TD
+>43</TD
+><TD
+>Molecule contains a non-ring oxygen atom attached to aromatic system</TD
+></TR
+><TR
+><TD
+>44</TD
+><TD
+>Molecule contains 2 non-C,H atoms separated by 2 atoms</TD
+></TR
+><TR
+><TD
+>45</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 1</TD
+></TR
+><TR
+><TD
+>46</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 2</TD
+></TR
+><TR
+><TD
+>47</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 3</TD
+></TR
+><TR
+><TD
+>48</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 4</TD
+></TR
+><TR
+><TD
+>49</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 5</TD
+></TR
+><TR
+><TD
+>50</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 6</TD
+></TR
+><TR
+><TD
+>51</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 7</TD
+></TR
+><TR
+><TD
+>52</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 8</TD
+></TR
+><TR
+><TD
+>53</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 9</TD
+></TR
+><TR
+><TD
+>54</TD
+><TD
+>Number of hydrogen bond acceptors &#62;= 10</TD
+></TR
+></TBODY
+></TABLE
+></DIV
+></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="../descriptors/atomProperties.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../JOELibPrimer.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="../descriptors/transformations.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Atom properties</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="../descriptors/descriptors.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Transformations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
