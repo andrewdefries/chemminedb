@@ -108,11 +108,7 @@ def do_paging(base_queryset, limit=50, batch=0):
 def do_property_search(base_queryset, field_name, operator, value, cache_life=3600):
 	field_name = field_name.replace('__', ' ')
 	try:
-		cache_key = h('propertyfield:%s' % (field_name))
-		field = cache.get(cache_key)
-		if field is None:
-			field = PropertyField.objects.get(name__iexact=field_name)
-			cache.set(cache_key, field, cache_life)
+		field = PropertyField.objects.get(name__iexact=field_name)
 	except:
 		raise SearchError("Unknown property: " + field_name)
 		
