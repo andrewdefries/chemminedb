@@ -1,16 +1,30 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import force_escape
 
+
 class MetaTag:
+
     """Simple class to output XHTML conform <meta> tags."""
-    def __init__(self, content='', name=None, http_equiv=None, scheme=None, lang=None):
+
+    def __init__(
+        self,
+        content='',
+        name=None,
+        http_equiv=None,
+        scheme=None,
+        lang=None,
+        ):
+
         self.content = content
         self.name = name
         self.http_equiv = http_equiv
         self.scheme = scheme
         self.lang = lang and lang.lower()[:5]
-        
+
     def __unicode__(self, request=None):
         if not self.lang:
             if not request:
@@ -30,17 +44,20 @@ class MetaTag:
         attrs += u'lang="%s" ' % force_escape(lang)
         return mark_safe(u'<meta %s/>' % attrs)
 
+
 def to_utf8(string):
     if isinstance(string, str):
         return unicode(string, 'utf8')
     else:
         return string
-    
+
+
 def from_utf8(string):
     if isinstance(string, unicode):
         return string.encode('utf8')
     else:
         return string
+
 
 def flatten(lst):
     for elem in lst:
@@ -49,6 +66,7 @@ def flatten(lst):
                 yield i
         else:
             yield elem
+
 
 def get_values(object, fields):
     value_dict = {}
@@ -61,6 +79,7 @@ def get_values(object, fields):
         value_dict[field] = value
     return value_dict
 
+
 def get_dict(fields, values):
     value_dict = {}
     for field in fields:
@@ -71,14 +90,18 @@ def get_dict(fields, values):
             value_dict[field] = value
     return value_dict
 
+
 def set_values(object, fields, values):
     for field in fields:
         setattr(object, field, from_utf8(values[field]))
 
+
 def language_list():
     return dict(settings.LANGUAGES).keys()
 
+
 class PositionDict(dict):
+
     """
     Dictionary which is used for the content and title objects.
     It is designed to be used in a Django template.
@@ -93,7 +116,10 @@ class PositionDict(dict):
     def __unicode__(self):
         return self.get(self.default)
 
+
 def resolve_dotted_path(path):
     dot = path.rindex('.')
-    mod_name, func_name = path[:dot], path[dot+1:]
+    (mod_name, func_name) = (path[:dot], path[dot + 1:])
     return getattr(__import__(mod_name, {}, {}, ['']), func_name)
+
+

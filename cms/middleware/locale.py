@@ -1,4 +1,7 @@
-"this is the locale selecting middleware that will look at accept headers"
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+'''this is the locale selecting middleware that will look at accept headers'''
 
 from django.utils.cache import patch_vary_headers
 from django.utils import translation
@@ -7,7 +10,9 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.middleware.locale import LocaleMiddleware
 
+
 class LocaleMiddleware(LocaleMiddleware):
+
     """
     This is a very simple middleware that parses a request
     and decides what translation object to install in the current
@@ -26,7 +31,7 @@ class LocaleMiddleware(LocaleMiddleware):
         language = translation.get_language_from_request(request)
         requested_language = request.REQUEST.get('language', None)
         if requested_language and requested_language != language \
-        and check_for_language(requested_language):
+            and check_for_language(requested_language):
             language = requested_language
             if hasattr(request, 'session'):
                 request.session['django_language'] = language
@@ -37,7 +42,10 @@ class LocaleMiddleware(LocaleMiddleware):
                 if not next:
                     next = '/'
                 response = HttpResponseRedirect(next)
-                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
+                                    language)
                 return response
         translation.activate(language)
         request.LANGUAGE_CODE = translation.get_language()
+
+

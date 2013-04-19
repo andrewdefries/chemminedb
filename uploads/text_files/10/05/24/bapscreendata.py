@@ -1,119 +1,151 @@
-import MySQLdb, sys
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import MySQLdb
+import sys
 import pyjson
 
-host = "bioweb"
-user = "ycao"
-db = "ptdb"
+host = 'bioweb'
+user = 'ycao'
+db = 'ptdb'
 
 con = MySQLdb.connect(host=host, user=user, db=db)
 cur = con.cursor()
 
+if __name__ == '__main__':
 
-if __name__ == "__main__":
+    screenid = int(sys.argv[1])
 
+    # decide keys
 
-	screenid = int(sys.argv[1])
+    query = \
+        """SELECT name, type, col_id FROM screen_obj_schema WHERE screenid=%s and function='key'""" \
+        % screenid
+    cur.execute(query)
+    (key_name, key_type, key_col) = cur.fetchone()[0:3]
 
-	# decide keys
-	query = """SELECT name, type, col_id FROM screen_obj_schema WHERE screenid=%s and function='key'"""%screenid
-	cur.execute(query)
-	key_name, key_type, key_col = cur.fetchone()[0:3]
+    tbl_name = 'screen_obj_%s' % key_type
 
-	tbl_name = "screen_obj_%s"%key_type
+    # decide name key
 
-	# decide name key
-	query = """SELECT col_id, name FROM screen_obj_schema WHERE screenid=%s and function='name key'"""%screenid
-	cur.execute(query)
-	name_key_col, name_key = cur.fetchone()[0:2]
+    query = \
+        """SELECT col_id, name FROM screen_obj_schema WHERE screenid=%s and function='name key'""" \
+        % screenid
+    cur.execute(query)
+    (name_key_col, name_key) = cur.fetchone()[0:2]
 
-	# decide SALK ID
-	query = """SELECT col_id, name FROM screen_obj_schema WHERE screenid=%s and function='salk'"""%screenid
-	cur.execute(query)
-	salk_col, salk_name = cur.fetchone()[0:2]
-	
-	# get all distinct Comparison Set IDs
-	sets = []
-	query = """SELECT distinct value FROM %s WHERE col_id=%s"""%(tbl_name, key_col)
-	cur.execute(query)
-	for i in cur.fetchall():
-		sets.append(i[0])
-	
-	# get all treamtments = {col_id:name}
-	trm = {} 
-	query = """SELECT name, col_id FROM screen_obj_schema WHERE screenid=%s and function='treatment'"""%screenid
-	cur.execute(query)
-	for i in cur.fetchall():
-		trm[i[1]] = i[0]
+    # decide SALK ID
 
-	# get mean values
-	all = {}
+    query = \
+        """SELECT col_id, name FROM screen_obj_schema WHERE screenid=%s and function='salk'""" \
+        % screenid
+    cur.execute(query)
+    (salk_col, salk_name) = cur.fetchone()[0:2]
 
-	# for every comparison set
-	for set_id in sets:
+    # get all distinct Comparison Set IDs
 
-		print set_id
+    sets = []
+    query = """SELECT distinct value FROM %s WHERE col_id=%s""" \
+        % (tbl_name, key_col)
+    cur.execute(query)
+    for i in cur.fetchall():
+        sets.append(i[0])
 
-		set = {}
-		wt = {}
-		organism = {}
-		ati = ''
-		salk_id = ''
+    # get all treamtments = {col_id:name}
 
-		# get AT#
-		query = """SELECT distinct(value) FROM screen_obj_string WHERE screenid=%s and col_id=%s and set_id=%s and value != 'wt'"""%(screenid, name_key_col, set_id)
-		cur.execute(query)
-		result = cur.fetchall()
-		if len(result) > 1:
-			print "Set %s has %s organisms."%(set_id,len(result))
-		else:
-			ati = i[0]
-		#for i in cur.fetchall():
-		#	if i[0]!='wt':
-		#		ati = i[0]
-		#		break
+    trm = {}
+    query = \
+        """SELECT name, col_id FROM screen_obj_schema WHERE screenid=%s and function='treatment'""" \
+        % screenid
+    cur.execute(query)
+    for i in cur.fetchall():
+        trm[i[1]] = i[0]
 
-		# get and SALK_ID
-		query = """SELECT distinct(value) FROM screen_obj_string WHERE screenid=%s and col_id=%s and set_id=%s"""%(screenid, salk_col, set_id)
-		cur.execute(query)
-		result = cur.fetchall()
-		for i in result:
-			if len(i[0]) != 0:
-				salk_id = i[0]
-				break
+    # get mean values
 
-		for treatment in trm.keys():
+    all = {}
 
-			# mean value for wt
-			query = """SELECT sum(value)/count(value) FROM screen_obj_double WHERE screenid=%s and col_id=%s and set_id=%s and wt=1"""%(screenid, treatment, set_id)
-			cur.execute(query)
-			mean = cur.fetchone()[0]
-			wt[trm[treatment]] = "%s"%mean 
+    # for every comparison set
 
-			# mean value for organism
-			query = """SELECT sum(value)/count(value) FROM screen_obj_double WHERE screenid=%s and col_id=%s and set_id=%s and wt=0"""%(screenid, treatment, set_id)
-			cur.execute(query)
-			mean = cur.fetchone()[0]
-			organism[trm[treatment]] = "%s"%mean 
+    for set_id in sets:
 
-		set["wt"] = wt
-		set["organism"] = organism
-		set["At#"] = ati
-		set["salk"] = salk_id
-		all["%s"%set_id] = set
+        print set_id
 
-		#if set_id == 497:
-		#	print set
-	#print all
+        set = {}
+        wt = {}
+        organism = {}
+        ati = ''
+        salk_id = ''
 
-	sys.exit(0)
+        # get AT#
 
+        query = \
+            """SELECT distinct(value) FROM screen_obj_string WHERE screenid=%s and col_id=%s and set_id=%s and value != 'wt'""" \
+            % (screenid, name_key_col, set_id)
+        cur.execute(query)
+        result = cur.fetchall()
+        if len(result) > 1:
+            print 'Set %s has %s organisms.' % (set_id, len(result))
+        else:
+            ati = i[0]
 
-	###################
+        # for i in cur.fetchall():
+        # ....if i[0]!='wt':
+        # ........ati = i[0]
+        # ........break
 
-	all_js = pyjson.write(all)
-	#print all_js
+        # get and SALK_ID
 
-	tmpl = """
+        query = \
+            """SELECT distinct(value) FROM screen_obj_string WHERE screenid=%s and col_id=%s and set_id=%s""" \
+            % (screenid, salk_col, set_id)
+        cur.execute(query)
+        result = cur.fetchall()
+        for i in result:
+            if len(i[0]) != 0:
+                salk_id = i[0]
+                break
+
+        for treatment in trm.keys():
+
+            # mean value for wt
+
+            query = \
+                """SELECT sum(value)/count(value) FROM screen_obj_double WHERE screenid=%s and col_id=%s and set_id=%s and wt=1""" \
+                % (screenid, treatment, set_id)
+            cur.execute(query)
+            mean = cur.fetchone()[0]
+            wt[trm[treatment]] = '%s' % mean
+
+            # mean value for organism
+
+            query = \
+                """SELECT sum(value)/count(value) FROM screen_obj_double WHERE screenid=%s and col_id=%s and set_id=%s and wt=0""" \
+                % (screenid, treatment, set_id)
+            cur.execute(query)
+            mean = cur.fetchone()[0]
+            organism[trm[treatment]] = '%s' % mean
+
+        set['wt'] = wt
+        set['organism'] = organism
+        set['At#'] = ati
+        set['salk'] = salk_id
+        all['%s' % set_id] = set
+
+        # if set_id == 497:
+        # ....print set
+    # print all
+
+    sys.exit(0)
+
+    # ##################
+
+    all_js = pyjson.write(all)
+
+    # print all_js
+
+    tmpl = \
+        """
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -184,17 +216,19 @@ $(function () {
 	__DIV__TMPL__
  </body>
 </html>
-"""%all_js
+""" \
+        % all_js
 
-	div_tmpl = """
+    div_tmpl = \
+        """
     <div class="placeholder" style="width:600px;height:300px"></div>
 """
 
-	fp = open("/home/lwang/.html/plot_tmpl.html","w")
-	divs = ""
-	for i in range(len(all)):
-		divs += div_tmpl
-	tmpl = tmpl.replace("__DIV__TMPL__", divs)
-	fp.write(tmpl)
-	fp.close()
+    fp = open('/home/lwang/.html/plot_tmpl.html', 'w')
+    divs = ''
+    for i in range(len(all)):
+        divs += div_tmpl
+    tmpl = tmpl.replace('__DIV__TMPL__', divs)
+    fp.write(tmpl)
+    fp.close()
 
